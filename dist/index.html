@@ -4,6 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <title>I Don't Get Paid Enough For This</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            overflow: auto;
+            position: fixed;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #main,
+        #game{
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #reaper {
+            right: 0px;
+            margin-right: 10%;
+            margin-top: 50%;
+        }
+
+        #soul {
+            margin-left: 10%;
+            margin-top: 50%;
+        }
+
+        canvas {
+            position: absolute;
+        }
+    </style>
 </head>
 
 <body>
