@@ -1,11 +1,17 @@
 const gameWidth = window.innerWidth;
 const gameHeight = window.innerHeight;
 
-const reaperWidth = 100;
-const reaperHeight = 200;
+const reaperWidth = 200;
+const reaperHeight = 300;
 
-const soulWidth = 50;
-const soulHeight = 100;
+const soulWidth = 200;
+const soulHeight = 200;
+
+const cardWidth = 200;
+const cardHeight = 300;
+
+let reaper = null;
+let soul = null;
 
 export const GameVariables = {
     gameWidth,
@@ -15,5 +21,11 @@ export const GameVariables = {
     reaperHeight,
 
     soulWidth,
-    soulHeight
+    soulHeight,
+
+    cardWidth,
+    cardHeight,
+
+    reaper,
+    soul
 }
