@@ -1,7 +1,7 @@
 import { GameVariables } from "../game-variables";
-const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
 const { drawSprite } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, minionIcon } = require("../objects/icons");
+const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
 
 export class Card {
@@ -15,21 +15,11 @@ export class Card {
 
         this.cardCtx = this.cardCanvas.getContext("2d");
 
-        // this.cardElem = document.createElement("div");
-        // this.cardElem.classList.add("card");
-        // gameDiv.appendChild(this.cardElem);
-
         // this.cardUseButton = document.createElement("button");
         // this.cardUseButton.classList.add("card-use-button");
         // this.cardUseButton.addEventListener('click', (e) => this.useCard(), false);
         // this.cardUseButton.textContent = "USE CARD"
-
         // this.cardElem.appendChild(this.cardUseButton);
-
-        // this.cardDescription = document.createElement("p");
-        // this.cardDescription.classList.add("card-description");
-
-        // this.cardElem.appendChild(this.cardDescription);
 
         this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
         this.generateCard();
@@ -98,7 +88,6 @@ export class Card {
 
     dispose() {
         if (this.cardElem.parentNode !== null) {
-            console.log("DISPOSE CARD!");
             this.cardElem.parentElement.removeChild(this.cardElem);
         }
     }

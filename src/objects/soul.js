@@ -1,4 +1,5 @@
 import { GameVariables } from "../game-variables";
+import { Status } from "./status";
 const { drawSprite } = require("../utilities/draw-utilities");
 
 export class Soul {
@@ -7,13 +8,19 @@ export class Soul {
         this.soulLife = 100;
         this.soulDef = 0;
 
+        this.soulContainer = document.createElement("div");
+        this.soulContainer.classList.add("soul-container");
+        gameDiv.appendChild(this.soulContainer);
+
         this.soulCanvas = document.createElement("canvas");
         this.soulCanvas.width = defaultMaleSoul[0].length * GameVariables.pixelSize;
         this.soulCanvas.height = defaultMaleSoul.length * GameVariables.pixelSize;
-        this.soulCanvas.id = "soul";
-        gameDiv.appendChild(this.soulCanvas);
+        this.soulCanvas.classList.add("soul");
+        this.soulContainer.appendChild(this.soulCanvas);
 
         this.soulCtx = this.soulCanvas.getContext("2d");
+
+        this.soulStatus = new Status(this.soulContainer, 33, 10, 0);
 
         this.draw();
     }

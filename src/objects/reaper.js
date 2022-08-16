@@ -1,4 +1,5 @@
 import { GameVariables } from "../game-variables";
+import { Status } from "./status";
 const { drawSprite } = require("../utilities/draw-utilities");
 
 export class Reaper {
@@ -7,14 +8,20 @@ export class Reaper {
         this.reaperLife = 100;
         this.reaperDef = 0;
 
+        this.reaperContainer = document.createElement("div");
+        this.reaperContainer.classList.add("reaper-container");
+        gameDiv.appendChild(this.reaperContainer);
+
         this.reaperCanvas = document.createElement("canvas");
         this.reaperCanvas.width = grimReaper[0].length * GameVariables.pixelSize;
         this.reaperCanvas.height = grimReaper.length * GameVariables.pixelSize;
         this.reaperCanvas.id = "reaper";
-
-        gameDiv.appendChild(this.reaperCanvas);
+        this.reaperContainer.appendChild(this.reaperCanvas);
 
         this.reaperCtx = this.reaperCanvas.getContext("2d");
+
+        this.reaperStatus = new Status(this.reaperContainer, 36, 999, 0);
+
         this.draw();
     }
 

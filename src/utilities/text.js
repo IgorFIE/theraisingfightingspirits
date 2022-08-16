@@ -1,4 +1,4 @@
-export const drawPixelTextInCanvasContext = (pixelText, ctx, pixelSize, startX, startY) => {
+export const drawPixelTextInCanvasContext = (pixelText, ctx, pixelSize, startX, startY, color = "black") => {
     const halfWidthPixelTextSize = (pixelText[0].length * pixelSize) / 2;
     const halfHeightPixelTextSize = (pixelText.length * pixelSize) / 2;
     const textWidthStartPosition = (startX * pixelSize) - halfWidthPixelTextSize;
@@ -8,7 +8,7 @@ export const drawPixelTextInCanvasContext = (pixelText, ctx, pixelSize, startX, 
             const drawPixel = pixelText[y][x];
             if (drawPixel) {
                 ctx.beginPath();
-                ctx.fillStyle = 'black';
+                ctx.fillStyle = color;
                 ctx.fillRect(
                     Math.round(textWidthStartPosition + (x * pixelSize)),
                     Math.round(textHeightStartPosition + (y * pixelSize)),
@@ -97,6 +97,8 @@ const retrievePixelLetter = (letter) => {
             return EXCLAMATION_MARK;
         case '+':
             return PLUS_MARK;
+        case '/':
+            return SLASH_MARK;
 
         case '0':
             return ZERO;
@@ -362,6 +364,14 @@ const PLUS_MARK = [
     [true, true, true],
     [false, true, false],
     [false, false, false]
+];
+
+const SLASH_MARK = [
+    [false, true],
+    [false, true],
+    [true, true],
+    [true, false],
+    [true, false]
 ];
 
 const ZERO = [

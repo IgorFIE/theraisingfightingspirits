@@ -12,6 +12,8 @@ const soulHeight = 200;
 const cardWidth = 53;
 const cardHeight = 85;
 
+const statusBarHeight = 18;
+
 let reaper = null;
 let soul = null;
 let playerCards = [];
@@ -45,6 +47,8 @@ export const GameVariables = {
     defaultMaxPlayCards,
     maxPlayCards,
     cardsPlayed,
+
+    statusBarHeight,
 
     isPlayerTurn
 }
