@@ -1,57 +1,157 @@
 import { GameVariables } from "../game-variables";
+const { drawSprite } = require("../utilities/draw-utilities");
 
 export class Soul {
-    constructor(gameDiv){
+    constructor(gameDiv) {
 
         this.soulLife = 100;
         this.soulDef = 0;
 
-        this.backgroundElem = document.createElement("canvas");
-        this.backgroundElem.width = GameVariables.soulWidth;
-        this.backgroundElem.height = GameVariables.soulHeight;
-        this.backgroundElem.id = "soul";
-        this.backgroundElem.style.backgroundColor = "blue";
+        this.soulCanvas = document.createElement("canvas");
+        this.soulCanvas.width = defaultMaleSoul[0].length * GameVariables.pixelSize;
+        this.soulCanvas.height = defaultMaleSoul.length * GameVariables.pixelSize;
+        this.soulCanvas.id = "soul";
+        gameDiv.appendChild(this.soulCanvas);
 
-        gameDiv.appendChild(this.backgroundElem);
+        this.soulCtx = this.soulCanvas.getContext("2d");
 
-        let ctx = this.backgroundElem.getContext("2d");
-        ctx.fillStyle = "#FF0000";
-        ctx.fillRect(5, GameVariables.soulHeight - 15, GameVariables.soulWidth - 10, 10);
+        this.draw();
     }
 
-    takeDamage(dmg){
-        console.log("Current Soul Life: " + this.soulLife + " || Def: " + this.soulDef);
-        if(this.soulDef > 0){
-            this.soulDef -=dmg;
-            if(this.soulDef < 0){
+    takeDamage(dmg) {
+        // refactor
+        if (this.soulDef > 0) {
+            this.soulDef -= dmg;
+            if (this.soulDef < 0) {
                 dmg = Math.abs(this.soulDef);
                 this.soulDef = 0;
             }
         }
-        if(this.soulDef == 0){
+        if (this.soulDef == 0) {
             this.soulLife -= dmg;
-            if(this.soulLife <  0){
+            if (this.soulLife < 0) {
                 this.soulLife = 0;
             }
         }
-        console.log("After Soul Life: " + this.soulLife+ " || Def: " + this.soulDef);
+        this.draw();
     }
 
-    addShield(amount){
-        console.log("Current Soul Life: " + this.soulLife + " || Def: " + this.soulDef);
+    addShield(amount) {
         this.soulDef += amount;
-        console.log("After Soul Life: " + this.soulLife + " || Def: " + this.soulDef);
+        this.draw();
     }
 
-    update(){
-
+    draw() {
+        this.soulCtx.clearRect(0, 0, GameVariables.soulWidth, GameVariables.soulHeight);
+        // this.drawLifeBar();
+        // this.drawShield();
+        this.drawSoul();
     }
 
-    draw(){
-
+    drawLifeBar() {
+        this.soulCtx.fillStyle = this.soulDef > 0 ? "lightblue" : "#FF0000";
+        this.soulCtx.fillRect(
+            5,
+            GameVariables.soulHeight - 15,
+            (this.soulLife * (GameVariables.soulWidth - 10)) / 100,
+            10);
     }
 
-    dispose(){
+    drawShield() {
+        if (this.soulDef > 0) {
+            this.soulCtx.beginPath();
+            this.soulCtx.arc(40, 150, 30, 0, 2 * Math.PI, false);
+            this.soulCtx.fillStyle = 'lightblue';
+            this.soulCtx.fill();
+            this.soulCtx.lineWidth = 5;
+            this.soulCtx.strokeStyle = '#003300';
+            this.soulCtx.stroke();
 
+            this.soulCtx.font = "30px monospace";
+            this.soulCtx.fillStyle = "black";
+            this.soulCtx.textAlign = "center";
+            this.soulCtx.fillText(this.soulDef, 40, 160);
+        }
+    }
+
+    drawSoul() {
+        drawSprite(this.soulCtx, defaultMaleSoul, GameVariables.pixelSize);
     }
 }
+
+const nu = null;
+const db = "#10495E";
+const lb = "#9BF2FA";
+const wb = "#EDEEF7";
+
+const defaultMaleSoul = [
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, db, wb, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, wb, db, db, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, wb, db, db, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, wb, db, db, db, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, wb, db, db, db, db, wb, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, wb, wb, db, lb, db, wb, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, wb, db, db, lb, lb, db, wb, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, wb, db, lb, lb, lb, db, wb, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, wb, db, lb, lb, lb, db, wb, nu, wb, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, wb, db, lb, lb, lb, db, wb, wb, db, wb, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, wb, db, lb, lb, lb, lb, db, db, db, wb, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, wb, db, lb, lb, lb, lb, lb, db, wb, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, wb, db, lb, lb, lb, db, wb, wb, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, wb, wb, db, lb, lb, lb, lb, lb, db, db, wb, wb, nu, nu, nu, nu],
+    [nu, nu, nu, wb, db, db, lb, lb, lb, lb, lb, lb, lb, lb, db, db, wb, nu, nu, nu],
+    [nu, nu, wb, db, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, db, wb, nu, nu],
+    [nu, wb, db, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, db, wb, nu],
+    [nu, wb, db, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, lb, db, wb, nu],
+    [wb, db, lb, lb, lb, lb, lb, wb, wb, wb, wb, wb, wb, lb, lb, lb, lb, lb, db, wb],
+    [wb, db, lb, lb, db, lb, wb, wb, wb, wb, wb, wb, wb, wb, lb, db, lb, lb, db, wb],
+    [wb, db, lb, db, lb, db, db, db, wb, wb, wb, wb, db, db, db, lb, db, lb, db, wb],
+    [wb, db, lb, db, lb, wb, wb, wb, db, wb, wb, db, wb, wb, wb, lb, db, lb, db, wb],
+    [wb, db, lb, db, lb, wb, wb, wb, db, wb, wb, db, wb, wb, wb, lb, db, lb, db, wb],
+    [wb, db, lb, lb, db, wb, wb, db, wb, wb, wb, wb, db, wb, wb, db, lb, lb, db, wb],
+    [nu, wb, db, lb, lb, db, db, wb, wb, wb, wb, wb, wb, db, db, lb, lb, db, wb, nu],
+    [nu, wb, db, lb, lb, lb, wb, wb, wb, wb, wb, wb, wb, wb, lb, lb, lb, db, wb, nu],
+    [nu, nu, wb, db, lb, lb, lb, wb, wb, wb, wb, wb, wb, lb, lb, lb, db, wb, nu, nu],
+    [nu, nu, nu, wb, db, db, lb, lb, lb, lb, lb, lb, lb, lb, db, db, wb, nu, nu, nu],
+    [nu, nu, nu, nu, wb, wb, db, db, lb, lb, lb, lb, db, db, wb, wb, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, wb, wb, db, db, db, db, wb, wb, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu]
+];
+
+const lp = "#FFBFFF";
+const dp = "#C776CA";
+const dl = "#9F3FA3";
+
+const defaultFemaleSoul = [
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, dp, wb, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, wb, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, wb, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, dp, wb, wb, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, dp, dp, wb],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, dp, lp, dp, wb],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, lp, lp, dp, wb],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, dp, lp, lp, lp, dp, wb, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, wb, dl, dl, lp, lp, lp, dp, wb, nu, nu],
+    [nu, nu, nu, nu, nu, nu, wb, wb, dp, dp, dp, dp, wb, wb, dl, lp, lp, dl, lp, lp, lp, dp, wb, nu],
+    [nu, nu, nu, nu, wb, wb, dp, dp, lp, lp, lp, lp, dp, dl, lp, lp, lp, dl, lp, lp, lp, dp, wb, nu],
+    [nu, nu, nu, wb, dp, dp, lp, lp, lp, lp, lp, lp, lp, dl, lp, lp, lp, dl, dl, lp, lp, dp, wb, nu],
+    [nu, nu, wb, dp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, dl, dl, dl, lp, dl, dl, dl, dp, wb, nu],
+    [nu, wb, dp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, dl, dl, lp, lp, lp, dl, wb, nu],
+    [nu, wb, dp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, dl, lp, lp, lp, dl, wb, nu],
+    [wb, dp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, dl, lp, lp, dl, wb, nu, nu],
+    [wb, dp, lp, lp, lp, lp, lp, wb, wb, wb, wb, wb, wb, lp, lp, lp, lp, lp, dl, dl, wb, nu, nu, nu],
+    [wb, dp, lp, lp, lp, lp, wb, wb, wb, wb, wb, wb, wb, wb, lp, lp, lp, lp, dp, wb, nu, nu, nu, nu],
+    [wb, dp, lp, lp, lp, dp, wb, wb, wb, wb, wb, wb, wb, wb, dp, lp, lp, lp, dp, wb, nu, nu, nu, nu],
+    [wb, dp, lp, lp, lp, wb, dp, dp, wb, wb, wb, wb, dp, dp, wb, lp, lp, lp, dp, wb, nu, nu, nu, nu],
+    [wb, dp, lp, lp, lp, wb, dp, dp, wb, wb, wb, wb, dp, dp, wb, lp, lp, lp, dp, wb, nu, nu, nu, nu],
+    [nu, wb, dp, lp, lp, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, lp, lp, dp, wb, nu, nu, nu, nu, nu],
+    [nu, wb, dp, lp, lp, lp, wb, wb, wb, dp, dp, wb, wb, wb, lp, lp, lp, dp, wb, nu, nu, nu, nu, nu],
+    [nu, nu, wb, dp, lp, lp, lp, wb, dp, dp, dp, dp, wb, lp, lp, lp, dp, wb, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, wb, dp, dp, lp, lp, lp, dp, dp, lp, lp, lp, dp, dp, wb, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, wb, wb, dp, dp, lp, lp, lp, lp, dp, dp, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, wb, wb, dp, dp, dp, dp, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu]
+];
+

@@ -10,16 +10,4 @@ export class Background {
 
         gameDiv.appendChild(this.backgroundElem);
     }
-
-    update(){
-
-    }
-
-    draw(){
-
-    }
-
-    dispose(){
-
-    }
 }

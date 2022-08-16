@@ -1,89 +1,106 @@
 import { GameVariables } from "../game-variables";
+const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
+const { drawSprite } = require("../utilities/draw-utilities");
+const { atkIcon, defIcon, minionIcon } = require("../objects/icons");
+const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
 
 export class Card {
     constructor(gameDiv) {
-        const self = this;
 
-        this.cardElem = document.createElement("div");
-        this.cardElem.classList.add("card");
-        gameDiv.appendChild(this.cardElem);
+        this.cardCanvas = document.createElement("canvas");
+        this.cardCanvas.width = GameVariables.cardWidth * GameVariables.pixelSize;
+        this.cardCanvas.height = GameVariables.cardHeight * GameVariables.pixelSize;
+        this.cardCanvas.classList.add("card");
+        gameDiv.appendChild(this.cardCanvas);
 
-        // this.cardImage = document.createElement("div");
-        // this.cardImage.classList.add("card-image");
+        this.cardCtx = this.cardCanvas.getContext("2d");
 
-        // this.cardElem.appendChild(this.cardImage);
+        // this.cardElem = document.createElement("div");
+        // this.cardElem.classList.add("card");
+        // gameDiv.appendChild(this.cardElem);
 
-        // this.cardIcon = document.createElement("div");
-        // this.cardIcon.classList.add("card-icon");
+        // this.cardUseButton = document.createElement("button");
+        // this.cardUseButton.classList.add("card-use-button");
+        // this.cardUseButton.addEventListener('click', (e) => this.useCard(), false);
+        // this.cardUseButton.textContent = "USE CARD"
 
-        // this.cardElem.appendChild(this.cardIcon);
+        // this.cardElem.appendChild(this.cardUseButton);
 
-        // this.cardTitle = document.createElement("div");
-        // this.cardTitle.classList.add("card-title");
+        // this.cardDescription = document.createElement("p");
+        // this.cardDescription.classList.add("card-description");
 
-        // this.cardElem.appendChild(this.cardTitle);
+        // this.cardElem.appendChild(this.cardDescription);
 
-        // this.cardType = document.createElement("div");
-        // this.cardType.classList.add("card-type");
-
-        // this.cardElem.appendChild(this.cardType);
-
-        this.cardUseButton = document.createElement("button");
-        this.cardUseButton.classList.add("card-use-button");
-        // this.cardUseButton.classList.add("hidden");
-         this.cardUseButton.addEventListener('click', function(e){ self.useCard()});
-        this.cardUseButton.textContent = "USE CARD"
-        
-        this.cardElem.appendChild(this.cardUseButton);
-        
-        this.cardDescription = document.createElement("p");
-        this.cardDescription.classList.add("card-description");
-        
-        this.cardElem.appendChild(this.cardDescription);
-        
-        this.cardType = this.initCard();
-        
-        // const test = this.cardUseButton;
-        // this.cardElem.addEventListener('click', function(e){
-        //     console.log(e);
-        //     test.classList.remove("hidden");
-        // });
+        this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
+        this.generateCard();
     }
 
-    initCard() {
-        let randomNumber = Math.floor(Math.random() * 2);
-        switch (randomNumber) {
-            case CardTypes.Atk:
-                this.cardDescription.textContent = "ATK CARD 2 DAMAGE";
-                return CardTypes.Atk;
-            default:
-                this.cardDescription.textContent = "DEF CARD 2 SHIELD"
-                return CardTypes.Def;
-        }
-    }
+    generateCard() {
+        generateLargeBox(this.cardCanvas, 2, 2, GameVariables.cardWidth - 3, GameVariables.cardHeight - 3, GameVariables.pixelSize, "black", "white");
+        generateSmallBox(this.cardCanvas, 7, 14, 40, 31, GameVariables.pixelSize, "black", "white");
+        generateSmallBox(this.cardCanvas, 7, 48, 40, 31, GameVariables.pixelSize, "black", "white");
+        generateSmallBox(this.cardCanvas, 13, 42, 28, 9, GameVariables.pixelSize, "black", "white");
 
-    useCard(){
-        console.log("USE CARD!");
         switch (this.cardType) {
             case CardTypes.Atk:
-                GameVariables.reaper.takeDamage(2);
+                drawSprite(this.cardCtx, atkIcon, GameVariables.pixelSize);
+                drawSprite(this.cardCtx, shockAtkIcon, GameVariables.pixelSize, 10, 19);
+                this.generateCardText("SHOCK", "ATK", "2 DAMAGE");
                 break;
+
+            case CardTypes.Minion:
+                drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize);
+                // drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize, 10, 19);
+                this.generateCardText("BOB", "MINION", "+1 SOUL");
+                break;
+
             default:
-                GameVariables.soul.addShield(2);
+                drawSprite(this.cardCtx, defIcon, GameVariables.pixelSize);
+                drawSprite(this.cardCtx, hardenDefIcon, GameVariables.pixelSize, 20, 20);
+                this.generateCardText("HARDEN", "DEF", "2 SHIELD");
                 break;
         }
     }
 
-    update() {
+    generateCardText(cardName, cardType, cardDescription) {
+        const cardNameText = convertTextToPixelArt(cardName);
+        drawPixelTextInCanvasContext(cardNameText, this.cardCtx, GameVariables.pixelSize, 32, 9);
 
+        const cardTypeText = convertTextToPixelArt(cardType);
+        drawPixelTextInCanvasContext(cardTypeText, this.cardCtx, GameVariables.pixelSize, 27, 47);
+
+        const cardDescriptionText = convertTextToPixelArt(cardDescription);
+        drawPixelTextInCanvasContext(cardDescriptionText, this.cardCtx, GameVariables.pixelSize, 27, 64);
     }
 
-    draw() {
-
+    useCard() {
+        if (GameVariables.cardsPlayed < GameVariables.maxPlayCards) {
+            GameVariables.cardsPlayed++;
+            switch (this.cardType) {
+                case CardTypes.Atk:
+                    if (GameVariables.isPlayerTurn) {
+                        GameVariables.reaper.takeDamage(2);
+                    } else {
+                        GameVariables.soul.takeDamage(2);
+                    }
+                    break;
+                default:
+                    if (GameVariables.isPlayerTurn) {
+                        GameVariables.soul.addShield(2);
+                    } else {
+                        GameVariables.reaper.addShield(2);
+                    }
+                    break;
+            }
+            this.dispose();
+        }
     }
 
     dispose() {
-
+        if (this.cardElem.parentNode !== null) {
+            console.log("DISPOSE CARD!");
+            this.cardElem.parentElement.removeChild(this.cardElem);
+        }
     }
 }
 
@@ -93,3 +110,49 @@ const CardTypes = {
     Minion: 2,
     Trick: 3
 }
+
+const nu = null;
+const bl = "#000000"
+const wb = "#EDEEF7"
+
+const shockAtkIcon = [
+    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, bl, bl, nu, bl, bl, bl, bl, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, bl, bl, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, bl, nu, nu, nu, bl, bl, bl, bl, bl, bl, nu, bl, bl, bl, nu, nu, bl, nu, bl, nu, nu, bl, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu],
+    [nu, bl, nu, nu, bl, nu, nu, bl, bl, bl, bl, bl, nu, bl, bl, bl, bl, bl, nu, bl, nu, bl, bl, bl, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu],
+    [bl, bl, nu, bl, nu, nu, bl, bl, bl, bl, wb, bl, nu, nu, bl, bl, bl, bl, nu, bl, nu, bl, bl, bl, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu],
+    [nu, bl, nu, bl, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, nu, bl, nu, bl, bl, nu, nu, bl, bl, bl, nu, nu, nu, nu],
+    [nu, bl, bl, nu, nu, nu, bl, bl, wb, bl, bl, nu, nu, nu, bl, bl, bl, nu, nu, bl, bl, bl, nu, bl, bl, nu, nu, bl, bl, bl, nu, nu, nu, nu],
+    [nu, bl, bl, nu, nu, nu, nu, bl, bl, bl, bl, nu, nu, nu, bl, bl, nu, nu, nu, bl, bl, bl, nu, bl, bl, nu, nu, bl, nu, bl, bl, nu, bl, nu],
+    [nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, bl, bl, nu, nu, bl, bl, nu, bl, bl, nu, nu, bl, nu, bl, nu],
+    [nu, nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, bl, bl, nu, nu, nu, bl, nu, bl, nu, nu, nu, bl, bl, bl, bl],
+    [nu, bl, bl, nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, bl, nu, nu],
+    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu, bl, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, bl, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu]
+];
+
+const hardenDefIcon = [
+    [nu, nu, nu, nu, nu, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu],
+    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu, bl, nu],
+    [nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl, nu],
+    [nu, bl, bl, bl, nu, nu, nu, nu, bl, bl, bl, bl, nu, nu, nu, bl],
+    [bl, bl, bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl],
+    [bl, bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl],
+    [bl, bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl],
+    [bl, bl, nu, nu, bl, wb, wb, bl, bl, wb, wb, bl, nu, nu, nu, bl],
+    [bl, bl, nu, nu, bl, bl, wb, bl, bl, wb, bl, bl, nu, nu, nu, bl],
+    [bl, bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl],
+    [bl, bl, nu, nu, nu, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl, nu],
+    [nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, nu],
+    [nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, nu, nu],
+    [nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu]
+];

@@ -20,27 +20,25 @@
         }
 
         #main,
-        #game{
+        #game {
             height: 100%;
             width: 100%;
         }
 
-        #gameBackground{
+        #gameBackground {
             z-index: -10;
         }
 
         #reaper {
             right: 0px;
             margin-right: 10%;
-            margin-top: 50%;
         }
 
         #soul {
             margin-left: 10%;
-            margin-top: 50%;
         }
 
-        #card-container{
+        #card-container {
             position: fixed;
             bottom: 0px;
             width: 100%;
@@ -53,37 +51,18 @@
         }
 
         .card {
-            width: 200px;
-            height: 300px;               
-            outline: black 10px solid;
-            border-radius: 6px;           
-            overflow: hidden;             
-            margin: 10px;                  
-            background-color: lightcyan;
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
             display: inline-block;
-        }
-
-        .card-use-button{
-            
-        }
-
-        .card-image {
-        }
-
-        .card-icon {
-        }
-
-        .card-title {
-        }
-
-        .card-type {
-        }
-
-        .card-description {
         }
 
         canvas {
             position: absolute;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
         }
     </style>
 </head>
