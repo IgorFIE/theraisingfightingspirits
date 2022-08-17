@@ -25,67 +25,12 @@ export class Reaper {
         this.draw();
     }
 
-    takeDamage(dmg) {
-        // refactor
-        if (this.reaperDef > 0) {
-            this.reaperDef -= dmg;
-            if (this.reaperDef < 0) {
-                dmg = Math.abs(this.reaperDef);
-                this.reaperDef = 0;
-            }
-        }
-        if (this.reaperDef == 0) {
-            this.reaperLife -= dmg;
-            if (this.reaperLife < 0) {
-                this.reaperLife = 0;
-            }
-        }
-        this.draw();
-    }
-
-    addShield(amount) {
-        this.reaperDef += amount;
-        this.draw();
-    }
-
     update() {
 
     }
 
     draw() {
         this.reaperCtx.clearRect(0, 0, GameVariables.reaperWidth, GameVariables.reaperHeight);
-        // this.drawLifeBar();
-        // this.drawShield();
-        this.drawReaper();
-    }
-
-    drawLifeBar() {
-        this.reaperCtx.fillStyle = this.reaperDef > 0 ? "lightblue" : "#FF0000";
-        this.reaperCtx.fillRect(
-            5,
-            GameVariables.reaperHeight - 15,
-            (this.reaperLife * (GameVariables.reaperWidth - 10)) / 100,
-            10);
-    }
-
-    drawShield() {
-        if (this.reaperDef > 0) {
-            this.reaperCtx.beginPath();
-            this.reaperCtx.arc(40, 150, 30, 0, 2 * Math.PI, false);
-            this.reaperCtx.fillStyle = 'lightblue';
-            this.reaperCtx.fill();
-            this.reaperCtx.lineWidth = 5;
-            this.reaperCtx.strokeStyle = '#003300';
-            this.reaperCtx.stroke();
-
-            this.reaperCtx.font = "30px monospace";
-            this.reaperCtx.fillStyle = "black";
-            this.reaperCtx.textAlign = "center";
-            this.reaperCtx.fillText(this.reaperDef, 40, 160);
-        }
-    }
-
-    drawReaper() {
         drawSprite(this.reaperCtx, grimReaper, GameVariables.pixelSize);
     }
 }

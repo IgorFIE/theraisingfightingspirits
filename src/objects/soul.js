@@ -25,63 +25,8 @@ export class Soul {
         this.draw();
     }
 
-    takeDamage(dmg) {
-        // refactor
-        if (this.soulDef > 0) {
-            this.soulDef -= dmg;
-            if (this.soulDef < 0) {
-                dmg = Math.abs(this.soulDef);
-                this.soulDef = 0;
-            }
-        }
-        if (this.soulDef == 0) {
-            this.soulLife -= dmg;
-            if (this.soulLife < 0) {
-                this.soulLife = 0;
-            }
-        }
-        this.draw();
-    }
-
-    addShield(amount) {
-        this.soulDef += amount;
-        this.draw();
-    }
-
     draw() {
         this.soulCtx.clearRect(0, 0, GameVariables.soulWidth, GameVariables.soulHeight);
-        // this.drawLifeBar();
-        // this.drawShield();
-        this.drawSoul();
-    }
-
-    drawLifeBar() {
-        this.soulCtx.fillStyle = this.soulDef > 0 ? "lightblue" : "#FF0000";
-        this.soulCtx.fillRect(
-            5,
-            GameVariables.soulHeight - 15,
-            (this.soulLife * (GameVariables.soulWidth - 10)) / 100,
-            10);
-    }
-
-    drawShield() {
-        if (this.soulDef > 0) {
-            this.soulCtx.beginPath();
-            this.soulCtx.arc(40, 150, 30, 0, 2 * Math.PI, false);
-            this.soulCtx.fillStyle = 'lightblue';
-            this.soulCtx.fill();
-            this.soulCtx.lineWidth = 5;
-            this.soulCtx.strokeStyle = '#003300';
-            this.soulCtx.stroke();
-
-            this.soulCtx.font = "30px monospace";
-            this.soulCtx.fillStyle = "black";
-            this.soulCtx.textAlign = "center";
-            this.soulCtx.fillText(this.soulDef, 40, 160);
-        }
-    }
-
-    drawSoul() {
         drawSprite(this.soulCtx, defaultMaleSoul, GameVariables.pixelSize);
     }
 }

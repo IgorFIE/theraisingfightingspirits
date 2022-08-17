@@ -10,7 +10,7 @@
             height: 100%;
             width: 100%;
             display: flex;
-            overflow: auto;
+            overflow: hidden;
             position: fixed;
             flex-direction: column;
             justify-content: center;
@@ -62,23 +62,23 @@
             display: block;
         }
 
-        #card-container {
-            position: fixed;
-            bottom: 0px;
-            width: 100%;
-            height: 325px;
-            text-align: center;
-        }
-
         .hidden {
             display: none;
         }
 
         .card {
-            position: relative;
-            overflow: hidden;
-            margin: 10px;
-            display: inline-block;
+            position: absolute;
+            z-index: 1;
+        }
+
+        #test {
+            position: absolute;
+            z-index: 0;
+            background-color: red;
+        }
+
+        .on-drag {
+            z-index: 999;
         }
 
         canvas {

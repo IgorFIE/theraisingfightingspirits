@@ -5,10 +5,10 @@ const { generateSmallBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
 
 export class Status {
-    constructor(parentdiv, w, lifeValue, defValue) {
+    constructor(parentdiv, w, lifeValue, shieldValue) {
         this.maxLifeValue = lifeValue;
         this.lifeValue = lifeValue;
-        this.defValue = defValue;
+        this.shieldValue = shieldValue;
 
         this.originalWidth = w;
 
@@ -23,7 +23,30 @@ export class Status {
         this.draw();
     }
 
+    takeDamage(dmg) {
+        if (this.shieldValue > 0) {
+            this.shieldValue -= dmg;
+            if (this.shieldValue <= 0) {
+                dmg = Math.abs(this.shieldValue);
+                this.shieldValue = 0;
+            }
+        }
+        if (this.shieldValue == 0) {
+            this.lifeValue -= dmg;
+            if (this.lifeValue < 0) {
+                this.lifeValue = 0;
+            }
+        }
+        this.draw();
+    }
+
+    addShield(shieldAmount) {
+        this.shieldValue += shieldAmount;
+        this.draw();
+    }
+
     draw() {
+        this.statusCtx.clearRect(0, 0, this.statusCanvas.width, this.statusCanvas.height);
         generateSmallBox(this.statusCanvas, 16, 3, this.originalWidth + 1, 11, GameVariables.pixelSize, "white", "white");
         this.drawShield();
         generateSmallBox(this.statusCanvas, 17, 4, this.originalWidth - 1, 9, GameVariables.pixelSize, "black", "white");
@@ -33,15 +56,15 @@ export class Status {
     }
 
     drawShield() {
-        if (this.defValue > 0) {
+        if (this.shieldValue > 0) {
             drawSprite(this.statusCtx, defIcon, GameVariables.pixelSize);
-            const defText = convertTextToPixelArt(this.defValue);
+            const defText = convertTextToPixelArt(this.shieldValue);
             drawPixelTextInCanvasContext(defText, this.statusCtx, GameVariables.pixelSize, 9, 9, "white");
         }
     }
 
     drawLifeBar() {
-        this.statusCtx.fillStyle = this.defValue > 0 ? "lightblue" : "#FF0000";
+        this.statusCtx.fillStyle = this.shieldValue > 0 ? "lightblue" : "#FF0000";
         this.statusCtx.fillRect(
             18 * GameVariables.pixelSize,
             5 * GameVariables.pixelSize,

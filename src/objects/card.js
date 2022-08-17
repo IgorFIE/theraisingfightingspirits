@@ -5,21 +5,18 @@ const { generateSmallBox, generateLargeBox } = require("../utilities/box-generat
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
 
 export class Card {
-    constructor(gameDiv) {
-
+    constructor(gameDiv, cardX, cardY) {
+        this.isUsed = false;
         this.cardCanvas = document.createElement("canvas");
         this.cardCanvas.width = GameVariables.cardWidth * GameVariables.pixelSize;
         this.cardCanvas.height = GameVariables.cardHeight * GameVariables.pixelSize;
         this.cardCanvas.classList.add("card");
+        this.updateCardPosition(cardX, cardY);
+        // this.cardCanvas.addEventListener('click', (e) => this.useCard());
+        this.dragElement(this);
         gameDiv.appendChild(this.cardCanvas);
 
         this.cardCtx = this.cardCanvas.getContext("2d");
-
-        // this.cardUseButton = document.createElement("button");
-        // this.cardUseButton.classList.add("card-use-button");
-        // this.cardUseButton.addEventListener('click', (e) => this.useCard(), false);
-        // this.cardUseButton.textContent = "USE CARD"
-        // this.cardElem.appendChild(this.cardUseButton);
 
         this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
         this.generateCard();
@@ -38,11 +35,11 @@ export class Card {
                 this.generateCardText("SHOCK", "ATK", "2 DAMAGE");
                 break;
 
-            case CardTypes.Minion:
-                drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize);
-                // drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize, 10, 19);
-                this.generateCardText("BOB", "MINION", "+1 SOUL");
-                break;
+            // case CardTypes.Minion:
+            //     drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize);
+            //     // drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize, 10, 19);
+            //     this.generateCardText("BOB", "MINION", "+1 SOUL");
+            //     break;
 
             default:
                 drawSprite(this.cardCtx, defIcon, GameVariables.pixelSize);
@@ -64,31 +61,91 @@ export class Card {
     }
 
     useCard() {
-        if (GameVariables.cardsPlayed < GameVariables.maxPlayCards) {
-            GameVariables.cardsPlayed++;
-            switch (this.cardType) {
-                case CardTypes.Atk:
-                    if (GameVariables.isPlayerTurn) {
-                        GameVariables.reaper.takeDamage(2);
-                    } else {
-                        GameVariables.soul.takeDamage(2);
-                    }
-                    break;
-                default:
-                    if (GameVariables.isPlayerTurn) {
-                        GameVariables.soul.addShield(2);
-                    } else {
-                        GameVariables.reaper.addShield(2);
-                    }
-                    break;
+        this.isUsed = true;
+        GameVariables.cardsPlayed++;
+        switch (this.cardType) {
+            case CardTypes.Atk:
+                if (GameVariables.isPlayerTurn) {
+                    GameVariables.reaper.reaperStatus.takeDamage(2);
+                } else {
+                    GameVariables.soul.soulStatus.takeDamage(2);
+                }
+                break;
+            default:
+                if (GameVariables.isPlayerTurn) {
+                    GameVariables.soul.soulStatus.addShield(2);
+                } else {
+                    GameVariables.reaper.reaperStatus.addShield(2);
+                }
+                break;
+        }
+        this.dispose();
+        this.refreshPlayerCards();
+    }
+
+    refreshPlayerCards() {
+        const cardSpace = (GameVariables.cardContainerW * GameVariables.pixelSize) / (GameVariables.drawCardNumber - GameVariables.cardsPlayed);
+        const cardX = (cardSpace / 2) - (this.cardCanvas.width / 2);
+        const cardY = GameVariables.cardContainerY + (2 * GameVariables.pixelSize);
+        let placementCounter = 0;
+        for (let i = 0; i < GameVariables.cards.length; i++) {
+            if (!GameVariables.cards[i].isUsed) {
+                GameVariables.cards[i].updateCardPosition(GameVariables.cardContainerX + (placementCounter * cardSpace + cardX), cardY);
+                placementCounter++;
             }
-            this.dispose();
+        }
+    }
+
+    updateCardPosition(cardX, cardY) {
+        this.cardX = cardX;
+        this.cardY = cardY;
+        this.cardCanvas.style.transform = "translate(" + cardX + "px," + cardY + "px)";
+    }
+
+    dragElement(card) {
+        let newX = 0, newY = 0, startX = 0, startY = 0;
+        let lastTopValue = 0;
+        card.cardCanvas.onmousedown = dragMouseDown;
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            startX = e.clientX;
+            startY = e.clientY;
+            card.cardCanvas.classList.add("on-drag");
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            newX = startX - e.clientX;
+            newY = startY - e.clientY;
+            startX = e.clientX;
+            startY = e.clientY;
+            lastTopValue = (card.cardCanvas.offsetTop - newY);
+            card.cardCanvas.style.top = lastTopValue + "px";
+            card.cardCanvas.style.left = (card.cardCanvas.offsetLeft - newX) + "px";
+        }
+
+        function closeDragElement(e) {
+            document.onmouseup = null;
+            document.onmousemove = null;
+            if (GameVariables.cardsPlayed < GameVariables.maxPlayCards &&
+                card.cardY - Math.abs(lastTopValue) < card.cardY - card.cardCanvas.height) {
+                card.useCard();
+            } else {
+                card.cardCanvas.style.top = null;
+                card.cardCanvas.style.left = null;
+            }
+            card.cardCanvas.classList.remove("on-drag");
         }
     }
 
     dispose() {
-        if (this.cardElem.parentNode !== null) {
-            this.cardElem.parentElement.removeChild(this.cardElem);
+        if (this.cardCanvas.parentNode !== null) {
+            this.cardCanvas.parentElement.removeChild(this.cardCanvas);
         }
     }
 }

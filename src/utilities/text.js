@@ -1,6 +1,7 @@
-export const drawPixelTextInCanvasContext = (pixelText, ctx, pixelSize, startX, startY, color = "black") => {
-    const halfWidthPixelTextSize = (pixelText[0].length * pixelSize) / 2;
-    const halfHeightPixelTextSize = (pixelText.length * pixelSize) / 2;
+export const drawPixelTextInCanvasContext = (pixelText, ctx, pixelSize, startX, startY, color = "black", size = 1) => {
+    const textPixelSize = pixelSize * size;
+    const halfWidthPixelTextSize = (pixelText[0].length * textPixelSize) / 2;
+    const halfHeightPixelTextSize = (pixelText.length * textPixelSize) / 2;
     const textWidthStartPosition = (startX * pixelSize) - halfWidthPixelTextSize;
     const textHeightStartPosition = (startY * pixelSize) - halfHeightPixelTextSize;
     for (let y = 0; y < pixelText.length; y++) {
@@ -10,9 +11,9 @@ export const drawPixelTextInCanvasContext = (pixelText, ctx, pixelSize, startX, 
                 ctx.beginPath();
                 ctx.fillStyle = color;
                 ctx.fillRect(
-                    Math.round(textWidthStartPosition + (x * pixelSize)),
-                    Math.round(textHeightStartPosition + (y * pixelSize)),
-                    pixelSize, pixelSize);
+                    Math.round(textWidthStartPosition + (x * textPixelSize)),
+                    Math.round(textHeightStartPosition + (y * textPixelSize)),
+                    textPixelSize, textPixelSize);
             }
         }
     }
@@ -127,11 +128,11 @@ const retrievePixelLetter = (letter) => {
 };
 
 const SPACE = [
-    [false, false, false],
-    [false, false, false],
-    [false, false, false],
-    [false, false, false],
-    [false, false, false]
+    [false],
+    [false],
+    [false],
+    [false],
+    [false]
 ];
 
 const A = [
