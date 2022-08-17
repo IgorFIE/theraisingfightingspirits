@@ -12,7 +12,6 @@ export class Card {
         this.cardCanvas.height = GameVariables.cardHeight * GameVariables.pixelSize;
         this.cardCanvas.classList.add("card");
         this.updateCardPosition(cardX, cardY);
-        // this.cardCanvas.addEventListener('click', (e) => this.useCard());
         this.dragElement(this);
         gameDiv.appendChild(this.cardCanvas);
 
@@ -103,27 +102,45 @@ export class Card {
     }
 
     dragElement(card) {
+        let clientX = 0, clientY = 0;
         let newX = 0, newY = 0, startX = 0, startY = 0;
         let lastTopValue = 0;
         card.cardCanvas.onmousedown = dragMouseDown;
+        card.cardCanvas.ontouchstart = dragMouseDown;
 
         function dragMouseDown(e) {
             e = e || window.event;
             e.preventDefault();
-            startX = e.clientX;
-            startY = e.clientY;
+            if (e.touches && e.touches.length > 0) {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            } else {
+                startX = e.clientX;
+                startY = e.clientY;
+            }
             card.cardCanvas.classList.add("on-drag");
+
             document.onmouseup = closeDragElement;
             document.onmousemove = elementDrag;
+
+            document.ontouchend = closeDragElement;
+            document.ontouchmove = elementDrag;
         }
 
         function elementDrag(e) {
             e = e || window.event;
             e.preventDefault();
-            newX = startX - e.clientX;
-            newY = startY - e.clientY;
-            startX = e.clientX;
-            startY = e.clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            newX = startX - clientX;
+            newY = startY - clientY;
+            startX = clientX;
+            startY = clientY;
             lastTopValue = (card.cardCanvas.offsetTop - newY);
             card.cardCanvas.style.top = lastTopValue + "px";
             card.cardCanvas.style.left = (card.cardCanvas.offsetLeft - newX) + "px";
@@ -132,6 +149,10 @@ export class Card {
         function closeDragElement(e) {
             document.onmouseup = null;
             document.onmousemove = null;
+
+            document.ontouchend = null;
+            document.ontouchmove = null;
+
             if (GameVariables.cardsPlayed < GameVariables.maxPlayCards &&
                 card.cardY - Math.abs(lastTopValue) < card.cardY - card.cardCanvas.height) {
                 card.useCard();
