@@ -23,6 +23,13 @@ export class Soul {
         this.soulCtx.clearRect(0, 0, GameVariables.soulWidth, GameVariables.soulHeight);
         drawSprite(this.soulCtx, defaultMaleSoul, GameVariables.pixelSize);
     }
+
+    dispose() {
+        if (this.soulCanvas.parentNode !== null) {
+            this.soulStatus.dispose();
+            this.soulCanvas.parentElement.removeChild(this.soulCanvas);
+        }
+    }
 }
 
 const nu = null;

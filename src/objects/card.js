@@ -38,7 +38,7 @@ export class Card {
             case CardTypes.Minion:
                 drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize);
                 // drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize, 10, 19);
-                this.generateCardText("BOB", "MINION", "+1 SOUL");
+                this.generateCardText("SPIRIT", "MINION", "+1 SOUL");
                 break;
 
             default:
@@ -108,6 +108,7 @@ export class Card {
         let lastTopValue = 0;
         card.cardCanvas.onmousedown = dragMouseDown;
         card.cardCanvas.ontouchstart = dragMouseDown;
+
 
         function dragMouseDown(e) {
             e = e || window.event;

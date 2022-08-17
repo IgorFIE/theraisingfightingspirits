@@ -1,11 +1,18 @@
 const gameWidth = window.innerWidth;
 const gameHeight = window.innerHeight;
 
-// 270, 1
-// 720, 3 
-// (value-x1) * ((y2-y1)/(x2-x1)) + y1
-// mark2s = (gameHeight-270) * ((3-1)/(720-270)) + 1
-const pixelSize = Math.ceil((gameHeight - 270) * ((3 - 1) / (870 - 270)) + 1);
+let pixelSize = 0;
+
+const calculatePixelSize = () => {
+    // 270, 1
+    // 720, 3 
+    // (value-x1) * ((y2-y1)/(x2-x1)) + y1
+    // mark2s = (gameHeight-270) * ((3-1)/(720-270)) + 1
+    let heightPixelSize = Math.round((gameHeight - 270) * ((3 - 1) / (1100 - 270)) + 1);
+    let widthPixelSize = Math.round((gameWidth - 480) * ((3 - 1) / (1000 - 480)) + 1);
+
+    GameVariables.pixelSize = heightPixelSize < widthPixelSize ? heightPixelSize : widthPixelSize;
+};
 
 const reaperWidth = 200;
 const reaperHeight = 300;
@@ -34,7 +41,7 @@ let playerCards = [];
 const defaultMaxPlayCards = 2;
 let maxPlayCards = defaultMaxPlayCards;
 let cardsPlayed = 0;
-let drawCardNumber = 4;
+let drawCardNumber = 5;
 
 let isPlayerTurn = true;
 
@@ -43,6 +50,7 @@ export const GameVariables = {
     gameHeight,
 
     pixelSize,
+    calculatePixelSize,
 
     reaperWidth,
     reaperHeight,

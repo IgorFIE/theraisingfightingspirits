@@ -23,14 +23,21 @@ export class Reaper {
     }
 
     translateReaper() {
-        let reaperX = ((GameVariables.gameWidth / 4) * 3) - (this.reaperStatus.statusCanvas.width / 2);
-        let reaperY = (GameVariables.gameHeight / 4);
+        let reaperX = ((GameVariables.gameWidth / 4) * 3) - (this.reaperContainer.clientWidth / 2);
+        let reaperY = (GameVariables.gameHeight / 2) - ((this.reaperContainer.clientHeight / 3) * 2);
         this.reaperContainer.style.transform = "translate(" + reaperX + "px," + reaperY + "px)";
     }
 
     draw() {
         this.reaperCtx.clearRect(0, 0, GameVariables.reaperWidth, GameVariables.reaperHeight);
         drawSprite(this.reaperCtx, grimReaper, GameVariables.pixelSize);
+    }
+
+    dispose() {
+        if (this.reaperContainer.parentNode !== null) {
+            this.reaperStatus.dispose();
+            this.reaperContainer.parentElement.removeChild(this.reaperContainer);
+        }
     }
 }
 

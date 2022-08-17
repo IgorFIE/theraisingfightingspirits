@@ -6,6 +6,7 @@ const { Background } = require("../objects/background");
 
 export class Game {
     constructor() {
+        GameVariables.calculatePixelSize();
         let mainDiv = document.getElementById("main");
 
         this.gameDiv = document.createElement("div");
@@ -27,10 +28,19 @@ export class Game {
     }
 
     generateSoulsContainers() {
-        const containerW = (18 + 33) * GameVariables.pixelSize;
-        const containerH = (GameVariables.statusBarHeight + 32) * GameVariables.pixelSize;
+        let fakeSoulContainer = document.createElement("div");
+        fakeSoulContainer.classList.add("soul-container");
+        let fakeSoul = new Soul(fakeSoulContainer, 0, 0);
+        this.gameDiv.appendChild(fakeSoulContainer);
+
+        const containerW = fakeSoulContainer.clientWidth;
+        const containerH = fakeSoulContainer.clientHeight;
         const containerX = (GameVariables.gameWidth / 4) - ((containerW / 2) * 3);
         const containerY = (GameVariables.gameHeight / 2) - (containerH * 2);
+
+        fakeSoul.dispose();
+        fakeSoulContainer.parentElement.removeChild(fakeSoulContainer);
+
         for (let y = 0; y < 3; y++) {
             let newSoulContainerArray = [];
             let newSoulArray = [];
