@@ -17,7 +17,8 @@ export class Card {
 
         this.cardCtx = this.cardCanvas.getContext("2d");
 
-        this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
+        // this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
+        this.cardType = Math.floor(Math.random() * 3);
         this.generateCard();
     }
 
@@ -34,11 +35,11 @@ export class Card {
                 this.generateCardText("SHOCK", "ATK", "2 DAMAGE");
                 break;
 
-            // case CardTypes.Minion:
-            //     drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize);
-            //     // drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize, 10, 19);
-            //     this.generateCardText("BOB", "MINION", "+1 SOUL");
-            //     break;
+            case CardTypes.Minion:
+                drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize);
+                // drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize, 10, 19);
+                this.generateCardText("BOB", "MINION", "+1 SOUL");
+                break;
 
             default:
                 drawSprite(this.cardCtx, defIcon, GameVariables.pixelSize);
@@ -67,12 +68,12 @@ export class Card {
                 if (GameVariables.isPlayerTurn) {
                     GameVariables.reaper.reaperStatus.takeDamage(2);
                 } else {
-                    GameVariables.soul.soulStatus.takeDamage(2);
+                    GameVariables.soulsInUse.soulStatus.takeDamage(2);
                 }
                 break;
             default:
                 if (GameVariables.isPlayerTurn) {
-                    GameVariables.soul.soulStatus.addShield(2);
+                    GameVariables.soulsInUse.soulStatus.addShield(2);
                 } else {
                     GameVariables.reaper.reaperStatus.addShield(2);
                 }

@@ -3,24 +3,18 @@ import { Status } from "./status";
 const { drawSprite } = require("../utilities/draw-utilities");
 
 export class Soul {
-    constructor(gameDiv) {
-
-        this.soulLife = 100;
-        this.soulDef = 0;
-
-        this.soulContainer = document.createElement("div");
-        this.soulContainer.classList.add("soul-container");
-        gameDiv.appendChild(this.soulContainer);
-
+    constructor(soulContainer, arrayPosX, arrayPosY) {
+        this.arrayPosX = arrayPosX;
+        this.arrayPosY = arrayPosY;
         this.soulCanvas = document.createElement("canvas");
         this.soulCanvas.width = defaultMaleSoul[0].length * GameVariables.pixelSize;
         this.soulCanvas.height = defaultMaleSoul.length * GameVariables.pixelSize;
         this.soulCanvas.classList.add("soul");
-        this.soulContainer.appendChild(this.soulCanvas);
+        soulContainer.appendChild(this.soulCanvas);
 
         this.soulCtx = this.soulCanvas.getContext("2d");
 
-        this.soulStatus = new Status(this.soulContainer, 33, 10, 0);
+        this.soulStatus = new Status(soulContainer, 33, 10, 0);
 
         this.draw();
     }

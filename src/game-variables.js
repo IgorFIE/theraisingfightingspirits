@@ -1,7 +1,11 @@
 const gameWidth = window.innerWidth;
 const gameHeight = window.innerHeight;
 
-const pixelSize = 3;
+// 270, 1
+// 720, 3 
+// (value-x1) * ((y2-y1)/(x2-x1)) + y1
+// mark2s = (gameHeight-270) * ((3-1)/(720-270)) + 1
+const pixelSize = Math.ceil((gameHeight - 270) * ((3 - 1) / (870 - 270)) + 1);
 
 const reaperWidth = 200;
 const reaperHeight = 300;
@@ -20,13 +24,17 @@ let cardContainerH = cardHeight + 4;
 const statusBarHeight = 18;
 
 let reaper = null;
-let soul = null;
+
+let soulsContainers = [];
+let souls = [];
+let soulsInUse = null;
+
 let playerCards = [];
 
 const defaultMaxPlayCards = 2;
 let maxPlayCards = defaultMaxPlayCards;
 let cardsPlayed = 0;
-let drawCardNumber = 5;
+let drawCardNumber = 4;
 
 let isPlayerTurn = true;
 
@@ -51,7 +59,10 @@ export const GameVariables = {
     cardContainerH,
 
     reaper,
-    soul,
+
+    soulsContainers,
+    souls,
+    soulsInUse,
 
     playerCards,
 

@@ -29,11 +29,9 @@
             z-index: -10;
         }
 
-        .reaper-container {
+        .reaper-container,
+        .soul-container {
             position: fixed;
-            text-align: center;
-            right: 0px;
-            margin-right: 10%;
         }
 
         #reaper {
@@ -41,12 +39,11 @@
             overflow: hidden;
             display: block;
             margin-left: 15%;
-        }
 
-        .soul-container {
-            position: fixed;
-            text-align: center;
-            margin-left: 10%;
+            animation-name: reaperAnim;
+            animation-duration: 6s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
         }
 
         .soul {
@@ -68,6 +65,20 @@
 
             50% {
                 transform: translate(0px, 10px);
+            }
+
+            100% {
+                transform: translate(0px, 0px);
+            }
+        }
+
+        @keyframes reaperAnim {
+            0% {
+                transform: translate(0px, 0px);
+            }
+
+            50% {
+                transform: translate(0px, 5px);
             }
 
             100% {

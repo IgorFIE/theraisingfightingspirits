@@ -4,10 +4,6 @@ const { drawSprite } = require("../utilities/draw-utilities");
 
 export class Reaper {
     constructor(gameDiv) {
-
-        this.reaperLife = 100;
-        this.reaperDef = 0;
-
         this.reaperContainer = document.createElement("div");
         this.reaperContainer.classList.add("reaper-container");
         gameDiv.appendChild(this.reaperContainer);
@@ -22,11 +18,14 @@ export class Reaper {
 
         this.reaperStatus = new Status(this.reaperContainer, 36, 999, 0);
 
+        this.translateReaper();
         this.draw();
     }
 
-    update() {
-
+    translateReaper() {
+        let reaperX = ((GameVariables.gameWidth / 4) * 3) - (this.reaperStatus.statusCanvas.width / 2);
+        let reaperY = (GameVariables.gameHeight / 4);
+        this.reaperContainer.style.transform = "translate(" + reaperX + "px," + reaperY + "px)";
     }
 
     draw() {
