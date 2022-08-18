@@ -68,6 +68,7 @@ export class Game {
     }
 
     update() {
+        this.cleanDeadSouls();
         if (!GameVariables.isPlayerTurn) {
             GameVariables.reaper.reaperTurn();
             this.ui.startPlayerTurn();

@@ -58,8 +58,7 @@ export class Status {
     drawShield() {
         if (this.shieldValue > 0) {
             drawSprite(this.statusCtx, defIcon, GameVariables.pixelSize);
-            const defText = convertTextToPixelArt(this.shieldValue);
-            drawPixelTextInCanvasContext(defText, this.statusCtx, GameVariables.pixelSize, 9, 9, "white");
+            drawPixelTextInCanvasContext(convertTextToPixelArt(this.shieldValue), this.statusCtx, GameVariables.pixelSize, 9, 9, "white");
         }
     }
 

@@ -1,11 +1,15 @@
 import { GameVariables } from "../game-variables";
 import { Status } from "./status";
 const { drawSprite } = require("../utilities/draw-utilities");
+const { atkIcon, defIcon, scytheIcon } = require("../objects/icons");
+const { generateSmallBox } = require("../utilities/box-generator");
+const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
 
 export class Reaper {
     constructor(gameDiv) {
         this.reaperAtk = 4;
         this.reaperAoeAtk = 3;
+        this.reaperDef = 2;
         this.reaperAction = ReaperActions.DEF;
         this.reaperLockOnSoul = null;
 
@@ -13,24 +17,29 @@ export class Reaper {
         this.reaperContainer.classList.add("reaper-container");
         gameDiv.appendChild(this.reaperContainer);
 
+        this.reaperActionCanvas = document.createElement("canvas");
+        this.reaperActionCtx = this.reaperActionCanvas.getContext("2d");
+        this.reaperActionCanvas.width = (scytheIcon[0].length + 4) * GameVariables.pixelSize;
+        this.reaperActionCanvas.height = (scytheIcon.length + 4) * GameVariables.pixelSize;
+        this.reaperActionCanvas.id = "reaper-action";
+        this.reaperContainer.appendChild(this.reaperActionCanvas);
+
         this.reaperCanvas = document.createElement("canvas");
         this.reaperCanvas.width = grimReaper[0].length * GameVariables.pixelSize;
         this.reaperCanvas.height = grimReaper.length * GameVariables.pixelSize;
         this.reaperCanvas.id = "reaper";
         this.reaperContainer.appendChild(this.reaperCanvas);
 
-        this.reaperCtx = this.reaperCanvas.getContext("2d");
-
         this.reaperStatus = new Status(this.reaperContainer, 36, 999, 0);
 
         this.translateReaper();
-        this.draw();
+        drawSprite(this.reaperCanvas.getContext("2d"), grimReaper, GameVariables.pixelSize);
         this.calculateReaperNextAction();
     }
 
     translateReaper() {
         let reaperX = ((GameVariables.gameWidth / 4) * 3) - (this.reaperContainer.clientWidth / 2);
-        let reaperY = (GameVariables.gameHeight / 2) - ((this.reaperContainer.clientHeight / 3) * 2);
+        let reaperY = (GameVariables.gameHeight / 2) - ((this.reaperContainer.clientHeight / 4) * 3);
         this.reaperContainer.style.transform = "translate(" + reaperX + "px," + reaperY + "px)";
     }
 
@@ -54,30 +63,46 @@ export class Reaper {
             }
         }));
 
-        // there is a chance of the normal atk to kill 3 souls and the aoe atk to kill 2, if this is the case the reaper will choose the normal atk
+        // there is a chance of the normal atk to kill 3 souls and the aoe atk to kill 2, 
+        // if this is the case the reaper will choose the normal atk
         if (aoeAtkKills > normalAtkKillsSouls.length) {
-            console.log("Next turn action is: SPECIAL AOE ATK");
             this.reaperAction = ReaperActions.AOE_ATK;
         } else if (normalAtkKillsSouls.length > aoeAtkKills) {
-            console.log("Next turn action is: SPECIAL NORMAL ATK");
             this.reaperAction = ReaperActions.ATK;
             this.reaperLockOnSoul = normalAtkKillsSouls[Math.floor(Math.random() * normalAtkKillsSouls.length)];
         } else {
             let randomValue = Math.floor(Math.random() * 100);
             if (randomValue < 40) {
-                console.log("Next turn action is: AOE ATK");
                 this.reaperAction = ReaperActions.AOE_ATK;
             } else if (randomValue < 80) {
-                console.log("Next turn action is: NORMAL ATK");
                 this.reaperAction = ReaperActions.ATK;
                 this.reaperLockOnSoul = visibleSouls[Math.floor(Math.random() * visibleSouls.length)];
             } else {
-                console.log("Next turn action is: DEF");
                 this.reaperAction = ReaperActions.DEF;
             }
         }
+        this.drawReaperAction();
+    }
 
-        // show icon and damage or shield it's going to gain
+    drawReaperAction() {
+        this.reaperActionCtx.clearRect(0, 0, this.reaperActionCanvas.width, this.reaperActionCanvas.height);
+        switch (this.reaperAction) {
+            case ReaperActions.ATK:
+                this.drawAction(atkIcon, this.reaperAtk);
+                break;
+            case ReaperActions.AOE_ATK:
+                this.drawAction(scytheIcon, this.reaperAoeAtk);
+                break;
+            default:
+                this.drawAction(defIcon, this.reaperDef);
+                break;
+        }
+    }
+
+    drawAction(actionIcon, actionValue) {
+        drawSprite(this.reaperActionCtx, actionIcon, GameVariables.pixelSize, 4);
+        generateSmallBox(this.reaperActionCanvas, 0, actionIcon.length - 6, 9, 9, GameVariables.pixelSize, "black", "white");
+        drawPixelTextInCanvasContext(convertTextToPixelArt(actionValue), this.reaperActionCtx, GameVariables.pixelSize, 5, actionIcon.length - 1, "black");
     }
 
     processReaperAction() {
@@ -93,14 +118,9 @@ export class Reaper {
                 }));
                 break;
             default:
-                this.reaperStatus.addShield(2);
+                this.reaperStatus.addShield(this.reaperDef);
                 break;
         }
-    }
-
-    draw() {
-        this.reaperCtx.clearRect(0, 0, GameVariables.reaperWidth, GameVariables.reaperHeight);
-        drawSprite(this.reaperCtx, grimReaper, GameVariables.pixelSize);
     }
 
     dispose() {
