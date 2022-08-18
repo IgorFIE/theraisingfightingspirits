@@ -6,6 +6,14 @@ export class Soul {
     constructor(soulContainer, arrayPosX, arrayPosY) {
         this.arrayPosX = arrayPosX;
         this.arrayPosY = arrayPosY;
+
+        this.soulSelectedArrow = document.createElement("canvas");
+        this.soulSelectedArrow.width = selectedArrow[0].length * GameVariables.pixelSize;
+        this.soulSelectedArrow.height = selectedArrow.length * GameVariables.pixelSize;
+        this.soulSelectedArrow.classList.add("soul-selection-arrow", "hidden");
+        drawSprite(this.soulSelectedArrow.getContext("2d"), selectedArrow, GameVariables.pixelSize);
+        soulContainer.appendChild(this.soulSelectedArrow);
+
         this.soulCanvas = document.createElement("canvas");
         this.soulCanvas.width = defaultMaleSoul[0].length * GameVariables.pixelSize;
         this.soulCanvas.height = defaultMaleSoul.length * GameVariables.pixelSize;
@@ -16,7 +24,21 @@ export class Soul {
 
         this.soulStatus = new Status(soulContainer, 33, 10, 0);
 
+        soulContainer.addEventListener('click', (e) => this.selectSoul());
+
         this.draw();
+    }
+
+    selectSoul() {
+        if (GameVariables.soulInUse) {
+            GameVariables.soulInUse.deselectSoul();
+        }
+        GameVariables.soulInUse = GameVariables.souls[this.arrayPosY][this.arrayPosX];
+        this.soulSelectedArrow.classList.remove("hidden");
+    }
+
+    deselectSoul() {
+        this.soulSelectedArrow.classList.add("hidden");
     }
 
     draw() {
@@ -106,5 +128,25 @@ const defaultFemaleSoul = [
     [nu, nu, nu, nu, wb, wb, dp, dp, lp, lp, lp, lp, dp, dp, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, wb, wb, dp, dp, dp, dp, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu]
+];
+
+const yl = "#FFFF57";
+const bl = "#000000"
+
+const selectedArrow = [
+    [nu, nu, nu, nu, wb, wb, wb, nu, nu, nu, nu],
+    [nu, nu, nu, wb, bl, bl, bl, wb, nu, nu, nu],
+    [nu, nu, wb, bl, yl, yl, yl, bl, wb, nu, nu],
+    [nu, nu, wb, bl, yl, yl, yl, bl, wb, nu, nu],
+    [nu, nu, wb, bl, yl, yl, yl, bl, wb, nu, nu],
+    [nu, nu, wb, bl, yl, yl, yl, bl, wb, nu, nu],
+    [nu, wb, bl, bl, yl, yl, yl, bl, bl, wb, nu],
+    [wb, bl, yl, yl, yl, yl, yl, yl, yl, bl, wb],
+    [wb, bl, yl, yl, yl, yl, yl, yl, yl, bl, wb],
+    [nu, wb, bl, yl, yl, yl, yl, yl, bl, wb, nu],
+    [nu, nu, wb, bl, yl, yl, yl, bl, wb, nu, nu],
+    [nu, nu, nu, wb, bl, yl, bl, wb, nu, nu, nu],
+    [nu, nu, nu, nu, wb, bl, wb, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, wb, nu, nu, nu, nu, nu]
 ];
 

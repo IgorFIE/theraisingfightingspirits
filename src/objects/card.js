@@ -1,4 +1,5 @@
 import { GameVariables } from "../game-variables";
+const { Soul } = require("../objects/soul");
 const { drawSprite } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, minionIcon } = require("../objects/icons");
 const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
@@ -57,30 +58,57 @@ export class Card {
         drawPixelTextInCanvasContext(cardTypeText, this.cardCtx, GameVariables.pixelSize, 27, 47);
 
         const cardDescriptionText = convertTextToPixelArt(cardDescription);
-        drawPixelTextInCanvasContext(cardDescriptionText, this.cardCtx, GameVariables.pixelSize, 27, 64);
+        drawPixelTextInCanvasContext(cardDescriptionText, this.cardCtx, GameVariables.pixelSize, 28, 64);
     }
 
     useCard() {
-        this.isUsed = true;
-        GameVariables.cardsPlayed++;
         switch (this.cardType) {
             case CardTypes.Atk:
                 if (GameVariables.isPlayerTurn) {
                     GameVariables.reaper.reaperStatus.takeDamage(2);
                 } else {
-                    GameVariables.soulsInUse.soulStatus.takeDamage(2);
+                    GameVariables.soulInUse.soulStatus.takeDamage(2);
+                }
+                this.afterUseCardsSettings();
+                break;
+            case CardTypes.Minion:
+                if (GameVariables.isPlayerTurn) {
+                    this.generateNewMinion();
                 }
                 break;
             default:
                 if (GameVariables.isPlayerTurn) {
-                    GameVariables.soulsInUse.soulStatus.addShield(2);
+                    GameVariables.soulInUse.soulStatus.addShield(2);
                 } else {
                     GameVariables.reaper.reaperStatus.addShield(2);
                 }
+                this.afterUseCardsSettings();
                 break;
         }
+    }
+
+    afterUseCardsSettings() {
+        this.isUsed = true;
+        GameVariables.cardsPlayed++;
         this.dispose();
         this.refreshPlayerCards();
+    }
+
+    generateNewMinion() {
+        if (GameVariables.soulsInGame != GameVariables.souls.length * GameVariables.souls[0].length) {
+            let y = Math.floor(Math.random() * GameVariables.souls.length);
+            let x = Math.floor(Math.random() * GameVariables.souls[0].length);
+            while (GameVariables.souls[y][x] !== null) {
+                y = Math.floor(Math.random() * GameVariables.souls.length);
+                x = Math.floor(Math.random() * GameVariables.souls[0].length);
+            }
+            GameVariables.souls[y][x] = new Soul(GameVariables.soulsContainers[y][x], x, y);
+            GameVariables.soulsInGame++;
+            this.afterUseCardsSettings();
+        } else {
+            this.cardCanvas.style.top = null;
+            this.cardCanvas.style.left = null;
+        }
     }
 
     refreshPlayerCards() {

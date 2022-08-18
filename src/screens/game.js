@@ -19,7 +19,8 @@ export class Game {
 
         this.generateSoulsContainers();
         GameVariables.souls[1][1] = new Soul(GameVariables.soulsContainers[1][1], 1, 1);
-        GameVariables.soulsInUse = GameVariables.souls[1][1];
+        GameVariables.souls[1][1].selectSoul();
+        GameVariables.soulsInGame++;
 
         this.ui = new UI(this.gameDiv);
         this.ui.startPlayerTurn();

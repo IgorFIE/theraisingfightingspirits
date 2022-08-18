@@ -92,6 +92,29 @@
             display: block;
         }
 
+
+        .soul-selection-arrow {
+            z-index: 10;
+            animation-name: soulSelectionArrowAnim;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+
+        @keyframes soulSelectionArrowAnim {
+            0% {
+                transform: translate(55px, -5px);
+            }
+
+            50% {
+                transform: translate(55px, -10px);
+            }
+
+            100% {
+                transform: translate(55px, -5px);
+            }
+        }
+
         .hidden {
             display: none;
         }
