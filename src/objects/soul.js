@@ -101,6 +101,8 @@ const dp = "#C776CA";
 const dl = "#9F3FA3";
 
 const defaultFemaleSoul = [
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, dp, wb, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, wb, nu, nu],
@@ -129,7 +131,8 @@ const defaultFemaleSoul = [
     [nu, nu, nu, wb, dp, dp, lp, lp, lp, dp, dp, lp, lp, lp, dp, dp, wb, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, wb, wb, dp, dp, lp, lp, lp, lp, dp, dp, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, wb, wb, dp, dp, dp, dp, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu]
+    [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu]
 ];
 
 const yl = "#FFFF57";
