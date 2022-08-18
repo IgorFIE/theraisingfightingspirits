@@ -62,7 +62,7 @@ export class Game {
 
     gameLoop() {
         this.update();
-        this.ui.draw();
+        this.draw();
         window.requestAnimationFrame(() => this.gameLoop());
     }
 
@@ -115,6 +115,11 @@ export class Game {
                 GameVariables.previousSoul = null;
             }
         }
+    }
+
+    draw() {
+        this.ui.draw();
+        GameVariables.cards.forEach(card => card.draw());
     }
 
     dispose() {

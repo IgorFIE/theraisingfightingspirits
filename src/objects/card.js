@@ -20,14 +20,14 @@ export class Card {
 
         // this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
         this.cardType = Math.floor(Math.random() * 3);
-        this.generateCard();
+        this.drawCard();
     }
 
-    generateCard() {
-        generateLargeBox(this.cardCanvas, 2, 2, GameVariables.cardWidth - 3, GameVariables.cardHeight - 3, GameVariables.pixelSize, "black", "white");
-        generateSmallBox(this.cardCanvas, 7, 14, 40, 31, GameVariables.pixelSize, "black", "white");
-        generateSmallBox(this.cardCanvas, 7, 48, 40, 31, GameVariables.pixelSize, "black", "white");
-        generateSmallBox(this.cardCanvas, 13, 42, 28, 9, GameVariables.pixelSize, "black", "white");
+    drawCard(bckColor = "White") {
+        generateLargeBox(this.cardCanvas, 2, 2, GameVariables.cardWidth - 3, GameVariables.cardHeight - 3, GameVariables.pixelSize, "black", bckColor);
+        generateSmallBox(this.cardCanvas, 7, 14, 40, 31, GameVariables.pixelSize, "black", bckColor);
+        generateSmallBox(this.cardCanvas, 7, 48, 40, 31, GameVariables.pixelSize, "black", bckColor);
+        generateSmallBox(this.cardCanvas, 13, 42, 28, 9, GameVariables.pixelSize, "black", bckColor);
 
         switch (this.cardType) {
             case CardTypes.Atk:
@@ -38,7 +38,7 @@ export class Card {
 
             case CardTypes.Minion:
                 drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize);
-                // drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize, 10, 19);
+                drawSprite(this.cardCtx, spiritMinionIcon, GameVariables.pixelSize, 21, 16);
                 this.generateCardText("SPIRIT", "MINION", "+1 SOUL");
                 break;
 
@@ -194,6 +194,12 @@ export class Card {
         }
     }
 
+    draw() {
+        if (GameVariables.maxPlayCards - GameVariables.cardsPlayed <= 0) {
+            this.drawCard("Gray");
+        }
+    }
+
     dispose() {
         if (this.cardCanvas.parentNode !== null) {
             this.cardCanvas.parentElement.removeChild(this.cardCanvas);
@@ -252,4 +258,32 @@ const hardenDefIcon = [
     [nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, nu, nu],
     [nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
     [nu, nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu]
+];
+
+const spiritMinionIcon = [
+    [nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu],
+    [nu, nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, bl, bl, bl, bl, nu, nu, bl, nu, nu, nu, nu],
+    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, bl, bl, bl, bl, nu, nu, nu, nu, nu],
+    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
+    [nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu],
+    [nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu],
+    [nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu],
+    [bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl],
+    [bl, bl, bl, bl, bl, wb, wb, wb, wb, bl, bl, bl, bl, bl],
+    [bl, bl, bl, bl, wb, wb, wb, wb, wb, wb, bl, bl, bl, bl],
+    [bl, bl, bl, bl, wb, wb, wb, wb, wb, wb, bl, bl, bl, bl],
+    [nu, bl, bl, bl, wb, wb, wb, wb, wb, wb, bl, bl, bl, nu],
+    [nu, bl, bl, bl, wb, wb, wb, wb, wb, wb, bl, bl, bl, nu],
+    [nu, nu, bl, bl, bl, wb, wb, wb, wb, bl, bl, bl, nu, nu],
+    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
+    [nu, nu, nu, nu, nu, bl, bl, bl, bl, nu, nu, nu, nu, nu]
 ];
