@@ -198,6 +198,10 @@ export class Card {
         if (GameVariables.maxPlayCards - GameVariables.cardsPlayed <= 0) {
             this.drawCard("Gray");
         }
+
+        if (this.cardType === CardTypes.Minion && GameVariables.soulsInGame === GameVariables.souls.length * GameVariables.souls[0].length) {
+            this.drawCard("Gray");
+        }
     }
 
     dispose() {
@@ -215,8 +219,7 @@ const CardTypes = {
 }
 
 const nu = null;
-const bl = "#000000"
-const wb = "#EDEEF7"
+const bl = "#000000";
 
 const shockAtkIcon = [
     [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
@@ -227,9 +230,9 @@ const shockAtkIcon = [
     [nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, bl, nu, nu, nu, bl, bl, bl, bl, bl, bl, nu, bl, bl, bl, nu, nu, bl, nu, bl, nu, nu, bl, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu],
     [nu, bl, nu, nu, bl, nu, nu, bl, bl, bl, bl, bl, nu, bl, bl, bl, bl, bl, nu, bl, nu, bl, bl, bl, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu],
-    [bl, bl, nu, bl, nu, nu, bl, bl, bl, bl, wb, bl, nu, nu, bl, bl, bl, bl, nu, bl, nu, bl, bl, bl, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu],
+    [bl, bl, nu, bl, nu, nu, bl, bl, bl, bl, nu, bl, nu, nu, bl, bl, bl, bl, nu, bl, nu, bl, bl, bl, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu],
     [nu, bl, nu, bl, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, nu, bl, nu, bl, bl, nu, nu, bl, bl, bl, nu, nu, nu, nu],
-    [nu, bl, bl, nu, nu, nu, bl, bl, wb, bl, bl, nu, nu, nu, bl, bl, bl, nu, nu, bl, bl, bl, nu, bl, bl, nu, nu, bl, bl, bl, nu, nu, nu, nu],
+    [nu, bl, bl, nu, nu, nu, bl, bl, nu, bl, bl, nu, nu, nu, bl, bl, bl, nu, nu, bl, bl, bl, nu, bl, bl, nu, nu, bl, bl, bl, nu, nu, nu, nu],
     [nu, bl, bl, nu, nu, nu, nu, bl, bl, bl, bl, nu, nu, nu, bl, bl, nu, nu, nu, bl, bl, bl, nu, bl, bl, nu, nu, bl, nu, bl, bl, nu, bl, nu],
     [nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, bl, bl, nu, nu, bl, bl, nu, bl, bl, nu, nu, bl, nu, bl, nu],
     [nu, nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, bl, bl, nu, nu, nu, bl, nu, bl, nu, nu, nu, bl, bl, bl, bl],
@@ -250,8 +253,8 @@ const hardenDefIcon = [
     [bl, bl, bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl],
     [bl, bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl],
     [bl, bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl],
-    [bl, bl, nu, nu, bl, wb, wb, bl, bl, wb, wb, bl, nu, nu, nu, bl],
-    [bl, bl, nu, nu, bl, bl, wb, bl, bl, wb, bl, bl, nu, nu, nu, bl],
+    [bl, bl, nu, nu, bl, nu, nu, bl, bl, nu, nu, bl, nu, nu, nu, bl],
+    [bl, bl, nu, nu, bl, bl, nu, bl, bl, nu, bl, bl, nu, nu, nu, bl],
     [bl, bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl],
     [bl, bl, nu, nu, nu, bl, bl, bl, bl, bl, bl, nu, nu, nu, bl, nu],
     [nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, nu],
@@ -278,12 +281,12 @@ const spiritMinionIcon = [
     [nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu],
     [nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu],
     [bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl],
-    [bl, bl, bl, bl, bl, wb, wb, wb, wb, bl, bl, bl, bl, bl],
-    [bl, bl, bl, bl, wb, wb, wb, wb, wb, wb, bl, bl, bl, bl],
-    [bl, bl, bl, bl, wb, wb, wb, wb, wb, wb, bl, bl, bl, bl],
-    [nu, bl, bl, bl, wb, wb, wb, wb, wb, wb, bl, bl, bl, nu],
-    [nu, bl, bl, bl, wb, wb, wb, wb, wb, wb, bl, bl, bl, nu],
-    [nu, nu, bl, bl, bl, wb, wb, wb, wb, bl, bl, bl, nu, nu],
+    [bl, bl, bl, bl, bl, nu, nu, nu, nu, bl, bl, bl, bl, bl],
+    [bl, bl, bl, bl, nu, nu, nu, nu, nu, nu, bl, bl, bl, bl],
+    [bl, bl, bl, bl, nu, nu, nu, nu, nu, nu, bl, bl, bl, bl],
+    [nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu],
+    [nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu],
+    [nu, nu, bl, bl, bl, nu, nu, nu, nu, bl, bl, bl, nu, nu],
     [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
     [nu, nu, nu, nu, nu, bl, bl, bl, bl, nu, nu, nu, nu, nu]
 ];
