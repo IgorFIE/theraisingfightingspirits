@@ -6,6 +6,8 @@ export class Soul {
     constructor(soulContainer, arrayPosX, arrayPosY) {
         this.arrayPosX = arrayPosX;
         this.arrayPosY = arrayPosY;
+        this.isMale = Math.floor(Math.random() * 2) === 0;
+        this.spriteInUse = (this.isMale ? defaultMaleSoul : defaultFemaleSoul);
 
         this.soulSelectedArrow = document.createElement("canvas");
         this.soulSelectedArrow.width = selectedArrow[0].length * GameVariables.pixelSize;
@@ -15,8 +17,8 @@ export class Soul {
         soulContainer.appendChild(this.soulSelectedArrow);
 
         this.soulCanvas = document.createElement("canvas");
-        this.soulCanvas.width = defaultMaleSoul[0].length * GameVariables.pixelSize;
-        this.soulCanvas.height = defaultMaleSoul.length * GameVariables.pixelSize;
+        this.soulCanvas.width = this.spriteInUse[0].length * GameVariables.pixelSize;
+        this.soulCanvas.height = this.spriteInUse.length * GameVariables.pixelSize;
         this.soulCanvas.classList.add("soul");
         soulContainer.appendChild(this.soulCanvas);
 
@@ -43,7 +45,7 @@ export class Soul {
 
     draw() {
         this.soulCtx.clearRect(0, 0, GameVariables.soulWidth, GameVariables.soulHeight);
-        drawSprite(this.soulCtx, defaultMaleSoul, GameVariables.pixelSize);
+        drawSprite(this.soulCtx, this.spriteInUse, GameVariables.pixelSize);
     }
 
     dispose() {
