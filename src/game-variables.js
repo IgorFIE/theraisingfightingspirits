@@ -35,7 +35,10 @@ let reaper = null;
 let soulsContainers = [];
 let souls = [];
 let soulsInGame = 0;
+
+let previousSoul = null;
 let soulInUse = null;
+let nextSoul = null;
 
 let playerCards = [];
 
@@ -72,7 +75,10 @@ export const GameVariables = {
     soulsContainers,
     souls,
     soulsInGame,
+
+    previousSoul,
     soulInUse,
+    nextSoul,
 
     playerCards,
 

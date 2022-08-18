@@ -61,10 +61,60 @@ export class Game {
     }
 
     gameLoop() {
-        if (this.ui.currentEnergy != GameVariables.maxPlayCards - GameVariables.cardsPlayed) {
-            this.ui.draw();
-        }
+        this.update();
+        this.ui.draw();
         window.requestAnimationFrame(() => this.gameLoop());
+    }
+
+    update() {
+        this.retrievePreviousSoul();
+        this.retrieveNextSoul();
+    }
+
+    retrieveNextSoul() {
+        if (GameVariables.soulsInGame > 1) {
+            let soul = GameVariables.soulInUse;
+            let soulExists = false;
+            for (let y = soul.arrayPosY; y < GameVariables.souls.length; y++) {
+                for (let x = (y == soul.arrayPosY ? soul.arrayPosX : 0); x < GameVariables.souls[0].length; x++) {
+                    if (y === soul.arrayPosY && x === soul.arrayPosX) {
+                        continue;
+                    }
+                    if (GameVariables.souls[y][x] !== null) {
+                        GameVariables.nextSoul = GameVariables.souls[y][x];
+                        soulExists = true;
+                        break;
+                    }
+                }
+                if (soulExists) break;
+            }
+            if (!soulExists) {
+                GameVariables.nextSoul = null;
+            }
+        }
+    }
+
+    retrievePreviousSoul() {
+        if (GameVariables.soulsInGame > 1) {
+            let soul = GameVariables.soulInUse;
+            let soulExists = false;
+            for (let y = soul.arrayPosY; y >= 0; y--) {
+                for (let x = (y == soul.arrayPosY ? soul.arrayPosX : GameVariables.souls[0].length - 1); x >= 0; x--) {
+                    if (y === soul.arrayPosY && x === soul.arrayPosX) {
+                        continue;
+                    }
+                    if (GameVariables.souls[y][x] !== null) {
+                        GameVariables.previousSoul = GameVariables.souls[y][x];
+                        soulExists = true;
+                        break;
+                    }
+                }
+                if (soulExists) break;
+            }
+            if (!soulExists) {
+                GameVariables.previousSoul = null;
+            }
+        }
     }
 
     dispose() {
