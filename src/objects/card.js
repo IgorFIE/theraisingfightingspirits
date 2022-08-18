@@ -18,8 +18,7 @@ export class Card {
 
         this.cardCtx = this.cardCanvas.getContext("2d");
 
-        // this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
-        this.cardType = Math.floor(Math.random() * 3);
+        this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
         this.drawCard();
     }
 
@@ -30,13 +29,13 @@ export class Card {
         generateSmallBox(this.cardCanvas, 13, 42, 28, 9, GameVariables.pixelSize, "black", bckColor);
 
         switch (this.cardType) {
-            case CardTypes.Atk:
+            case CardTypes.ATK:
                 drawSprite(this.cardCtx, atkIcon, GameVariables.pixelSize);
                 drawSprite(this.cardCtx, shockAtkIcon, GameVariables.pixelSize, 10, 19);
                 this.generateCardText("SHOCK", "ATK", "2 DAMAGE");
                 break;
 
-            case CardTypes.Minion:
+            case CardTypes.MINION:
                 drawSprite(this.cardCtx, minionIcon, GameVariables.pixelSize);
                 drawSprite(this.cardCtx, spiritMinionIcon, GameVariables.pixelSize, 21, 16);
                 this.generateCardText("SPIRIT", "MINION", "+1 SOUL");
@@ -63,25 +62,15 @@ export class Card {
 
     useCard() {
         switch (this.cardType) {
-            case CardTypes.Atk:
-                if (GameVariables.isPlayerTurn) {
-                    GameVariables.reaper.reaperStatus.takeDamage(2);
-                } else {
-                    GameVariables.soulInUse.soulStatus.takeDamage(2);
-                }
+            case CardTypes.ATK:
+                GameVariables.reaper.reaperStatus.takeDamage(2);
                 this.afterUseCardsSettings();
                 break;
-            case CardTypes.Minion:
-                if (GameVariables.isPlayerTurn) {
-                    this.generateNewMinion();
-                }
+            case CardTypes.MINION:
+                this.generateNewMinion();
                 break;
             default:
-                if (GameVariables.isPlayerTurn) {
-                    GameVariables.soulInUse.soulStatus.addShield(2);
-                } else {
-                    GameVariables.reaper.reaperStatus.addShield(2);
-                }
+                GameVariables.soulInUse.soulStatus.addShield(2);
                 this.afterUseCardsSettings();
                 break;
         }
@@ -199,7 +188,7 @@ export class Card {
             this.drawCard("Gray");
         }
 
-        if (this.cardType === CardTypes.Minion && GameVariables.soulsInGame === GameVariables.souls.length * GameVariables.souls[0].length) {
+        if (this.cardType === CardTypes.MINION && GameVariables.soulsInGame === GameVariables.souls.length * GameVariables.souls[0].length) {
             this.drawCard("Gray");
         }
     }
@@ -212,10 +201,9 @@ export class Card {
 }
 
 const CardTypes = {
-    Atk: 0,
-    Def: 1,
-    Minion: 2,
-    Trick: 3
+    ATK: 0,
+    DEF: 1,
+    MINION: 2
 }
 
 const nu = null;

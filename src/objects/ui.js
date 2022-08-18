@@ -119,10 +119,8 @@ export class UI {
     }
 
     endTurn() {
-        this.finishPlayerTurn();
-        this.startEnemyTurn();
-        this.finishEnemyTurn();
-        this.startPlayerTurn();
+        this.disposePlayerCards();
+        GameVariables.isPlayerTurn = false;
     }
 
     startPlayerTurn() {
@@ -130,23 +128,6 @@ export class UI {
         GameVariables.cardsPlayed = 0;
         GameVariables.isPlayerTurn = true;
         this.populatePlayerCards();
-    }
-
-    finishPlayerTurn() {
-        this.disposePlayerCards();
-    }
-
-    startEnemyTurn() {
-        GameVariables.maxPlayCards = GameVariables.defaultMaxPlayCards;
-        GameVariables.cardsPlayed = 0;
-        GameVariables.isPlayerTurn = false;
-        this.populatePlayerCards();
-        let randomNumber = Math.floor(Math.random() * GameVariables.cards.length);
-        GameVariables.cards[randomNumber].useCard();
-    }
-
-    finishEnemyTurn() {
-        this.disposePlayerCards();
     }
 
     populatePlayerCards() {

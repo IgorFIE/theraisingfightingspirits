@@ -15,12 +15,13 @@ export class Game {
         mainDiv.appendChild(this.gameDiv);
 
         this.background = new Background(this.gameDiv);
-        GameVariables.reaper = new Reaper(this.gameDiv);
 
         this.generateSoulsContainers();
         GameVariables.souls[1][1] = new Soul(GameVariables.soulsContainers[1][1], 1, 1);
         GameVariables.souls[1][1].selectSoul();
         GameVariables.soulsInGame++;
+
+        GameVariables.reaper = new Reaper(this.gameDiv);
 
         this.ui = new UI(this.gameDiv);
         this.ui.startPlayerTurn();
@@ -67,6 +68,10 @@ export class Game {
     }
 
     update() {
+        if (!GameVariables.isPlayerTurn) {
+            GameVariables.reaper.reaperTurn();
+            this.ui.startPlayerTurn();
+        }
         this.retrievePreviousSoul();
         this.retrieveNextSoul();
     }
@@ -115,6 +120,18 @@ export class Game {
                 GameVariables.previousSoul = null;
             }
         }
+    }
+
+    cleanDeadSouls() {
+        // ir soul a soul e
+        // fazer dispose
+        // caso esteja selecionada
+        // removela de soul in use
+        // selecionar uma outra alma random como in use
+        // meter a soul a null no souls array
+        // diminuir numero de soul in game
+
+        // se o numero de soul in game for igual a 0, GAME OVER
     }
 
     draw() {
