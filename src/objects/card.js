@@ -184,11 +184,14 @@ export class Card {
     }
 
     draw() {
-        if (GameVariables.maxPlayCards - GameVariables.cardsPlayed <= 0) {
-            this.drawCard("Gray");
+        if (this.cardType === CardTypes.MINION) {
+            if (GameVariables.soulsInGame === GameVariables.souls.length * GameVariables.souls[0].length) {
+                this.drawCard("Gray");
+            } else {
+                this.drawCard();
+            }
         }
-
-        if (this.cardType === CardTypes.MINION && GameVariables.soulsInGame === GameVariables.souls.length * GameVariables.souls[0].length) {
+        if (GameVariables.maxPlayCards - GameVariables.cardsPlayed <= 0) {
             this.drawCard("Gray");
         }
     }

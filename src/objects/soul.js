@@ -9,12 +9,12 @@ export class Soul {
         this.isMale = Math.floor(Math.random() * 2) === 0;
         this.spriteInUse = (this.isMale ? defaultMaleSoul : defaultFemaleSoul);
 
-        this.soulSelectedArrow = document.createElement("canvas");
-        this.soulSelectedArrow.width = selectedArrow[0].length * GameVariables.pixelSize;
-        this.soulSelectedArrow.height = selectedArrow.length * GameVariables.pixelSize;
-        this.soulSelectedArrow.classList.add("soul-selection-arrow", "hidden");
-        drawSprite(this.soulSelectedArrow.getContext("2d"), selectedArrow, GameVariables.pixelSize);
-        soulContainer.appendChild(this.soulSelectedArrow);
+        this.soulSelectedArrowCanvas = document.createElement("canvas");
+        this.soulSelectedArrowCanvas.width = selectedArrow[0].length * GameVariables.pixelSize;
+        this.soulSelectedArrowCanvas.height = selectedArrow.length * GameVariables.pixelSize;
+        this.soulSelectedArrowCanvas.classList.add("soul-selection-arrow", "hidden");
+        drawSprite(this.soulSelectedArrowCanvas.getContext("2d"), selectedArrow, GameVariables.pixelSize);
+        soulContainer.appendChild(this.soulSelectedArrowCanvas);
 
         this.soulCanvas = document.createElement("canvas");
         this.soulCanvas.width = this.spriteInUse[0].length * GameVariables.pixelSize;
@@ -36,11 +36,11 @@ export class Soul {
             GameVariables.soulInUse.deselectSoul();
         }
         GameVariables.soulInUse = GameVariables.souls[this.arrayPosY][this.arrayPosX];
-        this.soulSelectedArrow.classList.remove("hidden");
+        this.soulSelectedArrowCanvas.classList.remove("hidden");
     }
 
     deselectSoul() {
-        this.soulSelectedArrow.classList.add("hidden");
+        this.soulSelectedArrowCanvas.classList.add("hidden");
     }
 
     draw() {
@@ -51,6 +51,7 @@ export class Soul {
     dispose() {
         if (this.soulCanvas.parentNode !== null) {
             this.soulStatus.dispose();
+            this.soulSelectedArrowCanvas.parentElement.removeChild(this.soulSelectedArrowCanvas);
             this.soulCanvas.parentElement.removeChild(this.soulCanvas);
         }
     }

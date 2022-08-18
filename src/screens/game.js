@@ -124,15 +124,35 @@ export class Game {
     }
 
     cleanDeadSouls() {
-        // ir soul a soul e
-        // fazer dispose
-        // caso esteja selecionada
-        // removela de soul in use
-        // selecionar uma outra alma random como in use
-        // meter a soul a null no souls array
-        // diminuir numero de soul in game
+        let currentSoul = null;
+        for (let y = 0; y < GameVariables.souls.length; y++) {
+            for (let x = 0; x < GameVariables.souls[0].length; x++) {
+                currentSoul = GameVariables.souls[y][x];
+                if (currentSoul && currentSoul.soulStatus.lifeValue <= 0) {
+                    if (currentSoul === GameVariables.soulInUse) {
+                        GameVariables.soulInUse = null;
+                    }
+                    currentSoul.dispose();
+                    GameVariables.souls[y][x] = null;
+                    GameVariables.soulsInGame--;
+                }
+            }
+        }
 
-        // se o numero de soul in game for igual a 0, GAME OVER
+        if (GameVariables.soulInUse === null && GameVariables.soulsInGame > 0) {
+            let y = Math.floor(Math.random() * GameVariables.souls.length);
+            let x = Math.floor(Math.random() * GameVariables.souls[0].length);
+            while (GameVariables.souls[y][x] === null) {
+                y = Math.floor(Math.random() * GameVariables.souls.length);
+                x = Math.floor(Math.random() * GameVariables.souls[0].length);
+            }
+            GameVariables.soulInUse = GameVariables.souls[y][x];
+            GameVariables.soulInUse.selectSoul();
+        }
+
+        if (GameVariables.soulsInGame <= 0) {
+            // GAME OVER!!!
+        }
     }
 
     draw() {

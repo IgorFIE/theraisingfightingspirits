@@ -76,7 +76,11 @@ export class Reaper {
                 this.reaperAction = ReaperActions.AOE_ATK;
             } else if (randomValue < 80) {
                 this.reaperAction = ReaperActions.ATK;
-                this.reaperLockOnSoul = visibleSouls[Math.floor(Math.random() * visibleSouls.length)];
+                if (normalAtkKillsSouls.length > 0) {
+                    this.reaperLockOnSoul = normalAtkKillsSouls[Math.floor(Math.random() * normalAtkKillsSouls.length)];
+                } else {
+                    this.reaperLockOnSoul = visibleSouls[Math.floor(Math.random() * visibleSouls.length)];
+                }
             } else {
                 this.reaperAction = ReaperActions.DEF;
             }

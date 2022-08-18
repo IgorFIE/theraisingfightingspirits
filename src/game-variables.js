@@ -48,6 +48,7 @@ let cardsPlayed = 0;
 let drawCardNumber = 5;
 
 let isPlayerTurn = true;
+let turnCounter = 0;
 
 export const GameVariables = {
     gameWidth,
@@ -89,5 +90,6 @@ export const GameVariables = {
 
     statusBarHeight,
 
-    isPlayerTurn
+    isPlayerTurn,
+    turnCounter
 }

@@ -10,6 +10,13 @@ export class UI {
         this.uiContainer.id = "ui-container";
         gameDiv.appendChild(this.uiContainer);
 
+        this.turnCounterCanvas = document.createElement("canvas");
+        this.turnCounterCanvas.width = 300;
+        this.turnCounterCanvas.height = 100;
+        this.turnCounterCanvas.style.transform = "translate(" + ((GameVariables.gameWidth / 2) - (this.turnCounterCanvas.width / 2)) + "px,0px)";
+        this.turnCounterCtx = this.turnCounterCanvas.getContext("2d");
+        this.uiContainer.appendChild(this.turnCounterCanvas);
+
         this.energyCanvas = document.createElement("canvas");
         this.energyCanvasCtx = this.energyCanvas.getContext("2d");
         this.uiContainer.appendChild(this.energyCanvas);
@@ -59,7 +66,7 @@ export class UI {
         generateSmallBox(this.energyCanvas, 17, 17, 31, 30, GameVariables.pixelSize, "black", "white");
         drawPixelTextInCanvasContext(convertTextToPixelArt(this.currentEnergy), this.energyCanvasCtx, GameVariables.pixelSize, 33, 32, "black", 3);
 
-        generateLargeBox(this.energyCanvas, 5, 63, 56, 30, GameVariables.pixelSize, "black", "gray");
+        generateSmallBox(this.energyCanvas, 5, 63, 56, 30, GameVariables.pixelSize, "black", "gray");
         drawPixelTextInCanvasContext(convertTextToPixelArt("MONETIZATION"), this.energyCanvasCtx, GameVariables.pixelSize, 34, 75);
         drawPixelTextInCanvasContext(convertTextToPixelArt("+1 ENERGY"), this.energyCanvasCtx, GameVariables.pixelSize, 34, 82);
     }
@@ -69,7 +76,7 @@ export class UI {
         this.turnControllersCanvas.height = 99 * GameVariables.pixelSize;
         this.turnControllersCanvas.style.transform = "translate(" + (GameVariables.gameWidth - this.turnControllersCanvas.width) + "px," + (GameVariables.gameHeight - this.turnControllersCanvas.height) + "px)";
         generateLargeBox(this.turnControllersCanvas, 0, 0, 67 - 1, 99 - 1, GameVariables.pixelSize, "black", "white");
-        generateLargeBox(this.turnControllersCanvas, 5, 25, 67 - 11, 28, GameVariables.pixelSize, "black", "gray");
+        generateSmallBox(this.turnControllersCanvas, 5, 25, 67 - 11, 28, GameVariables.pixelSize, "black", "gray");
         drawPixelTextInCanvasContext(convertTextToPixelArt("MONETIZATION"), this.turnControllersCtx, GameVariables.pixelSize, 34, 33);
         drawPixelTextInCanvasContext(convertTextToPixelArt("DRAW +1"), this.turnControllersCtx, GameVariables.pixelSize, 34, 40);
         drawPixelTextInCanvasContext(convertTextToPixelArt("EXTRA CARD"), this.turnControllersCtx, GameVariables.pixelSize, 34, 47);
@@ -127,6 +134,7 @@ export class UI {
         GameVariables.maxPlayCards = GameVariables.defaultMaxPlayCards;
         GameVariables.cardsPlayed = 0;
         GameVariables.isPlayerTurn = true;
+        GameVariables.turnCounter++;
         this.populatePlayerCards();
     }
 
@@ -151,17 +159,23 @@ export class UI {
         }
         this.drawNexSoulBtn();
         this.drawPreviousBtn();
+        this.drawTurnCounter();
     }
 
     drawPreviousBtn() {
         this.previousSoulCtx.clearRect(0, 0, this.previousSoulCanvas.width, this.previousSoulCanvas.height);
         generateLargeBox(this.previousSoulCanvas, 5, 3, 56, 13, GameVariables.pixelSize, "black", GameVariables.previousSoul ? "white" : "gray");
-        drawPixelTextInCanvasContext(convertTextToPixelArt("PREVIOUS SOUL"), this.previousSoulCanvas.getContext("2d"), GameVariables.pixelSize, 34, 10);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("PREVIOUS SOUL"), this.previousSoulCtx, GameVariables.pixelSize, 34, 10);
     }
 
     drawNexSoulBtn() {
         this.nextSoulCtx.clearRect(0, 0, this.nextSoulCanvas.width, this.nextSoulCanvas.height);
         generateLargeBox(this.nextSoulCanvas, 5, 5, 56, 13, GameVariables.pixelSize, "black", GameVariables.nextSoul ? "white" : "gray");
-        drawPixelTextInCanvasContext(convertTextToPixelArt("NEXT SOUL"), this.nextSoulCanvas.getContext("2d"), GameVariables.pixelSize, 34, 12);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("NEXT SOUL"), this.nextSoulCtx, GameVariables.pixelSize, 34, 12);
+    }
+
+    drawTurnCounter() {
+        this.turnCounterCtx.clearRect(0, 0, this.turnCounterCanvas.width, this.turnCounterCanvas.height);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("TURN: " + GameVariables.turnCounter), this.turnCounterCtx, GameVariables.pixelSize, 150 / GameVariables.pixelSize, 25, "black", 2);
     }
 }

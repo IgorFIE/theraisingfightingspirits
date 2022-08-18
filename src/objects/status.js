@@ -63,7 +63,7 @@ export class Status {
     }
 
     drawLifeBar() {
-        this.statusCtx.fillStyle = this.shieldValue > 0 ? "lightblue" : "#FF0000";
+        this.statusCtx.fillStyle = this.shieldValue > 0 ? "lightblue" : "red";
         this.statusCtx.fillRect(
             18 * GameVariables.pixelSize,
             5 * GameVariables.pixelSize,
