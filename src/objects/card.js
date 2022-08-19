@@ -50,14 +50,9 @@ export class Card {
     }
 
     generateCardText(cardName, cardType, cardDescription) {
-        const cardNameText = convertTextToPixelArt(cardName);
-        drawPixelTextInCanvasContext(cardNameText, this.cardCtx, GameVariables.pixelSize, 32, 9);
-
-        const cardTypeText = convertTextToPixelArt(cardType);
-        drawPixelTextInCanvasContext(cardTypeText, this.cardCtx, GameVariables.pixelSize, 27, 47);
-
-        const cardDescriptionText = convertTextToPixelArt(cardDescription);
-        drawPixelTextInCanvasContext(cardDescriptionText, this.cardCtx, GameVariables.pixelSize, 28, 64);
+        drawPixelTextInCanvasContext(convertTextToPixelArt(cardName), this.cardCtx, GameVariables.pixelSize, 32, 9);
+        drawPixelTextInCanvasContext(convertTextToPixelArt(cardType), this.cardCtx, GameVariables.pixelSize, 27, 47);
+        drawPixelTextInCanvasContext(convertTextToPixelArt(cardDescription), this.cardCtx, GameVariables.pixelSize, 28, 64);
     }
 
     useCard() {

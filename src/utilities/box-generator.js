@@ -5,7 +5,9 @@ export const generateSmallBox = (canvas, startX, startY, endX, endY, pixelSize, 
             (x === 0 && (y > 0 && y < endY)) ||
             (x === endX && (y > 0 && y < endY));
     }
-    genetateInsideBoxColor(canvas, startX, startY, endX, endY, pixelSize, bgColor);
+    if (bgColor) {
+        genetateInsideBoxColor(canvas, startX, startY, endX, endY, pixelSize, bgColor);
+    }
     generateBox(canvas, startX, startY, endX, endY, pixelSize, color, conditionFn);
 };
 

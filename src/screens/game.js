@@ -5,28 +5,25 @@ const { Soul } = require("../objects/soul");
 const { Background } = require("../objects/background");
 
 export class Game {
-    constructor() {
+    constructor(gameDiv) {
+        this.gameDiv = gameDiv;
+
+        GameVariables.resetGameVariables();
         GameVariables.calculatePixelSize();
-        let mainDiv = document.getElementById("main");
-
-        this.gameDiv = document.createElement("div");
-        this.gameDiv.id = "game";
-
-        mainDiv.appendChild(this.gameDiv);
-
-        this.background = new Background(this.gameDiv);
+        
+        this.background = new Background(gameDiv);
 
         this.generateSoulsContainers();
         GameVariables.souls[1][1] = new Soul(GameVariables.soulsContainers[1][1], 1, 1);
         GameVariables.souls[1][1].selectSoul();
         GameVariables.soulsInGame++;
 
-        GameVariables.reaper = new Reaper(this.gameDiv);
+        GameVariables.reaper = new Reaper(gameDiv);
 
-        this.ui = new UI(this.gameDiv);
+        this.ui = new UI(gameDiv);
         this.ui.startPlayerTurn();
 
-        window.requestAnimationFrame(() => this.gameLoop());
+        GameVariables.isGameOver = false;
     }
 
     generateSoulsContainers() {
@@ -59,12 +56,6 @@ export class Game {
             GameVariables.soulsContainers.push(newSoulContainerArray);
             GameVariables.souls.push(newSoulArray);
         }
-    }
-
-    gameLoop() {
-        this.update();
-        this.draw();
-        window.requestAnimationFrame(() => this.gameLoop());
     }
 
     update() {
@@ -151,7 +142,7 @@ export class Game {
         }
 
         if (GameVariables.soulsInGame <= 0) {
-            // GAME OVER!!!
+            GameVariables.isGameOver = true;
         }
     }
 
@@ -161,10 +152,8 @@ export class Game {
     }
 
     dispose() {
-        GameVariables.reaper.dispose();
-        GameVariables.reaper = null;
-
-        GameVariables.soul.dispose();
-        GameVariables.soul = null;
+        if (this.gameDiv.parentNode !== null) {
+            this.gameDiv.innerHTML = "";
+        }
     }
 }

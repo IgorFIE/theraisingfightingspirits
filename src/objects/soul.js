@@ -7,7 +7,7 @@ export class Soul {
         this.arrayPosX = arrayPosX;
         this.arrayPosY = arrayPosY;
         this.isMale = Math.floor(Math.random() * 2) === 0;
-        this.spriteInUse = (this.isMale ? defaultMaleSoul : defaultFemaleSoul);
+        this.spriteInUse = (this.isMale ? maleSoul : femaleSoul);
 
         this.soulSelectedArrowCanvas = document.createElement("canvas");
         this.soulSelectedArrowCanvas.width = selectedArrow[0].length * GameVariables.pixelSize;
@@ -62,7 +62,7 @@ const db = "#10495E";
 const lb = "#9BF2FA";
 const wb = "#EDEEF7";
 
-const defaultMaleSoul = [
+export const maleSoul = [
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, db, wb, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, wb, db, db, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu],
@@ -101,7 +101,7 @@ const lp = "#FFBFFF";
 const dp = "#C776CA";
 const dl = "#9F3FA3";
 
-const defaultFemaleSoul = [
+export const femaleSoul = [
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, nu, nu],
