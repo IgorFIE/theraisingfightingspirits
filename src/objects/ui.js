@@ -67,8 +67,9 @@ export class UI {
         drawPixelTextInCanvasContext(convertTextToPixelArt(this.currentEnergy), this.energyCanvasCtx, GameVariables.pixelSize, 33, 32, "black", 3);
 
         generateSmallBox(this.energyCanvas, 5, 63, 56, 30, GameVariables.pixelSize, "black", "gray");
-        drawPixelTextInCanvasContext(convertTextToPixelArt("MONETIZATION"), this.energyCanvasCtx, GameVariables.pixelSize, 34, 75);
-        drawPixelTextInCanvasContext(convertTextToPixelArt("+1 ENERGY"), this.energyCanvasCtx, GameVariables.pixelSize, 34, 82);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("ENABLE"), this.energyCanvasCtx, GameVariables.pixelSize, 34, 70);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("MONETIZATION"), this.energyCanvasCtx, GameVariables.pixelSize, 34, 78);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("GAIN +1 ENERGY"), this.energyCanvasCtx, GameVariables.pixelSize, 34, 86);
     }
 
     populateTurnControllersCanvas() {
@@ -76,10 +77,11 @@ export class UI {
         this.turnControllersCanvas.height = 99 * GameVariables.pixelSize;
         this.turnControllersCanvas.style.transform = "translate(" + (GameVariables.gameWidth - this.turnControllersCanvas.width) + "px," + (GameVariables.gameHeight - this.turnControllersCanvas.height) + "px)";
         generateLargeBox(this.turnControllersCanvas, 0, 0, 67 - 1, 99 - 1, GameVariables.pixelSize, "black", "white");
-        generateSmallBox(this.turnControllersCanvas, 5, 25, 67 - 11, 28, GameVariables.pixelSize, "black", "gray");
-        drawPixelTextInCanvasContext(convertTextToPixelArt("MONETIZATION"), this.turnControllersCtx, GameVariables.pixelSize, 34, 33);
-        drawPixelTextInCanvasContext(convertTextToPixelArt("DRAW +1"), this.turnControllersCtx, GameVariables.pixelSize, 34, 40);
-        drawPixelTextInCanvasContext(convertTextToPixelArt("EXTRA CARD"), this.turnControllersCtx, GameVariables.pixelSize, 34, 47);
+        generateSmallBox(this.turnControllersCanvas, 5, 23, 67 - 11, 31, GameVariables.pixelSize, "black", "gray");
+        drawPixelTextInCanvasContext(convertTextToPixelArt("ENABLE"), this.turnControllersCtx, GameVariables.pixelSize, 34, 28);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("MONETIZATION"), this.turnControllersCtx, GameVariables.pixelSize, 34, 35);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("DRAW +1"), this.turnControllersCtx, GameVariables.pixelSize, 34, 42);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("EXTRA CARD"), this.turnControllersCtx, GameVariables.pixelSize, 34, 49);
 
         this.endTurnCanvas.width = 67 * GameVariables.pixelSize;
         this.endTurnCanvas.height = 24 * GameVariables.pixelSize;

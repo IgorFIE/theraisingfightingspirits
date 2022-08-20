@@ -8,10 +8,9 @@ export class Game {
     constructor(gameDiv) {
         this.gameDiv = gameDiv;
 
+        this.background = new Background(gameDiv);
         GameVariables.resetGameVariables();
         GameVariables.calculatePixelSize();
-        
-        this.background = new Background(gameDiv);
 
         this.generateSoulsContainers();
         GameVariables.souls[1][1] = new Soul(GameVariables.soulsContainers[1][1], 1, 1);
@@ -19,6 +18,7 @@ export class Game {
         GameVariables.soulsInGame++;
 
         GameVariables.reaper = new Reaper(gameDiv);
+        this.background.generate(GameVariables.reaper);
 
         this.ui = new UI(gameDiv);
         this.ui.startPlayerTurn();

@@ -4,7 +4,6 @@ const { grimReaper } = require("./objects/reaper");
 const { maleSoul, femaleSoul } = require("./objects/soul");
 const { drawSprite } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("./utilities/text");
-const { generateSmallBox } = require("./utilities/box-generator");
 
 // Game names...
 
