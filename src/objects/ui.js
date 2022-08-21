@@ -128,8 +128,10 @@ export class UI {
     }
 
     endTurn() {
-        this.disposePlayerCards();
-        GameVariables.isPlayerTurn = false;
+        if (!GameVariables.isEventRunning) {
+            this.disposePlayerCards();
+            GameVariables.isPlayerTurn = false;
+        }
     }
 
     startPlayerTurn() {

@@ -23,13 +23,13 @@ function init() {
     GameVariables.calculatePixelSize();
 
     createGameContainer();
-    // createGameTutorialMenu();
-    // createGameOverMenu();
-    // createWinScreenMenu();
-    // createMainMenu();
+    createGameTutorialMenu();
+    createGameOverMenu();
+    createWinScreenMenu();
+    createMainMenu();
 
     // remove me
-    startGame();
+    // startGame();
 }
 
 function createMainMenu() {
@@ -79,6 +79,7 @@ function createGameTutorialMenu() {
     let gameTutorialCanvas = document.createElement("canvas");
     gameTutorialCanvas.style.backgroundColor = "rgba(150,150,150,0.8)";
     gameTutorialCanvas.style.zIndex = 999;
+    gameTutorialCanvas.style.transform = "translateZ(999px)";
     gameTutorialCanvas.width = GameVariables.gameWidth;
     gameTutorialCanvas.height = GameVariables.gameHeight;
     let gameTutorialCtx = gameTutorialCanvas.getContext("2d");
@@ -101,6 +102,7 @@ function createGameTutorialMenu() {
     gameTutorialSkipCanvas.width = 140 * GameVariables.pixelSize;
     gameTutorialSkipCanvas.height = 40 * GameVariables.pixelSize;
     gameTutorialSkipCanvas.style.zIndex = 999;
+    gameTutorialSkipCanvas.style.transform = "translateZ(999px)";
     gameTutorialSkipCanvas.style.translate = ((GameVariables.gameWidth - gameTutorialSkipCanvas.width) / 2) + "px " + (GameVariables.gameHeight - gameTutorialSkipCanvas.height - (120 * GameVariables.pixelSize)) + "px";
     generateLargeBox(gameTutorialSkipCanvas, 0, 0, 139, 39, GameVariables.pixelSize, "black", "rgba(150,150,150,0.8)");
     drawPixelTextInCanvasContext(convertTextToPixelArt("skip tutorial"), gameTutorialSkipCtx, GameVariables.pixelSize, 70, 20, "black", 2);
@@ -160,8 +162,8 @@ function createElemOnMainDiv(id, elemType) {
 }
 
 function startGame() {
-    // mainMenuCanvas.classList.add("hidden");
-    // gameTutorialDiv.classList.remove("hidden");
+    mainMenuCanvas.classList.add("hidden");
+    gameTutorialDiv.classList.remove("hidden");
     wasScheduledToShowWinScreen = false;
     game = new Game(gameDiv);
     window.requestAnimationFrame(() => gameLoop());
