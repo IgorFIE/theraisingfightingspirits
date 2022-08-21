@@ -33,7 +33,7 @@ export class Card {
             case CardTypes.ATK:
                 drawSprite(this.cardCtx, atkIcon, GameVariables.pixelSize);
                 drawSprite(this.cardCtx, shockAtkIcon, GameVariables.pixelSize, 10, 19);
-                this.generateCardText("SHOCK", "ATK", "2 DAMAGE");
+                this.generateCardText("SHOCK", "ATK", GameVariables.cardDmg + " DAMAGE");
                 break;
 
             case CardTypes.MINION:
@@ -45,7 +45,7 @@ export class Card {
             default:
                 drawSprite(this.cardCtx, defIcon, GameVariables.pixelSize);
                 drawSprite(this.cardCtx, hardenDefIcon, GameVariables.pixelSize, 20, 20);
-                this.generateCardText("HARDEN", "DEF", "2 SHIELD");
+                this.generateCardText("HARDEN", "DEF", GameVariables.cardShield + " SHIELD");
                 break;
         }
     }
@@ -60,14 +60,14 @@ export class Card {
         switch (this.cardType) {
             case CardTypes.ATK:
                 GameVariables.soulInUse.soulCanvas.style.animation = "soulatk 900ms ease-in-out";
-                setTimeout(() => GameVariables.reaper.takeDamage(2), 250)
+                setTimeout(() => GameVariables.reaper.takeDamage(GameVariables.cardDmg), 250)
                 this.afterUseCardsSettings();
                 break;
             case CardTypes.MINION:
                 this.generateNewMinion();
                 break;
             default:
-                GameVariables.soulInUse.soulStatus.addShield(2);
+                GameVariables.soulInUse.soulStatus.addShield(GameVariables.cardShield);
                 this.afterUseCardsSettings();
                 break;
         }

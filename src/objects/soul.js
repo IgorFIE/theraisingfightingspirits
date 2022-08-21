@@ -33,7 +33,7 @@ export class Soul {
 
         this.soulCtx = this.soulCanvas.getContext("2d");
 
-        this.soulStatus = new Status(soulContainer, 33, 10, 0);
+        this.soulStatus = new Status(soulContainer, 33, GameVariables.soulLife, 0);
 
         soulContainer.addEventListener('click', (e) => this.selectSoul());
 

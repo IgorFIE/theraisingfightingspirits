@@ -23,13 +23,13 @@ function init() {
     GameVariables.calculatePixelSize();
 
     createGameContainer();
-    createGameTutorialMenu();
-    createGameOverMenu();
-    createWinScreenMenu();
-    createMainMenu();
+    // createGameTutorialMenu();
+    // createGameOverMenu();
+    // createWinScreenMenu();
+    // createMainMenu();
 
     // remove me
-    // startGame();
+    startGame();
 }
 
 function createMainMenu() {
@@ -160,8 +160,8 @@ function createElemOnMainDiv(id, elemType) {
 }
 
 function startGame() {
-    mainMenuCanvas.classList.add("hidden");
-    gameTutorialDiv.classList.remove("hidden");
+    // mainMenuCanvas.classList.add("hidden");
+    // gameTutorialDiv.classList.remove("hidden");
     wasScheduledToShowWinScreen = false;
     game = new Game(gameDiv);
     window.requestAnimationFrame(() => gameLoop());

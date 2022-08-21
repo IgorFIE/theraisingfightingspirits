@@ -1,3 +1,5 @@
+import { Game } from "./screens/game";
+
 const gameWidth = window.innerWidth;
 const gameHeight = window.innerHeight;
 
@@ -47,16 +49,26 @@ let nextSoul;
 
 let playerCards;
 
-const defaultMaxPlayCards = 2;
 let maxPlayCards;
 let cardsPlayed;
 let drawCardNumber;
 
 let isPlayerTurn;
 let turnCounter;
-let nextEventTurn;
+let reaperNextEventTurn;
+let soulNextEventTurn;
+
+let soulLife;
+let soulLifeBuff;
+
+let cardDmg;
+let cardDmgBuff;
+let cardShield;
+let cardShieldBuff;
 
 let isGameOver;
+let isEventRunning;
+let isEventFinished;
 
 const resetGameVariables = () => {
     GameVariables.cardContainerX = 0;
@@ -76,15 +88,26 @@ const resetGameVariables = () => {
 
     GameVariables.playerCards = [];
 
-    GameVariables.maxPlayCards = defaultMaxPlayCards;
+    GameVariables.maxPlayCards = 2;
     GameVariables.cardsPlayed = 0;
     GameVariables.drawCardNumber = 5;
 
     GameVariables.isPlayerTurn = true;
     GameVariables.turnCounter = 0;
-    GameVariables.nextEventTurn = 5;
+    GameVariables.reaperNextEventTurn = 6;
+    GameVariables.soulNextEventTurn = 3;
+
+    GameVariables.soulLife = 10;
+    GameVariables.soulLifeBuff = 5;
+
+    GameVariables.cardDmg = 2;
+    GameVariables.cardDmgBuff = 4;
+    GameVariables.cardShield = 2;
+    GameVariables.cardShieldBuff = 4;
 
     GameVariables.isGameOver = false;
+    GameVariables.isEventRunning = false;
+    GameVariables.isEventFinished = false;
 }
 
 export const GameVariables = {
@@ -122,7 +145,6 @@ export const GameVariables = {
 
     playerCards,
 
-    defaultMaxPlayCards,
     maxPlayCards,
     cardsPlayed,
     drawCardNumber,
@@ -131,9 +153,20 @@ export const GameVariables = {
 
     isPlayerTurn,
     turnCounter,
-    nextEventTurn,
+    reaperNextEventTurn,
+    soulNextEventTurn,
+
+    soulLife,
+    soulLifeBuff,
+
+    cardDmg,
+    cardDmgBuff,
+    cardShield,
+    cardShieldBuff,
 
     isGameOver,
+    isEventRunning,
+    isEventFinished,
 
     resetGameVariables
 }

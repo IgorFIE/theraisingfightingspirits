@@ -133,7 +133,6 @@ export class UI {
     }
 
     startPlayerTurn() {
-        GameVariables.maxPlayCards = GameVariables.defaultMaxPlayCards;
         GameVariables.cardsPlayed = 0;
         GameVariables.isPlayerTurn = true;
         GameVariables.turnCounter++;

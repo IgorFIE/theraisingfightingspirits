@@ -1,4 +1,5 @@
 import { GameVariables } from "../game-variables";
+import { CardEvent } from "../objects/cardEvent";
 import { UI } from "../objects/ui";
 const { Reaper } = require("../objects/reaper");
 const { Soul } = require("../objects/soul");
@@ -22,6 +23,8 @@ export class Game {
 
         this.ui = new UI(gameDiv);
         this.ui.startPlayerTurn();
+
+        this.cardEvent = new CardEvent(gameDiv);
 
         GameVariables.isGameOver = false;
     }
@@ -61,9 +64,24 @@ export class Game {
     update() {
         this.cleanDeadSouls();
         if (!GameVariables.isPlayerTurn) {
-            GameVariables.reaper.reaperTurn();
-            this.ui.startPlayerTurn();
+            if (!GameVariables.isEventRunning) {
+                GameVariables.reaper.reaperTurn();
+                if (GameVariables.soulNextEventTurn === GameVariables.turnCounter) {
+                    GameVariables.soulNextEventTurn = GameVariables.soulNextEventTurn * 2;
+                    GameVariables.isEventRunning = true;
+                    setTimeout(() => this.cardEvent.startEvent(), 1500);
+                } else {
+                    this.ui.startPlayerTurn();
+                }
+            }
+
+            if (GameVariables.isEventRunning && GameVariables.isEventFinished) {
+                GameVariables.isEventRunning = false;
+                GameVariables.isEventFinished = false;
+                this.ui.startPlayerTurn();
+            }
         }
+
         this.retrievePreviousSoul();
         this.retrieveNextSoul();
     }

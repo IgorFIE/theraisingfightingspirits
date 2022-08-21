@@ -64,8 +64,8 @@ export class Reaper {
     }
 
     calculateReaperNextAction() {
-        if (GameVariables.turnCounter === GameVariables.nextEventTurn) {
-            GameVariables.nextEventTurn = GameVariables.nextEventTurn * 2;
+        if (GameVariables.turnCounter === GameVariables.reaperNextEventTurn) {
+            GameVariables.reaperNextEventTurn = GameVariables.reaperNextEventTurn * 2;
             this.reaperAction = ReaperActions.BUFF;
         } else {
             let visibleSouls = [];
@@ -141,7 +141,6 @@ export class Reaper {
                     } else {
                         let soulsAlive = [];
                         GameVariables.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStatus.lifeValue > 0) soulsAlive.push(soul); }));
-                        console.log(soulsAlive);
                         soulsAlive[Math.floor(Math.random() * soulsAlive.length)].takeDamage(this.reaperAtk);
                     }
                 }, 250);
