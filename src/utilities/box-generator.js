@@ -22,7 +22,9 @@ export const generateLargeBox = (canvas, startX, startY, endX, endY, pixelSize, 
             (y === endY - 3 && x === 3) ||
             (x === endX - 3 && y === endY - 3);
     }
-    genetateInsideBoxColor(canvas, startX, startY, endX, endY, pixelSize, bgColor);
+    if (bgColor) {
+        genetateInsideBoxColor(canvas, startX, startY, endX, endY, pixelSize, bgColor);
+    }
     generateBox(canvas, startX, startY, endX, endY, pixelSize, color, conditionFn);
 };
 

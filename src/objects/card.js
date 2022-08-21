@@ -116,13 +116,31 @@ export class Card {
         this.cardCanvas.style.translate = + cardX + "px " + cardY + "px " + this.cardCanvas.width + "px";
     }
 
+    draw() {
+        if (this.cardType === CardTypes.MINION) {
+            if (GameVariables.soulsInGame === GameVariables.souls.length * GameVariables.souls[0].length) {
+                this.drawCard("Gray");
+            } else {
+                this.drawCard();
+            }
+        }
+        if (GameVariables.maxPlayCards - GameVariables.cardsPlayed <= 0) {
+            this.drawCard("Gray");
+        }
+    }
+
+    dispose() {
+        if (this.cardCanvas.parentNode !== null) {
+            this.cardCanvas.parentElement.removeChild(this.cardCanvas);
+        }
+    }
+
     dragElement(card) {
         let clientX = 0, clientY = 0;
         let newX = 0, newY = 0, startX = 0, startY = 0;
         let lastTopValue = 0;
         card.cardCanvas.onmousedown = dragMouseDown;
         card.cardCanvas.ontouchstart = dragMouseDown;
-
 
         function dragMouseDown(e) {
             e = e || window.event;
@@ -177,25 +195,6 @@ export class Card {
                 card.cardCanvas.style.left = null;
             }
             card.cardCanvas.classList.remove("on-drag");
-        }
-    }
-
-    draw() {
-        if (this.cardType === CardTypes.MINION) {
-            if (GameVariables.soulsInGame === GameVariables.souls.length * GameVariables.souls[0].length) {
-                this.drawCard("Gray");
-            } else {
-                this.drawCard();
-            }
-        }
-        if (GameVariables.maxPlayCards - GameVariables.cardsPlayed <= 0) {
-            this.drawCard("Gray");
-        }
-    }
-
-    dispose() {
-        if (this.cardCanvas.parentNode !== null) {
-            this.cardCanvas.parentElement.removeChild(this.cardCanvas);
         }
     }
 }
