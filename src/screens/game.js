@@ -119,7 +119,7 @@ export class Game {
         for (let y = 0; y < GameVariables.souls.length; y++) {
             for (let x = 0; x < GameVariables.souls[0].length; x++) {
                 currentSoul = GameVariables.souls[y][x];
-                if (currentSoul && currentSoul.soulStatus.lifeValue <= 0) {
+                if (currentSoul && currentSoul.isDeadAndAnimationEnded) {
                     if (currentSoul === GameVariables.soulInUse) {
                         GameVariables.soulInUse = null;
                     }

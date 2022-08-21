@@ -12,6 +12,7 @@ export class Card {
         this.cardCanvas.width = GameVariables.cardWidth * GameVariables.pixelSize;
         this.cardCanvas.height = GameVariables.cardHeight * GameVariables.pixelSize;
         this.cardCanvas.classList.add("card");
+        this.cardCanvas.style.animation = "cardturn 500ms linear";
         this.updateCardPosition(cardX, cardY);
         this.dragElement(this);
         gameDiv.appendChild(this.cardCanvas);
@@ -58,7 +59,8 @@ export class Card {
     useCard() {
         switch (this.cardType) {
             case CardTypes.ATK:
-                GameVariables.reaper.reaperStatus.takeDamage(2);
+                GameVariables.soulInUse.soulCanvas.style.animation = "soulatk 900ms ease-in-out";
+                setTimeout(() => GameVariables.reaper.takeDamage(2), 250)
                 this.afterUseCardsSettings();
                 break;
             case CardTypes.MINION:
@@ -111,7 +113,7 @@ export class Card {
     updateCardPosition(cardX, cardY) {
         this.cardX = cardX;
         this.cardY = cardY;
-        this.cardCanvas.style.transform = "translate(" + cardX + "px," + cardY + "px)";
+        this.cardCanvas.style.translate = + cardX + "px " + cardY + "px " + this.cardCanvas.width + "px";
     }
 
     dragElement(card) {

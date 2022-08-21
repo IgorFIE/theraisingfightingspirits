@@ -19,6 +19,17 @@
             font-size: 1.2em;
         }
 
+        canvas {
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .hidden {
+            display: none;
+        }
+
         #main,
         #game {
             height: 100%;
@@ -35,113 +46,176 @@
             position: fixed;
         }
 
-        #reaper-action {
-            margin-left: 46%;
-            position: relative;
-            overflow: hidden;
-            display: block;
-            animation: soulSelectionArrowAnim 3s infinite ease-in-out;
-        }
-
-        #reaper {
-            position: relative;
-            overflow: hidden;
-            display: block;
-            margin-left: 15%;
-            animation: reaperAnim 6s infinite ease-in-out;
-        }
-
-        .soul {
-            position: relative;
-            overflow: hidden;
-            display: block;
-            margin-left: 46%;
-            animation: soulAnim 6s infinite ease-in-out;
-        }
-
-        @keyframes soulAnim {
-            0% {
-                transform: translate(0px, 0px);
-            }
-
-            50% {
-                transform: translate(0px, 10px);
-            }
-
-            100% {
-                transform: translate(0px, 0px);
-            }
-        }
-
-        @keyframes reaperAnim {
-            0% {
-                transform: translate(0px, 0px);
-            }
-
-            50% {
-                transform: translate(0px, 5px);
-            }
-
-            100% {
-                transform: translate(0px, 0px);
-            }
-        }
-
+        #reaper,
+        #reaper-action,
+        .soul,
         .status {
             position: relative;
             overflow: hidden;
             display: block;
         }
 
+        #reaper-action {
+            margin-left: 46%;
+            animation: arrowAnim 3s infinite ease-in-out;
+        }
+
+        #reaper {
+            margin-left: 15%;
+        }
+
         .soul-selection-arrow {
             z-index: 10;
             margin-left: 54%;
-            animation: soulSelectionArrowAnim 3s infinite ease-in-out;
+            animation: arrowAnim 3s infinite ease-in-out;
         }
 
-        @keyframes soulSelectionArrowAnim {
-            0% {
-                transform: translateY(-5px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-
-            100% {
-                transform: translateY(-5px);
-            }
-        }
-
-        .hidden {
-            display: none;
+        .soul {
+            margin-left: 46%;
         }
 
         .card {
-            position: absolute;
             z-index: 1;
-        }
-
-        #test {
-            position: absolute;
-            z-index: 0;
-            background-color: red;
         }
 
         .on-drag {
             z-index: 999;
         }
 
+        canvas,
+        .card,
         .absolute {
             position: absolute;
         }
+    </style>
 
-        canvas {
-            position: absolute;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: -webkit-crisp-edges;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
+    <style>
+        @keyframes arrowAnim {
+
+            0%,
+            100% {
+                transform: translateY(-5px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes soulAnim {
+
+            0%,
+            100% {
+                transform: translate(0px, 0px);
+            }
+
+            50% {
+                transform: translate(0px, 10px);
+            }
+        }
+
+        @keyframes reaperAnim {
+
+            0%,
+            100% {
+                transform: translate(0px, 0px);
+            }
+
+            50% {
+                transform: translate(0px, 5px);
+            }
+        }
+
+        @keyframes addsoul {
+            0% {
+                transform: scale(0);
+            }
+
+            80% {
+                transform: scale(1.3);
+            }
+
+            90% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes addshield {
+
+            10%,
+            90% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+        }
+
+        @keyframes takedmg {
+
+            0%,
+            50%,
+            30%,
+            80% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+
+            10%,
+            60%,
+            40%,
+            90% {
+                transform: translate(-1px, -2px) rotate(-1deg);
+            }
+
+            20%,
+            70%,
+            50%,
+            100% {
+                transform: translate(-3px, 0px) rotate(1deg);
+            }
+        }
+
+        @keyframes reaperatk {
+
+            0%,
+            65% {
+                transform: rotate(0deg);
+            }
+
+            22% {
+                transform: rotate(10deg);
+            }
+
+            30% {
+                transform: rotate(-50deg);
+            }
+        }
+
+        @keyframes soulatk {
+
+            0%,
+            100% {
+                transform: translate(0px, 0px);
+            }
+
+            10% {
+                transform: rotate(45deg);
+            }
+
+            30% {
+                transform: translateX(40vw);
+            }
+        }
+
+        @keyframes cardturn {
+            0% {
+                transform: rotateY(90deg);
+            }
+
+            100% {
+                transform: rotateY(0deg);
+            }
         }
     </style>
 </head>

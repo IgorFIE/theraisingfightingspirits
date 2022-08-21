@@ -16,6 +16,7 @@ export class Status {
         this.statusCanvas.width = (18 + w) * GameVariables.pixelSize;
         this.statusCanvas.height = GameVariables.statusBarHeight * GameVariables.pixelSize;
         this.statusCanvas.classList.add("status");
+        this.statusCanvas.addEventListener("animationend", () => this.statusCanvas.style.animation = "");
         parentdiv.appendChild(this.statusCanvas);
 
         this.statusCtx = this.statusCanvas.getContext("2d");
@@ -41,6 +42,7 @@ export class Status {
     }
 
     addShield(shieldAmount) {
+        this.statusCanvas.style.animation = "addshield 500ms ease-in-out";
         this.shieldValue += shieldAmount;
         this.draw();
     }

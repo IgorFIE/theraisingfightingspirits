@@ -12,6 +12,7 @@ export class Reaper {
         this.reaperDef = 2;
         this.reaperAction = ReaperActions.DEF;
         this.reaperLockOnSoul = null;
+        this.isDeadAndAnimationEnded = false;
 
         this.reaperContainer = document.createElement("div");
         this.reaperContainer.classList.add("reaper-container");
@@ -25,15 +26,28 @@ export class Reaper {
         this.reaperContainer.appendChild(this.reaperActionCanvas);
 
         this.reaperCanvas = document.createElement("canvas");
+        this.reaperCtx = this.reaperCanvas.getContext("2d");
         this.reaperCanvas.width = grimReaper[0].length * GameVariables.pixelSize;
         this.reaperCanvas.height = grimReaper.length * GameVariables.pixelSize;
         this.reaperCanvas.id = "reaper";
+
         this.reaperContainer.appendChild(this.reaperCanvas);
+
+        this.reaperCanvas.style.animation = "addsoul 500ms ease-in-out";
+        this.reaperCanvas.addEventListener("animationend", () => {
+            this.isDeadAndAnimationEnded = this.reaperStatus.lifeValue <= 0;
+            if (!this.isDeadAndAnimationEnded) {
+                this.reaperCanvas.style.animation = "reaperAnim 6s infinite ease-in-out";
+                this.draw();
+            } else {
+                this.dispose();
+            }
+        });
 
         this.reaperStatus = new Status(this.reaperContainer, 36, 999, 0);
 
         this.translateReaper();
-        drawSprite(this.reaperCanvas.getContext("2d"), grimReaper, GameVariables.pixelSize);
+        this.draw();
         this.calculateReaperNextAction();
     }
 
@@ -62,9 +76,6 @@ export class Reaper {
                 if (soulTotalLife - this.reaperAoeAtk <= 0) aoeAtkKills++;
             }
         }));
-
-        // there is a chance of the normal atk to kill 3 souls and the aoe atk to kill 2, 
-        // if this is the case the reaper will choose the normal atk
         if (aoeAtkKills > normalAtkKillsSouls.length) {
             this.reaperAction = ReaperActions.AOE_ATK;
         } else if (normalAtkKillsSouls.length > aoeAtkKills) {
@@ -110,21 +121,41 @@ export class Reaper {
     }
 
     processReaperAction() {
+        if (this.reaperAction === ReaperActions.ATK || this.reaperAction === ReaperActions.AOE_ATK) {
+            this.reaperCanvas.style.animation = "reaperatk 1s ease-in-out";
+        }
         switch (this.reaperAction) {
             case ReaperActions.ATK:
-                this.reaperLockOnSoul.soulStatus.takeDamage(this.reaperAtk);
+                setTimeout(() => this.reaperLockOnSoul.takeDamage(this.reaperAtk), 250);
                 break;
             case ReaperActions.AOE_ATK:
-                GameVariables.souls.forEach((row) => row.forEach((soul) => {
-                    if (soul) {
-                        soul.soulStatus.takeDamage(this.reaperAoeAtk);
-                    }
-                }));
+                setTimeout(() => {
+                    GameVariables.souls.forEach((row) => row.forEach((soul) => {
+                        if (soul) {
+                            soul.takeDamage(this.reaperAoeAtk);
+                        }
+                    }));
+                }, 250);
                 break;
             default:
                 this.reaperStatus.addShield(this.reaperDef);
                 break;
         }
+    }
+
+    takeDamage(dmg) {
+        this.reaperStatus.takeDamage(dmg);
+        this.draw("red");
+        if (this.reaperStatus.lifeValue > 0) {
+            this.reaperCanvas.style.animation = "takedmg 400ms ease-in-out";
+        } else {
+            this.reaperCanvas.style.animation = "addsoul 500ms reverse ease-in-out";
+        }
+    }
+
+    draw(color = null) {
+        this.reaperCtx.clearRect(0, 0, GameVariables.reaperWidth, GameVariables.reaperHeight);
+        drawSprite(this.reaperCanvas.getContext("2d"), grimReaper, GameVariables.pixelSize, 0, 0, color);
     }
 
     dispose() {

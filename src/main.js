@@ -20,7 +20,9 @@ let mainMenuCanvas;
 let gameTutorialCanvas;
 let gameDiv;
 let gameOverCanvas;
+let winScreenCanvas;
 
+let wasScheduledToShowWinScreen;
 let game;
 
 function init() {
@@ -31,7 +33,11 @@ function init() {
     createGameContainer();
     createGameTutorialMenu();
     createGameOverMenu();
+    createWinScreenMenu();
     createMainMenu();
+
+    // remove me
+    // startGame();
 }
 
 function createMainMenu() {
@@ -122,6 +128,25 @@ function createGameOverMenu() {
     });
 }
 
+function createWinScreenMenu() {
+    winScreenCanvas = createElemOnMainDiv("game-over", "canvas");
+    winScreenCanvas.classList.add("hidden");
+    winScreenCanvas.style.backgroundColor = "lightblue";
+    winScreenCanvas.style.opacity = "0.9";
+    winScreenCanvas.style.zIndex = 999;
+    winScreenCanvas.width = GameVariables.gameWidth;
+    winScreenCanvas.height = GameVariables.gameHeight;
+    let winScreenCtx = winScreenCanvas.getContext("2d");
+    drawPixelTextInCanvasContext(convertTextToPixelArt("win!!!"), winScreenCtx, GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, (GameVariables.gameHeightAsPixels / 2) - 6, "black", 6);
+
+    winScreenCanvas.addEventListener('click', (e) => {
+        winScreenCanvas.classList.add("hidden");
+        mainMenuCanvas.classList.remove("hidden");
+        game.dispose();
+        game = null;
+    });
+}
+
 function createElemOnMainDiv(id, elemType) {
     let elem = document.createElement(elemType);
     elem.id = id;
@@ -132,6 +157,7 @@ function createElemOnMainDiv(id, elemType) {
 function startGame() {
     mainMenuCanvas.classList.add("hidden");
     gameTutorialCanvas.classList.remove("hidden");
+    wasScheduledToShowWinScreen = false;
     game = new Game(gameDiv);
     window.requestAnimationFrame(() => gameLoop());
 }
@@ -142,6 +168,10 @@ function gameLoop() {
         game.draw();
         if (GameVariables.isGameOver) {
             gameOverCanvas.classList.remove("hidden");
+        }
+        if (GameVariables.reaper.isDeadAndAnimationEnded && !wasScheduledToShowWinScreen) {
+            wasScheduledToShowWinScreen = true;
+            setTimeout(() => winScreenCanvas.classList.remove("hidden"), 250);
         }
     }
     window.requestAnimationFrame(() => gameLoop());

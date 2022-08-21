@@ -8,6 +8,7 @@ export class Soul {
         this.arrayPosY = arrayPosY;
         this.isMale = Math.floor(Math.random() * 2) === 0;
         this.spriteInUse = (this.isMale ? maleSoul : femaleSoul);
+        this.isDeadAndAnimationEnded = false;
 
         this.soulSelectedArrowCanvas = document.createElement("canvas");
         this.soulSelectedArrowCanvas.width = selectedArrow[0].length * GameVariables.pixelSize;
@@ -20,6 +21,14 @@ export class Soul {
         this.soulCanvas.width = this.spriteInUse[0].length * GameVariables.pixelSize;
         this.soulCanvas.height = this.spriteInUse.length * GameVariables.pixelSize;
         this.soulCanvas.classList.add("soul");
+
+        this.soulCanvas.style.animation = "addsoul 500ms ease-in-out";
+        this.soulCanvas.addEventListener("animationend", () => {
+            this.soulCanvas.style.animation = "soulAnim 6s infinite ease-in-out";
+            this.isDeadAndAnimationEnded = this.soulStatus.lifeValue <= 0;
+            this.draw();
+        });
+
         soulContainer.appendChild(this.soulCanvas);
 
         this.soulCtx = this.soulCanvas.getContext("2d");
@@ -43,9 +52,19 @@ export class Soul {
         this.soulSelectedArrowCanvas.classList.add("hidden");
     }
 
-    draw() {
+    takeDamage(dmg) {
+        this.soulStatus.takeDamage(dmg);
+        this.draw("red");
+        if (this.soulStatus.lifeValue > 0) {
+            this.soulCanvas.style.animation = "takedmg 400ms ease-in-out";
+        } else {
+            this.soulCanvas.style.animation = "addsoul 500ms reverse ease-in-out";
+        }
+    }
+
+    draw(color = null) {
         this.soulCtx.clearRect(0, 0, GameVariables.soulWidth, GameVariables.soulHeight);
-        drawSprite(this.soulCtx, this.spriteInUse, GameVariables.pixelSize);
+        drawSprite(this.soulCtx, this.spriteInUse, GameVariables.pixelSize, 0, 0, color);
     }
 
     dispose() {
