@@ -6,15 +6,6 @@ const { drawSprite } = require("./utilities/draw-utilities");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("./utilities/text");
 const { generateLargeBox } = require("./utilities/box-generator");
 
-// Game names...
-
-// The Raising Fighting Spirits
-// In the realm of the reaper
-// battle spirits
-// soul fighting
-// limbo battles
-// Reaper's bad soul day
-
 let mainDiv;
 
 let mainMenuCanvas;

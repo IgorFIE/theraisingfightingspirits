@@ -1,7 +1,7 @@
 import { GameVariables } from "../game-variables";
 import { Status } from "./status";
 const { drawSprite } = require("../utilities/draw-utilities");
-const { atkIcon, defIcon, scytheIcon } = require("../objects/icons");
+const { atkIcon, defIcon, scytheIcon, buffIcon } = require("../objects/icons");
 const { generateSmallBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
 
@@ -10,6 +10,7 @@ export class Reaper {
         this.reaperAtk = 4;
         this.reaperAoeAtk = 3;
         this.reaperDef = 2;
+        this.reaperBuffPower = 1;
         this.reaperAction = ReaperActions.DEF;
         this.reaperLockOnSoul = null;
         this.isDeadAndAnimationEnded = false;
@@ -63,37 +64,42 @@ export class Reaper {
     }
 
     calculateReaperNextAction() {
-        let visibleSouls = [];
-        let normalAtkKillsSouls = [];
-        let aoeAtkKills = 0;
-        GameVariables.souls.forEach((row) => row.forEach((soul) => {
-            if (soul) {
-                visibleSouls.push(soul);
-                let soulTotalLife = soul.soulStatus.lifeValue + soul.soulStatus.shieldValue;
-                if (soulTotalLife - this.reaperAtk <= 0) {
-                    normalAtkKillsSouls.push(soul);
-                }
-                if (soulTotalLife - this.reaperAoeAtk <= 0) aoeAtkKills++;
-            }
-        }));
-        if (aoeAtkKills > normalAtkKillsSouls.length) {
-            this.reaperAction = ReaperActions.AOE_ATK;
-        } else if (normalAtkKillsSouls.length > aoeAtkKills) {
-            this.reaperAction = ReaperActions.ATK;
-            this.reaperLockOnSoul = normalAtkKillsSouls[Math.floor(Math.random() * normalAtkKillsSouls.length)];
+        if (GameVariables.turnCounter === GameVariables.nextEventTurn) {
+            GameVariables.nextEventTurn = GameVariables.nextEventTurn * 2;
+            this.reaperAction = ReaperActions.BUFF;
         } else {
-            let randomValue = Math.floor(Math.random() * 100);
-            if (randomValue < 40) {
-                this.reaperAction = ReaperActions.AOE_ATK;
-            } else if (randomValue < 80) {
-                this.reaperAction = ReaperActions.ATK;
-                if (normalAtkKillsSouls.length > 0) {
-                    this.reaperLockOnSoul = normalAtkKillsSouls[Math.floor(Math.random() * normalAtkKillsSouls.length)];
-                } else {
-                    this.reaperLockOnSoul = visibleSouls[Math.floor(Math.random() * visibleSouls.length)];
+            let visibleSouls = [];
+            let normalAtkKillsSouls = [];
+            let aoeAtkKills = 0;
+            GameVariables.souls.forEach((row) => row.forEach((soul) => {
+                if (soul && soul.soulStatus.lifeValue > 0) {
+                    visibleSouls.push(soul);
+                    let soulTotalLife = soul.soulStatus.lifeValue + soul.soulStatus.shieldValue;
+                    if (soulTotalLife - this.reaperAtk <= 0) {
+                        normalAtkKillsSouls.push(soul);
+                    }
+                    if (soulTotalLife - this.reaperAoeAtk <= 0) aoeAtkKills++;
                 }
+            }));
+            if (aoeAtkKills > normalAtkKillsSouls.length) {
+                this.reaperAction = ReaperActions.AOE_ATK;
+            } else if (normalAtkKillsSouls.length > aoeAtkKills) {
+                this.reaperAction = ReaperActions.ATK;
+                this.reaperLockOnSoul = normalAtkKillsSouls[Math.floor(Math.random() * normalAtkKillsSouls.length)];
             } else {
-                this.reaperAction = ReaperActions.DEF;
+                let randomValue = Math.floor(Math.random() * 100);
+                if (randomValue < 40) {
+                    this.reaperAction = ReaperActions.AOE_ATK;
+                } else if (randomValue < 80) {
+                    this.reaperAction = ReaperActions.ATK;
+                    if (normalAtkKillsSouls.length > 0) {
+                        this.reaperLockOnSoul = normalAtkKillsSouls[Math.floor(Math.random() * normalAtkKillsSouls.length)];
+                    } else {
+                        this.reaperLockOnSoul = visibleSouls[Math.floor(Math.random() * visibleSouls.length)];
+                    }
+                } else {
+                    this.reaperAction = ReaperActions.DEF;
+                }
             }
         }
         this.drawReaperAction();
@@ -107,6 +113,9 @@ export class Reaper {
                 break;
             case ReaperActions.AOE_ATK:
                 this.drawAction(scytheIcon, this.reaperAoeAtk);
+                break;
+            case ReaperActions.BUFF:
+                this.drawAction(buffIcon, this.reaperBuffPower);
                 break;
             default:
                 this.drawAction(defIcon, this.reaperDef);
@@ -126,7 +135,16 @@ export class Reaper {
         }
         switch (this.reaperAction) {
             case ReaperActions.ATK:
-                setTimeout(() => this.reaperLockOnSoul.takeDamage(this.reaperAtk), 250);
+                setTimeout(() => {
+                    if (this.reaperLockOnSoul.soulStatus.lifeValue > 0) {
+                        this.reaperLockOnSoul.takeDamage(this.reaperAtk);
+                    } else {
+                        let soulsAlive = [];
+                        GameVariables.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStatus.lifeValue > 0) soulsAlive.push(soul); }));
+                        console.log(soulsAlive);
+                        soulsAlive[Math.floor(Math.random() * soulsAlive.length)].takeDamage(this.reaperAtk);
+                    }
+                }, 250);
                 break;
             case ReaperActions.AOE_ATK:
                 setTimeout(() => {
@@ -136,6 +154,13 @@ export class Reaper {
                         }
                     }));
                 }, 250);
+                break;
+            case ReaperActions.BUFF:
+                this.reaperCanvas.style.animation = "addshield 500ms ease-in-out";
+                this.reaperAtk += this.reaperBuffPower;
+                this.reaperAoeAtk += this.reaperBuffPower;
+                this.reaperDef += this.reaperBuffPower;
+                this.reaperBuffPower++;
                 break;
             default:
                 this.reaperStatus.addShield(this.reaperDef);
@@ -169,7 +194,8 @@ export class Reaper {
 const ReaperActions = {
     ATK: 0,
     AOE_ATK: 1,
-    DEF: 2
+    DEF: 2,
+    BUFF: 3,
 }
 
 const nu = null;

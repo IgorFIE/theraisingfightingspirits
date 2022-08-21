@@ -54,6 +54,7 @@ let drawCardNumber;
 
 let isPlayerTurn;
 let turnCounter;
+let nextEventTurn;
 
 let isGameOver;
 
@@ -81,6 +82,7 @@ const resetGameVariables = () => {
 
     GameVariables.isPlayerTurn = true;
     GameVariables.turnCounter = 0;
+    GameVariables.nextEventTurn = 5;
 
     GameVariables.isGameOver = false;
 }
@@ -129,6 +131,7 @@ export const GameVariables = {
 
     isPlayerTurn,
     turnCounter,
+    nextEventTurn,
 
     isGameOver,
 

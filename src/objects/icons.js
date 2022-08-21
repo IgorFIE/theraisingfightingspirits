@@ -86,6 +86,27 @@ export const scytheIcon = [
     [nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu]
 ];
 
+export const buffIcon = [
+    [nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, wb, wb, bl, bl, bl, bl, bl, bl, wb, wb, nu, nu, nu, nu],
+    [nu, nu, nu, wb, bl, bl, bl, wb, wb, wb, wb, bl, bl, bl, wb, nu, nu, nu],
+    [nu, nu, wb, bl, bl, wb, wb, wb, bl, bl, wb, wb, wb, bl, bl, wb, nu, nu],
+    [nu, wb, bl, bl, wb, wb, wb, bl, bl, bl, bl, wb, wb, wb, bl, bl, wb, nu],
+    [nu, wb, bl, wb, wb, wb, bl, bl, bl, bl, bl, bl, wb, wb, wb, bl, wb, nu],
+    [wb, bl, bl, wb, wb, bl, bl, bl, bl, bl, bl, bl, bl, wb, wb, bl, bl, wb],
+    [wb, bl, wb, wb, wb, bl, bl, bl, bl, bl, bl, bl, bl, wb, wb, wb, bl, wb],
+    [wb, bl, wb, wb, wb, wb, wb, bl, bl, bl, bl, wb, wb, wb, wb, wb, bl, wb],
+    [wb, bl, wb, wb, wb, wb, wb, bl, bl, bl, bl, wb, wb, wb, wb, wb, bl, wb],
+    [wb, bl, wb, wb, wb, wb, wb, bl, bl, bl, bl, wb, wb, wb, wb, wb, bl, wb],
+    [wb, bl, bl, wb, wb, wb, wb, bl, bl, bl, bl, wb, wb, wb, wb, bl, bl, wb],
+    [nu, wb, bl, wb, wb, wb, wb, bl, bl, bl, bl, wb, wb, wb, wb, bl, wb, nu],
+    [nu, wb, bl, bl, wb, wb, wb, bl, bl, bl, bl, wb, wb, wb, bl, bl, wb, nu],
+    [nu, nu, wb, bl, bl, wb, wb, wb, wb, wb, wb, wb, wb, bl, bl, wb, nu, nu],
+    [nu, nu, nu, wb, bl, bl, bl, wb, wb, wb, wb, bl, bl, bl, wb, nu, nu, nu],
+    [nu, nu, nu, nu, wb, wb, bl, bl, bl, bl, bl, bl, wb, wb, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu]
+];
+
 export const deckIcon = [
     [bl, bl, nu, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl],
     [bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl],
