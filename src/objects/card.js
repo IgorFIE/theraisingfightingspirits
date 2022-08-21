@@ -59,7 +59,8 @@ export class Card {
     useCard() {
         switch (this.cardType) {
             case CardTypes.ATK:
-                GameVariables.soulInUse.soulCanvas.style.animation = "soulatk 900ms ease-in-out";
+                GameVariables.soulInUse.soulCanvas.style.animation = "";
+                requestAnimationFrame(() => setTimeout(() => GameVariables.soulInUse.soulCanvas.style.animation = "soulatk 900ms ease-in-out", 0));
                 setTimeout(() => GameVariables.reaper.takeDamage(GameVariables.cardDmg), 250)
                 this.afterUseCardsSettings();
                 break;

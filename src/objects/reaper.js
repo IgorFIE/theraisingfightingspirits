@@ -131,7 +131,8 @@ export class Reaper {
 
     processReaperAction() {
         if (this.reaperAction === ReaperActions.ATK || this.reaperAction === ReaperActions.AOE_ATK) {
-            this.reaperCanvas.style.animation = "reaperatk 1s ease-in-out";
+            this.reaperCanvas.style.animation = "";
+            requestAnimationFrame(() => setTimeout(() => this.reaperCanvas.style.animation = "reaperatk 1s ease-in-out", 0));
         }
         switch (this.reaperAction) {
             case ReaperActions.ATK:

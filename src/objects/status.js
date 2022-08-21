@@ -42,7 +42,8 @@ export class Status {
     }
 
     addShield(shieldAmount) {
-        this.statusCanvas.style.animation = "addshield 500ms ease-in-out";
+        this.statusCanvas.style.animation = "";
+        requestAnimationFrame(() => setTimeout(() => this.statusCanvas.style.animation = "addshield 500ms ease-in-out", 0));
         this.shieldValue += shieldAmount;
         this.draw();
     }
