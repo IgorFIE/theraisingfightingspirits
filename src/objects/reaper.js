@@ -13,6 +13,7 @@ export class Reaper {
         this.reaperBuffPower = 1;
         this.reaperAction = ReaperActions.DEF;
         this.reaperLockOnSoul = null;
+        this.isReaperPlaying = false;
         this.isDeadAndAnimationEnded = false;
 
         this.reaperContainer = document.createElement("div");
@@ -59,8 +60,10 @@ export class Reaper {
     }
 
     reaperTurn() {
+        this.isReaperPlaying = true;
         this.processReaperAction();
         this.calculateReaperNextAction();
+        setTimeout(() => this.isReaperPlaying = false, 750);
     }
 
     calculateReaperNextAction() {

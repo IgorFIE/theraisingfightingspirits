@@ -37,6 +37,7 @@ export class UI {
         this.uiContainer.appendChild(this.previousSoulCanvas);
 
         this.endTurnCanvas = document.createElement("canvas");
+        this.endTurnCtx = this.endTurnCanvas.getContext("2d");
         this.endTurnCanvas.addEventListener('click', (e) => this.endTurn());
         this.uiContainer.appendChild(this.endTurnCanvas);
 
@@ -88,8 +89,6 @@ export class UI {
         this.endTurnCanvas.style.transform = "translate(" +
             (GameVariables.gameWidth - this.endTurnCanvas.width) + "px," +
             (GameVariables.gameHeight - this.turnControllersCanvas.height) + "px)";
-        generateLargeBox(this.endTurnCanvas, 5, 5, 56, 13, GameVariables.pixelSize, "black", "white");
-        drawPixelTextInCanvasContext(convertTextToPixelArt("END TURN"), this.endTurnCanvas.getContext("2d"), GameVariables.pixelSize, 34, 12);
 
         this.previousSoulCanvas.width = 67 * GameVariables.pixelSize;
         this.previousSoulCanvas.height = 22 * GameVariables.pixelSize;
@@ -128,7 +127,7 @@ export class UI {
     }
 
     endTurn() {
-        if (!GameVariables.isEventRunning) {
+        if (!GameVariables.isEventRunning && !GameVariables.reaper.isReaperPlaying) {
             this.disposePlayerCards();
             GameVariables.isPlayerTurn = false;
         }
@@ -160,9 +159,16 @@ export class UI {
             this.energyCanvasCtx.clearRect(0, 0, this.energyCanvas.width, this.energyCanvas.height);
             this.populateEnergyCanvas();
         }
+        this.drawEndTurnBtn();
         this.drawNexSoulBtn();
         this.drawPreviousBtn();
         this.drawTurnCounter();
+    }
+
+    drawEndTurnBtn() {
+        this.endTurnCtx.clearRect(0, 0, this.previousSoulCanvas.width, this.previousSoulCanvas.height);
+        generateLargeBox(this.endTurnCanvas, 5, 5, 56, 13, GameVariables.pixelSize, "black", GameVariables.reaper.isReaperPlaying ? "gray" : "white");
+        drawPixelTextInCanvasContext(convertTextToPixelArt("END TURN"), this.endTurnCtx, GameVariables.pixelSize, 34, 12);
     }
 
     drawPreviousBtn() {

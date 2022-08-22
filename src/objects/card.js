@@ -8,6 +8,7 @@ const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../util
 export class Card {
     constructor(gameDiv, cardX, cardY) {
         this.isUsed = false;
+        this.isDispose = false;
         this.cardCanvas = document.createElement("canvas");
         this.cardCanvas.width = GameVariables.cardWidth * GameVariables.pixelSize;
         this.cardCanvas.height = GameVariables.cardHeight * GameVariables.pixelSize;
@@ -132,7 +133,12 @@ export class Card {
 
     dispose() {
         if (this.cardCanvas.parentNode !== null) {
-            this.cardCanvas.parentElement.removeChild(this.cardCanvas);
+            if (!this.isDispose) {
+                this.isDispose = true;
+                this.cardCanvas.style.animation = "";
+                requestAnimationFrame(() => setTimeout(() => this.cardCanvas.style.animation = "cardturn 250ms reverse linear", 0));
+                setTimeout(() => this.cardCanvas.parentElement.removeChild(this.cardCanvas), 250);
+            }
         }
     }
 

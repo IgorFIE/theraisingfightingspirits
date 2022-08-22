@@ -71,7 +71,8 @@ export class Game {
                     GameVariables.isEventRunning = true;
                     setTimeout(() => this.cardEvent.startEvent(), 1500);
                 } else {
-                    this.ui.startPlayerTurn();
+                    GameVariables.isPlayerTurn = true;
+                    setTimeout(() => this.ui.startPlayerTurn(), 750);
                 }
             }
 
