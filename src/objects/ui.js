@@ -1,4 +1,5 @@
 import { GameVariables } from "../game-variables";
+import { SoundInstance } from "../utilities/sound";
 const { Card } = require("../objects/card");
 const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
@@ -116,18 +117,21 @@ export class UI {
 
     selectNextSoul() {
         if (GameVariables.nextSoul) {
+            SoundInstance.clickSound();
             GameVariables.nextSoul.selectSoul();
         }
     }
 
     selectPreviousSoul() {
         if (GameVariables.previousSoul) {
+            SoundInstance.clickSound();
             GameVariables.previousSoul.selectSoul();
         }
     }
 
     endTurn() {
         if (!GameVariables.isEventRunning && !GameVariables.reaper.isReaperPlaying) {
+            SoundInstance.clickSound();
             this.disposePlayerCards();
             GameVariables.isPlayerTurn = false;
         }

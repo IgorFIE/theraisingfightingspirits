@@ -1,6 +1,7 @@
 import { GameVariables } from "../game-variables";
 import { CardEvent } from "../objects/cardEvent";
 import { UI } from "../objects/ui";
+import { SoundInstance } from "../utilities/sound";
 const { Reaper } = require("../objects/reaper");
 const { Soul } = require("../objects/soul");
 const { Background } = require("../objects/background");

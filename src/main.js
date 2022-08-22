@@ -3,10 +3,13 @@ const { Game } = require("./screens/game");
 const { grimReaper } = require("./objects/reaper");
 const { maleSoul, femaleSoul } = require("./objects/soul");
 const { drawSprite } = require("./utilities/draw-utilities");
+const { SoundInstance } = require("./utilities/sound");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("./utilities/text");
 const { generateLargeBox } = require("./utilities/box-generator");
 
 let mainDiv;
+
+let sound;
 
 let mainMenuCanvas;
 let gameTutorialDiv;
@@ -107,7 +110,10 @@ function createGameTutorialMenu() {
     generateLargeBox(gameTutorialSkipCanvas, 0, 0, 139, 39, GameVariables.pixelSize, "black", "rgba(150,150,150,0.8)");
     drawPixelTextInCanvasContext(convertTextToPixelArt("skip tutorial"), gameTutorialSkipCtx, GameVariables.pixelSize, 70, 20, "black", 2);
 
-    gameTutorialSkipCanvas.addEventListener('click', (e) => gameTutorialDiv.classList.add("hidden"));
+    gameTutorialSkipCanvas.addEventListener('click', (e) => {
+        SoundInstance.clickSound();
+        gameTutorialDiv.classList.add("hidden")
+    });
     gameTutorialDiv.appendChild(gameTutorialSkipCanvas);
 
 }
@@ -128,6 +134,7 @@ function createGameOverMenu() {
     drawPixelTextInCanvasContext(convertTextToPixelArt("CROSSED OVER"), gameOverCtx, GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, (GameVariables.gameHeightAsPixels / 2) - 6, "black", 6);
 
     gameOverCanvas.addEventListener('click', (e) => {
+        SoundInstance.clickSound();
         gameOverCanvas.classList.add("hidden");
         mainMenuCanvas.classList.remove("hidden");
         game.dispose();
@@ -147,6 +154,7 @@ function createWinScreenMenu() {
     drawPixelTextInCanvasContext(convertTextToPixelArt("win!!!"), winScreenCtx, GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, (GameVariables.gameHeightAsPixels / 2) - 6, "black", 6);
 
     winScreenCanvas.addEventListener('click', (e) => {
+        SoundInstance.clickSound();
         winScreenCanvas.classList.add("hidden");
         mainMenuCanvas.classList.remove("hidden");
         game.dispose();
@@ -166,6 +174,9 @@ function startGame() {
     gameTutorialDiv.classList.remove("hidden");
     wasScheduledToShowWinScreen = false;
     game = new Game(gameDiv);
+    sound = SoundInstance;
+    sound.initSound();
+    SoundInstance.clickSound();
     window.requestAnimationFrame(() => gameLoop());
 }
 
@@ -180,8 +191,9 @@ function gameLoop() {
             wasScheduledToShowWinScreen = true;
             setTimeout(() => winScreenCanvas.classList.remove("hidden"), 250);
         }
+        sound.playMusic();
+        window.requestAnimationFrame(() => gameLoop());
     }
-    window.requestAnimationFrame(() => gameLoop());
 }
 
 init();

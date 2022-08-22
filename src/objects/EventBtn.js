@@ -1,4 +1,5 @@
 import { GameVariables } from "../game-variables";
+import { SoundInstance } from "../utilities/sound";
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
 const { generateLargeBox } = require("../utilities/box-generator");
 
@@ -17,6 +18,7 @@ export class EventBtn {
         drawPixelTextInCanvasContext(this.retrieveBtnText(), eventBtnCtx, GameVariables.pixelSize, 70, 20, "black", 1);
 
         eventBtnCanvas.addEventListener('click', () => {
+            SoundInstance.buffSound();
             this.useBtn();
             btnContainer.parentElement.classList.add("hidden");
             btnContainer.innerHTML = "";

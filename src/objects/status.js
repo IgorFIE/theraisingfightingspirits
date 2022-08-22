@@ -1,4 +1,5 @@
 import { GameVariables } from "../game-variables";
+import { SoundInstance } from "../utilities/sound";
 const { defIcon } = require("../objects/icons");
 const { drawSprite } = require("../utilities/draw-utilities");
 const { generateSmallBox } = require("../utilities/box-generator");
@@ -25,6 +26,7 @@ export class Status {
     }
 
     takeDamage(dmg) {
+        SoundInstance.takeDamageSound();
         if (this.shieldValue > 0) {
             this.shieldValue -= dmg;
             if (this.shieldValue <= 0) {
@@ -42,6 +44,7 @@ export class Status {
     }
 
     addShield(shieldAmount) {
+        SoundInstance.gainShield();
         this.statusCanvas.style.animation = "";
         requestAnimationFrame(() => setTimeout(() => this.statusCanvas.style.animation = "addshield 500ms ease-in-out", 0));
         this.shieldValue += shieldAmount;

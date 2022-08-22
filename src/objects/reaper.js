@@ -1,4 +1,5 @@
 import { GameVariables } from "../game-variables";
+import { SoundInstance } from "../utilities/sound";
 import { Status } from "./status";
 const { drawSprite } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, scytheIcon, buffIcon } = require("../objects/icons");
@@ -164,6 +165,7 @@ export class Reaper {
                 this.reaperAoeAtk += this.reaperBuffPower;
                 this.reaperDef += this.reaperBuffPower;
                 this.reaperBuffPower++;
+                SoundInstance.buffSound();
                 break;
             default:
                 this.reaperStatus.addShield(this.reaperDef);
@@ -178,6 +180,7 @@ export class Reaper {
             this.reaperCanvas.style.animation = "takedmg 400ms ease-in-out";
         } else {
             this.reaperCanvas.style.animation = "addsoul 500ms reverse ease-in-out";
+            SoundInstance.deadSound();
         }
     }
 

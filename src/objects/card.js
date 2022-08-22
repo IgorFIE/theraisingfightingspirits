@@ -136,8 +136,8 @@ export class Card {
             if (!this.isDispose) {
                 this.isDispose = true;
                 this.cardCanvas.style.animation = "";
-                requestAnimationFrame(() => setTimeout(() => this.cardCanvas.style.animation = "cardturn 250ms reverse linear", 0));
-                setTimeout(() => this.cardCanvas.parentElement.removeChild(this.cardCanvas), 250);
+                requestAnimationFrame(() => setTimeout(() => this.cardCanvas.style.animation = "cardturn 200ms reverse linear", 0));
+                setTimeout(() => this.cardCanvas.parentElement.removeChild(this.cardCanvas), 200);
             }
         }
     }

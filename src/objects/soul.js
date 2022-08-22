@@ -1,9 +1,11 @@
 import { GameVariables } from "../game-variables";
+import { SoundInstance } from "../utilities/sound";
 import { Status } from "./status";
 const { drawSprite } = require("../utilities/draw-utilities");
 
 export class Soul {
     constructor(soulContainer, arrayPosX, arrayPosY) {
+        SoundInstance.spawnSound();
         this.arrayPosX = arrayPosX;
         this.arrayPosY = arrayPosY;
         this.isMale = Math.floor(Math.random() * 2) === 0;
@@ -35,7 +37,10 @@ export class Soul {
 
         this.soulStatus = new Status(soulContainer, 33, GameVariables.soulLife, 0);
 
-        soulContainer.addEventListener('click', (e) => this.selectSoul());
+        soulContainer.addEventListener('click', (e) => {
+            this.selectSoul()
+            SoundInstance.clickSound();
+        });
 
         this.draw();
     }
@@ -59,6 +64,7 @@ export class Soul {
             this.soulCanvas.style.animation = "takedmg 400ms ease-in-out";
         } else {
             this.soulCanvas.style.animation = "addsoul 500ms reverse ease-in-out";
+            SoundInstance.deadSound();
         }
     }
 
