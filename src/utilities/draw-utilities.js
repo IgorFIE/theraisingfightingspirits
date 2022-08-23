@@ -1,4 +1,5 @@
-export const drawSprite = (ctx, sprite, pixelSize, startX = 0, startY = 0, color = null) => {
+export const drawSprite = (canvas, sprite, pixelSize, startX = 0, startY = 0, color = null) => {
+    const ctx = canvas.getContext("2d");
     for (let y = 0; y < sprite.length; y++) {
         for (let x = 0; x < sprite[y].length; x++) {
             if (sprite[y][x] !== null) {

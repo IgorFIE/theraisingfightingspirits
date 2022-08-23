@@ -1,4 +1,5 @@
-export const drawPixelTextInCanvasCtx = (pixelText, ctx, pixelSize, startX, startY, color = "black", size = 1) => {
+export const drawPixelTextInCanvas = (pixelText, canvas, pixelSize, startX, startY, color = "black", size = 1) => {
+    const ctx = canvas.getContext("2d");
     const textPixelSize = pixelSize * size;
     const halfWidthPixelTextSize = (pixelText[0].length * textPixelSize) / 2;
     const halfHeightPixelTextSize = (pixelText.length * textPixelSize) / 2;

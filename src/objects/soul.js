@@ -14,7 +14,7 @@ export class Soul {
         this.isDeadAndAnimationEnded = false;
 
         this.soulSelectedArrowCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul-selection-arrow", "hidden"], selectedArrow[0].length * GameVars.pixelSize, selectedArrow.length * GameVars.pixelSize);
-        drawSprite(this.soulSelectedArrowCanvas.getContext("2d"), selectedArrow, GameVars.pixelSize);
+        drawSprite(this.soulSelectedArrowCanvas, selectedArrow, GameVars.pixelSize);
 
         this.soulCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul"], this.spriteInUse[0].length * GameVars.pixelSize, this.spriteInUse.length * GameVars.pixelSize, null, (e) => {
             this.selectSoul()
@@ -57,7 +57,7 @@ export class Soul {
 
     draw(color = null) {
         this.soulCtx.clearRect(0, 0, GameVars.soulW, GameVars.soulH);
-        drawSprite(this.soulCtx, this.spriteInUse, GameVars.pixelSize, 0, 0, color);
+        drawSprite(this.soulCanvas, this.spriteInUse, GameVars.pixelSize, 0, 0, color);
     }
 
     dispose() {

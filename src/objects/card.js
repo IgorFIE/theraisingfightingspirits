@@ -4,7 +4,7 @@ const { Soul } = require("../objects/soul");
 const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, minionIcon } = require("../objects/icons");
 const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
-const { convertTextToPixelArt, drawPixelTextInCanvasCtx } = require("../utilities/text");
+const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 
 export class Card {
     constructor(gameDiv, cardX, cardY) {
@@ -13,7 +13,6 @@ export class Card {
 
         this.cardCanvas = createElemOnElem(gameDiv, "canvas", null, ["card"], GameVars.cardW * GameVars.pixelSize, GameVars.cardH * GameVars.pixelSize);
         this.cardCanvas.style.animation = "cardturn 500ms linear";
-        this.cardCtx = this.cardCanvas.getContext("2d");
 
         this.updateCardPosition(cardX, cardY);
         this.dragElement(this);
@@ -30,29 +29,29 @@ export class Card {
 
         switch (this.cardType) {
             case CardTypes.ATK:
-                drawSprite(this.cardCtx, atkIcon, GameVars.pixelSize);
-                drawSprite(this.cardCtx, shockAtkIcon, GameVars.pixelSize, 10, 19);
+                drawSprite(this.cardCanvas, atkIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanvas, shockAtkIcon, GameVars.pixelSize, 10, 19);
                 this.generateCardText("SHOCK", "ATK", GameVars.cardDmg + " DAMAGE");
                 break;
 
             case CardTypes.MINION:
-                drawSprite(this.cardCtx, minionIcon, GameVars.pixelSize);
-                drawSprite(this.cardCtx, spiritMinionIcon, GameVars.pixelSize, 21, 16);
+                drawSprite(this.cardCanvas, minionIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanvas, spiritMinionIcon, GameVars.pixelSize, 21, 16);
                 this.generateCardText("SPIRIT", "MINION", "+1 SOUL");
                 break;
 
             default:
-                drawSprite(this.cardCtx, defIcon, GameVars.pixelSize);
-                drawSprite(this.cardCtx, hardenDefIcon, GameVars.pixelSize, 20, 20);
+                drawSprite(this.cardCanvas, defIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanvas, hardenDefIcon, GameVars.pixelSize, 20, 20);
                 this.generateCardText("HARDEN", "DEF", GameVars.cardShield + " SHIELD");
                 break;
         }
     }
 
     generateCardText(cardName, cardType, cardDescription) {
-        drawPixelTextInCanvasCtx(convertTextToPixelArt(cardName), this.cardCtx, GameVars.pixelSize, 32, 9);
-        drawPixelTextInCanvasCtx(convertTextToPixelArt(cardType), this.cardCtx, GameVars.pixelSize, 27, 47);
-        drawPixelTextInCanvasCtx(convertTextToPixelArt(cardDescription), this.cardCtx, GameVars.pixelSize, 28, 64);
+        drawPixelTextInCanvas(convertTextToPixelArt(cardName), this.cardCanvas, GameVars.pixelSize, 32, 9);
+        drawPixelTextInCanvas(convertTextToPixelArt(cardType), this.cardCanvas, GameVars.pixelSize, 27, 47);
+        drawPixelTextInCanvas(convertTextToPixelArt(cardDescription), this.cardCanvas, GameVars.pixelSize, 28, 64);
     }
 
     useCard() {

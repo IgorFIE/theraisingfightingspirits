@@ -1,6 +1,6 @@
 import { GameVars } from "../game-variables";
 import { SoundInstance } from "../utilities/sound";
-const { convertTextToPixelArt, drawPixelTextInCanvasCtx } = require("../utilities/text");
+const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 const { generateLargeBox } = require("../utilities/box-generator");
 const { createElemOnElem } = require("../utilities/draw-utilities");
 
@@ -15,11 +15,10 @@ export class EventBtn {
             btnContainer.innerHTML = "";
             GameVars.isEventFinished = true;
         });
-        let eventBtnCtx = eventBtnCanvas.getContext("2d");
         eventBtnCanvas.style.translate = ((GameVars.gameW / 2) - (x * (eventBtnCanvas.width + (10 * GameVars.pixelSize)))) + "px " +
             ((GameVars.gameH / 2) - (y * (eventBtnCanvas.height + (10 * GameVars.pixelSize)))) + "px";
         generateLargeBox(eventBtnCanvas, 0, 0, 139, 39, GameVars.pixelSize, "black", "rgba(150,150,150,0.8)");
-        drawPixelTextInCanvasCtx(this.retrieveBtnText(), eventBtnCtx, GameVars.pixelSize, 70, 20, "black", 1);
+        drawPixelTextInCanvas(this.retrieveBtnText(), eventBtnCanvas, GameVars.pixelSize, 70, 20, "black", 1);
     }
 
     retrieveBtnText() {

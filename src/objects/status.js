@@ -3,7 +3,7 @@ import { SoundInstance } from "../utilities/sound";
 const { defIcon } = require("../objects/icons");
 const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
 const { generateSmallBox } = require("../utilities/box-generator");
-const { convertTextToPixelArt, drawPixelTextInCanvasCtx } = require("../utilities/text");
+const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 
 export class Status {
     constructor(parentdiv, w, lifeValue, shieldValue) {
@@ -51,13 +51,13 @@ export class Status {
         generateSmallBox(this.statusCanvas, 17, 4, this.originalWidth - 1, 9, GameVars.pixelSize, "black", "white");
         this.drawLifeBar();
         const lifeText = convertTextToPixelArt(this.lifeValue + "/" + this.maxLifeValue);
-        drawPixelTextInCanvasCtx(lifeText, this.statusCtx, GameVars.pixelSize, 17 + (this.originalWidth / 2), 9);
+        drawPixelTextInCanvas(lifeText, this.statusCanvas, GameVars.pixelSize, 17 + (this.originalWidth / 2), 9);
     }
 
     drawShield() {
         if (this.shieldValue > 0) {
-            drawSprite(this.statusCtx, defIcon, GameVars.pixelSize);
-            drawPixelTextInCanvasCtx(convertTextToPixelArt(this.shieldValue), this.statusCtx, GameVars.pixelSize, 9, 9, "white");
+            drawSprite(this.statusCanvas, defIcon, GameVars.pixelSize);
+            drawPixelTextInCanvas(convertTextToPixelArt(this.shieldValue), this.statusCanvas, GameVars.pixelSize, 9, 9, "white");
         }
     }
 

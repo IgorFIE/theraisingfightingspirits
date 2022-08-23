@@ -5,7 +5,7 @@ import { Status } from "./status";
 const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, scytheIcon, buffIcon } = require("../objects/icons");
 const { generateSmallBox } = require("../utilities/box-generator");
-const { convertTextToPixelArt, drawPixelTextInCanvasCtx } = require("../utilities/text");
+const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 
 export class Reaper {
     constructor(gameDiv) {
@@ -117,9 +117,9 @@ export class Reaper {
     }
 
     drawAction(actionIcon, actionValue) {
-        drawSprite(this.reaperActionCtx, actionIcon, GameVars.pixelSize, 4);
+        drawSprite(this.reaperActionCanvas, actionIcon, GameVars.pixelSize, 4);
         generateSmallBox(this.reaperActionCanvas, 0, actionIcon.length - 6, 9, 9, GameVars.pixelSize, "black", "white");
-        drawPixelTextInCanvasCtx(convertTextToPixelArt(actionValue), this.reaperActionCtx, GameVars.pixelSize, 5, actionIcon.length - 1, "black");
+        drawPixelTextInCanvas(convertTextToPixelArt(actionValue), this.reaperActionCanvas, GameVars.pixelSize, 5, actionIcon.length - 1, "black");
     }
 
     processReaperAction() {
@@ -175,7 +175,7 @@ export class Reaper {
 
     draw(color = null) {
         this.reaperCtx.clearRect(0, 0, GameVars.reaperW, GameVars.reaperH);
-        drawSprite(this.reaperCanvas.getContext("2d"), grimReaper, GameVars.pixelSize, 0, 0, color);
+        drawSprite(this.reaperCanvas, grimReaper, GameVars.pixelSize, 0, 0, color);
     }
 
     dispose() {
