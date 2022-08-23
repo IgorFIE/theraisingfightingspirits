@@ -1,4 +1,5 @@
 import { GameVars } from "../game-variables";
+import { randomNumb } from "../utilities/general-utilities";
 import { SoundInstance } from "../utilities/sound";
 import { Status } from "./status";
 const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
@@ -77,17 +78,17 @@ export class Reaper {
                 this.reaperAction = ReaperActions.AOE_ATK;
             } else if (normalAtkKillsSouls.length > aoeAtkKills) {
                 this.reaperAction = ReaperActions.ATK;
-                this.reaperLockOnSoul = normalAtkKillsSouls[Math.floor(Math.random() * normalAtkKillsSouls.length)];
+                this.reaperLockOnSoul = normalAtkKillsSouls[randomNumb(normalAtkKillsSouls.length)];
             } else {
-                let randomValue = Math.floor(Math.random() * 100);
+                let randomValue = randomNumb(100);
                 if (randomValue < 40) {
                     this.reaperAction = ReaperActions.AOE_ATK;
                 } else if (randomValue < 80) {
                     this.reaperAction = ReaperActions.ATK;
                     if (normalAtkKillsSouls.length > 0) {
-                        this.reaperLockOnSoul = normalAtkKillsSouls[Math.floor(Math.random() * normalAtkKillsSouls.length)];
+                        this.reaperLockOnSoul = normalAtkKillsSouls[randomNumb(normalAtkKillsSouls.length)];
                     } else {
-                        this.reaperLockOnSoul = visibleSouls[Math.floor(Math.random() * visibleSouls.length)];
+                        this.reaperLockOnSoul = visibleSouls[randomNumb(visibleSouls.length)];
                     }
                 } else {
                     this.reaperAction = ReaperActions.DEF;
@@ -134,7 +135,7 @@ export class Reaper {
                     } else {
                         let soulsAlive = [];
                         GameVars.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStatus.lifeValue > 0) soulsAlive.push(soul); }));
-                        soulsAlive[Math.floor(Math.random() * soulsAlive.length)].takeDamage(this.reaperAtk);
+                        soulsAlive[randomNumb(soulsAlive.length)].takeDamage(this.reaperAtk);
                     }
                 }, 250);
                 break;

@@ -1,4 +1,5 @@
 import { GameVars } from "../game-variables";
+import { randomNumbOnRange } from "../utilities/general-utilities";
 const { createElemOnElem } = require("../utilities/draw-utilities");
 
 export class Background {
@@ -59,13 +60,13 @@ export class Background {
 
     generateRandomTerrain(terrainCoords, spaceMin, spaceMax, heightMin, heightMax, size, fillHeight = 100) {
         if (terrainCoords.x > -spaceMax * 2 && terrainCoords.y < GameVars.gameHgAsPixels) {
-            let newX = terrainCoords.x - this.randomNumberOnRange(spaceMin, spaceMax);
-            let newY = terrainCoords.y + this.randomNumberOnRange(heightMin, heightMax);
+            let newX = terrainCoords.x - randomNumbOnRange(spaceMin, spaceMax);
+            let newY = terrainCoords.y + randomNumbOnRange(heightMin, heightMax);
             let yDiff = Math.abs(newY) - Math.abs(terrainCoords.y);
             let forceBreak = 0;
             while (terrainCoords.y !== newY) {
                 this.bckCtx.fillRect(terrainCoords.x * GameVars.pixelSize, terrainCoords.y * GameVars.pixelSize, size * GameVars.pixelSize, fillHeight * GameVars.pixelSize);
-                if (terrainCoords.x !== newX) terrainCoords.x -= this.randomNumberOnRange(1, spaceMin);
+                if (terrainCoords.x !== newX) terrainCoords.x -= randomNumbOnRange(1, spaceMin);
                 if (terrainCoords.y !== newY) yDiff > 0 ? terrainCoords.y++ : terrainCoords.y--;
                 forceBreak++;
                 if (forceBreak > 500) break;
@@ -77,7 +78,7 @@ export class Background {
     generateRandomTrees(treeX, spaceMin, spaceMax, treeSize) {
         if (treeX < GameVars.gameWdAsPixels + treeSize) {
             this.generateTree(treeX, GameVars.gameHgAsPixels / 2, -1, 1, -16, 0, 120, treeSize);
-            treeX += this.randomNumberOnRange(spaceMin, spaceMax);
+            treeX += randomNumbOnRange(spaceMin, spaceMax);
         }
         return treeX;
     }
@@ -93,8 +94,8 @@ export class Background {
                 treeSize * GameVars.pixelSize,
                 treeSize * GameVars.pixelSize
             );
-            nextX += this.randomNumberOnRange(spaceMin, spaceMax);
-            nextY += this.randomNumberOnRange(heightMin, heightMax);
+            nextX += randomNumbOnRange(spaceMin, spaceMax);
+            nextY += randomNumbOnRange(heightMin, heightMax);
             if (treeSize > (originalTreeSize / 3) * 2) treeSize--;
             if (nextY < -treeSize) {
                 break;
@@ -104,8 +105,8 @@ export class Background {
 
     generateInLineGraves(graveX, y, spaceMin, spaceMax, heightMin, heightMax) {
         if (graveX < GameVars.gameWdAsPixels + spaceMax) {
-            this.generateGrave(graveX, y + this.randomNumberOnRange(heightMin, heightMax));
-            graveX += this.randomNumberOnRange(spaceMin, spaceMax);
+            this.generateGrave(graveX, y + randomNumbOnRange(heightMin, heightMax));
+            graveX += randomNumbOnRange(spaceMin, spaceMax);
         }
         return graveX;
     }
@@ -119,9 +120,5 @@ export class Background {
         this.bckCtx.fillRect((x + 3) * GameVars.pixelSize, (y - 7) * GameVars.pixelSize, 24 * GameVars.pixelSize, 2 * GameVars.pixelSize);
         this.bckCtx.fillRect((x + 2) * GameVars.pixelSize, (y - 5) * GameVars.pixelSize, 26 * GameVars.pixelSize, 100 * GameVars.pixelSize);
         this.bckCtx.fillRect((x + 1) * GameVars.pixelSize, (y + 1) * GameVars.pixelSize, 28 * GameVars.pixelSize, 30 * GameVars.pixelSize);
-    }
-
-    randomNumberOnRange(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }

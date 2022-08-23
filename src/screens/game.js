@@ -1,6 +1,7 @@
 import { GameVars } from "../game-variables";
 import { CardEvent } from "../objects/cardEvent";
 import { UI } from "../objects/ui";
+import { randomNumb } from "../utilities/general-utilities";
 const { Reaper } = require("../objects/reaper");
 const { Soul } = require("../objects/soul");
 const { Background } = require("../objects/background");
@@ -145,11 +146,11 @@ export class Game {
         }
 
         if (GameVars.soulInUse === null && GameVars.soulsInGame > 0) {
-            let y = Math.floor(Math.random() * GameVars.souls.length);
-            let x = Math.floor(Math.random() * GameVars.souls[0].length);
+            let y = randomNumb(GameVars.souls.length);
+            let x = randomNumb(GameVars.souls[0].length);
             while (GameVars.souls[y][x] === null) {
-                y = Math.floor(Math.random() * GameVars.souls.length);
-                x = Math.floor(Math.random() * GameVars.souls[0].length);
+                y = randomNumb(GameVars.souls.length);
+                x = randomNumb(GameVars.souls[0].length);
             }
             GameVars.soulInUse = GameVars.souls[y][x];
             GameVars.soulInUse.selectSoul();

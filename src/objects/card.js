@@ -1,4 +1,5 @@
 import { GameVars } from "../game-variables";
+import { randomNumb } from "../utilities/general-utilities";
 const { Soul } = require("../objects/soul");
 const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, minionIcon } = require("../objects/icons");
@@ -17,7 +18,7 @@ export class Card {
         this.updateCardPosition(cardX, cardY);
         this.dragElement(this);
 
-        this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
+        this.cardType = randomNumb(Object.keys(CardTypes).length);
         this.drawCard();
     }
 
@@ -81,11 +82,11 @@ export class Card {
 
     generateNewMinion() {
         if (GameVars.soulsInGame != GameVars.souls.length * GameVars.souls[0].length) {
-            let y = Math.floor(Math.random() * GameVars.souls.length);
-            let x = Math.floor(Math.random() * GameVars.souls[0].length);
+            let y = randomNumb(GameVars.souls.length);
+            let x = randomNumb(GameVars.souls[0].length);
             while (GameVars.souls[y][x] !== null) {
-                y = Math.floor(Math.random() * GameVars.souls.length);
-                x = Math.floor(Math.random() * GameVars.souls[0].length);
+                y = randomNumb(GameVars.souls.length);
+                x = randomNumb(GameVars.souls[0].length);
             }
             GameVars.souls[y][x] = new Soul(GameVars.soulsConts[y][x], x, y);
             GameVars.soulsInGame++;

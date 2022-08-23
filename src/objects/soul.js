@@ -1,4 +1,5 @@
 import { GameVars } from "../game-variables";
+import { randomNumb } from "../utilities/general-utilities";
 import { SoundInstance } from "../utilities/sound";
 import { Status } from "./status";
 const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
@@ -8,7 +9,7 @@ export class Soul {
         SoundInstance.spawnSound();
         this.arrayPosX = arrayPosX;
         this.arrayPosY = arrayPosY;
-        this.isMale = Math.floor(Math.random() * 2) === 0;
+        this.isMale = randomNumb(2) === 0;
         this.spriteInUse = (this.isMale ? maleSoul : femaleSoul);
         this.isDeadAndAnimationEnded = false;
 
