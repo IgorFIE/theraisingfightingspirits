@@ -1,4 +1,4 @@
-import { GameVariables } from "../game-variables";
+import { GameVars } from "../game-variables";
 import { CardEvent } from "../objects/cardEvent";
 import { UI } from "../objects/ui";
 const { Reaper } = require("../objects/reaper");
@@ -13,19 +13,19 @@ export class Game {
         this.background = new Background(gameDiv);
 
         this.generateSoulsContainers();
-        GameVariables.souls[1][1] = new Soul(GameVariables.soulsContainers[1][1], 1, 1);
-        GameVariables.souls[1][1].selectSoul();
-        GameVariables.soulsInGame++;
+        GameVars.souls[1][1] = new Soul(GameVars.soulsConts[1][1], 1, 1);
+        GameVars.souls[1][1].selectSoul();
+        GameVars.soulsInGame++;
 
-        GameVariables.reaper = new Reaper(gameDiv);
-        this.background.generate(GameVariables.reaper);
+        GameVars.reaper = new Reaper(gameDiv);
+        this.background.generate(GameVars.reaper);
 
         this.ui = new UI(gameDiv);
         this.ui.startPlayerTurn();
 
         this.cardEvent = new CardEvent(gameDiv);
 
-        GameVariables.isGameOver = false;
+        GameVars.isGameOver = false;
     }
 
     generateSoulsContainers() {
@@ -34,8 +34,8 @@ export class Game {
 
         const containerW = fakeSoulContainer.clientWidth;
         const containerH = fakeSoulContainer.clientHeight;
-        const containerX = (GameVariables.gameWidth / 4) - ((containerW / 2) * 3);
-        const containerY = (GameVariables.gameHeight / 2) - (containerH * 2);
+        const containerX = (GameVars.gameW / 4) - ((containerW / 2) * 3);
+        const containerY = (GameVars.gameH / 2) - (containerH * 2);
 
         fakeSoul.dispose();
         fakeSoulContainer.parentElement.removeChild(fakeSoulContainer);
@@ -51,29 +51,29 @@ export class Game {
                 newSoulContainerArray.push(soulContainer);
                 newSoulArray.push(null);
             }
-            GameVariables.soulsContainers.push(newSoulContainerArray);
-            GameVariables.souls.push(newSoulArray);
+            GameVars.soulsConts.push(newSoulContainerArray);
+            GameVars.souls.push(newSoulArray);
         }
     }
 
     update() {
         this.cleanDeadSouls();
-        if (!GameVariables.isPlayerTurn) {
-            if (!GameVariables.isEventRunning) {
-                GameVariables.reaper.reaperTurn();
-                if (GameVariables.soulNextEventTurn === GameVariables.turnCounter) {
-                    GameVariables.soulNextEventTurn = GameVariables.soulNextEventTurn * 2;
-                    GameVariables.isEventRunning = true;
+        if (!GameVars.isPlayerTurn) {
+            if (!GameVars.isEventRunning) {
+                GameVars.reaper.reaperTurn();
+                if (GameVars.soulNextEventTurn === GameVars.turnCount) {
+                    GameVars.soulNextEventTurn = GameVars.soulNextEventTurn * 2;
+                    GameVars.isEventRunning = true;
                     setTimeout(() => this.cardEvent.startEvent(), 1500);
                 } else {
-                    GameVariables.isPlayerTurn = true;
+                    GameVars.isPlayerTurn = true;
                     setTimeout(() => this.ui.startPlayerTurn(), 750);
                 }
             }
 
-            if (GameVariables.isEventRunning && GameVariables.isEventFinished) {
-                GameVariables.isEventRunning = false;
-                GameVariables.isEventFinished = false;
+            if (GameVars.isEventRunning && GameVars.isEventFinished) {
+                GameVars.isEventRunning = false;
+                GameVars.isEventFinished = false;
                 this.ui.startPlayerTurn();
             }
         }
@@ -83,16 +83,16 @@ export class Game {
     }
 
     retrieveNextSoul() {
-        if (GameVariables.soulsInGame > 1) {
-            let soul = GameVariables.soulInUse;
+        if (GameVars.soulsInGame > 1) {
+            let soul = GameVars.soulInUse;
             let soulExists = false;
-            for (let y = soul.arrayPosY; y < GameVariables.souls.length; y++) {
-                for (let x = (y == soul.arrayPosY ? soul.arrayPosX : 0); x < GameVariables.souls[0].length; x++) {
+            for (let y = soul.arrayPosY; y < GameVars.souls.length; y++) {
+                for (let x = (y == soul.arrayPosY ? soul.arrayPosX : 0); x < GameVars.souls[0].length; x++) {
                     if (y === soul.arrayPosY && x === soul.arrayPosX) {
                         continue;
                     }
-                    if (GameVariables.souls[y][x] !== null) {
-                        GameVariables.nextSoul = GameVariables.souls[y][x];
+                    if (GameVars.souls[y][x] !== null) {
+                        GameVars.nextSoul = GameVars.souls[y][x];
                         soulExists = true;
                         break;
                     }
@@ -100,22 +100,22 @@ export class Game {
                 if (soulExists) break;
             }
             if (!soulExists) {
-                GameVariables.nextSoul = null;
+                GameVars.nextSoul = null;
             }
         }
     }
 
     retrievePreviousSoul() {
-        if (GameVariables.soulsInGame > 1) {
-            let soul = GameVariables.soulInUse;
+        if (GameVars.soulsInGame > 1) {
+            let soul = GameVars.soulInUse;
             let soulExists = false;
             for (let y = soul.arrayPosY; y >= 0; y--) {
-                for (let x = (y == soul.arrayPosY ? soul.arrayPosX : GameVariables.souls[0].length - 1); x >= 0; x--) {
+                for (let x = (y == soul.arrayPosY ? soul.arrayPosX : GameVars.souls[0].length - 1); x >= 0; x--) {
                     if (y === soul.arrayPosY && x === soul.arrayPosX) {
                         continue;
                     }
-                    if (GameVariables.souls[y][x] !== null) {
-                        GameVariables.previousSoul = GameVariables.souls[y][x];
+                    if (GameVars.souls[y][x] !== null) {
+                        GameVars.previousSoul = GameVars.souls[y][x];
                         soulExists = true;
                         break;
                     }
@@ -123,46 +123,46 @@ export class Game {
                 if (soulExists) break;
             }
             if (!soulExists) {
-                GameVariables.previousSoul = null;
+                GameVars.prevSoul = null;
             }
         }
     }
 
     cleanDeadSouls() {
         let currentSoul = null;
-        for (let y = 0; y < GameVariables.souls.length; y++) {
-            for (let x = 0; x < GameVariables.souls[0].length; x++) {
-                currentSoul = GameVariables.souls[y][x];
+        for (let y = 0; y < GameVars.souls.length; y++) {
+            for (let x = 0; x < GameVars.souls[0].length; x++) {
+                currentSoul = GameVars.souls[y][x];
                 if (currentSoul && currentSoul.isDeadAndAnimationEnded) {
-                    if (currentSoul === GameVariables.soulInUse) {
-                        GameVariables.soulInUse = null;
+                    if (currentSoul === GameVars.soulInUse) {
+                        GameVars.soulInUse = null;
                     }
                     currentSoul.dispose();
-                    GameVariables.souls[y][x] = null;
-                    GameVariables.soulsInGame--;
+                    GameVars.souls[y][x] = null;
+                    GameVars.soulsInGame--;
                 }
             }
         }
 
-        if (GameVariables.soulInUse === null && GameVariables.soulsInGame > 0) {
-            let y = Math.floor(Math.random() * GameVariables.souls.length);
-            let x = Math.floor(Math.random() * GameVariables.souls[0].length);
-            while (GameVariables.souls[y][x] === null) {
-                y = Math.floor(Math.random() * GameVariables.souls.length);
-                x = Math.floor(Math.random() * GameVariables.souls[0].length);
+        if (GameVars.soulInUse === null && GameVars.soulsInGame > 0) {
+            let y = Math.floor(Math.random() * GameVars.souls.length);
+            let x = Math.floor(Math.random() * GameVars.souls[0].length);
+            while (GameVars.souls[y][x] === null) {
+                y = Math.floor(Math.random() * GameVars.souls.length);
+                x = Math.floor(Math.random() * GameVars.souls[0].length);
             }
-            GameVariables.soulInUse = GameVariables.souls[y][x];
-            GameVariables.soulInUse.selectSoul();
+            GameVars.soulInUse = GameVars.souls[y][x];
+            GameVars.soulInUse.selectSoul();
         }
 
-        if (GameVariables.soulsInGame <= 0) {
-            GameVariables.isGameOver = true;
+        if (GameVars.soulsInGame <= 0) {
+            GameVars.isGameOver = true;
         }
     }
 
     draw() {
         this.ui.draw();
-        GameVariables.cards.forEach(card => card.draw());
+        GameVars.cards.forEach(card => card.draw());
     }
 
     dispose() {

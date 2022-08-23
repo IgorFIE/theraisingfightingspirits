@@ -1,47 +1,43 @@
-const gameWidth = window.innerWidth;
-const gameHeight = window.innerHeight;
+const gameW = window.innerWidth;
+const gameH = window.innerHeight;
 
 let pixelSize;
 
-let gameWidthAsPixels;
-let gameHeightAsPixels;
+let gameWdAsPixels;
+let gameHgAsPixels;
 
-const calculatePixelSize = () => {
-    // 270, 1
-    // 720, 3 
-    // (value-x1) * ((y2-y1)/(x2-x1)) + y1
-    // mark2s = (gameHeight-270) * ((3-1)/(720-270)) + 1
-    let heightPixelSize = Math.round((gameHeight - 270) * ((3 - 1) / (1100 - 270)) + 1);
-    let widthPixelSize = Math.round((gameWidth - 480) * ((3 - 1) / (1000 - 480)) + 1);
+const calcPixelSize = () => {
+    let hgPixelSize = Math.round((gameH - 270) * ((3 - 1) / (1100 - 270)) + 1);
+    let wdPixelSize = Math.round((gameW - 480) * ((3 - 1) / (1000 - 480)) + 1);
 
-    GameVariables.pixelSize = heightPixelSize < widthPixelSize ? heightPixelSize : widthPixelSize;
-    GameVariables.gameWidthAsPixels = GameVariables.gameWidth / GameVariables.pixelSize;
-    GameVariables.gameHeightAsPixels = GameVariables.gameHeight / GameVariables.pixelSize;
+    GameVars.pixelSize = hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
+    GameVars.gameWdAsPixels = GameVars.gameW / GameVars.pixelSize;
+    GameVars.gameHgAsPixels = GameVars.gameH / GameVars.pixelSize;
 };
 
-const reaperWidth = 200;
-const reaperHeight = 300;
+const reaperW = 200;
+const reaperH = 300;
 
-const soulWidth = 200;
-const soulHeight = 200;
+const soulW = 200;
+const soulH = 200;
 
-const cardWidth = 53;
-const cardHeight = 85;
+const cardW = 53;
+const cardH = 85;
 
-let cardContainerX;
-let cardContainerY;
-let cardContainerW;
-let cardContainerH;
+let cardContX;
+let cardContY;
+let cardContW;
+let cardContH;
 
-const statusBarHeight = 18;
+const statsBarH = 18;
 
 let reaper;
 
-let soulsContainers;
+let soulsConts;
 let souls;
 let soulsInGame;
 
-let previousSoul;
+let prevSoul;
 let soulInUse;
 let nextSoul;
 
@@ -49,10 +45,10 @@ let playerCards;
 
 let maxPlayCards;
 let cardsPlayed;
-let drawCardNumber;
+let drawCardNumb;
 
 let isPlayerTurn;
-let turnCounter;
+let turnCount;
 let reaperNextEventTurn;
 let soulNextEventTurn;
 
@@ -68,76 +64,76 @@ let isGameOver;
 let isEventRunning;
 let isEventFinished;
 
-const resetGameVariables = () => {
-    GameVariables.cardContainerX = 0;
-    GameVariables.cardContainerY = 0;
-    GameVariables.cardContainerW = 0;
-    GameVariables.cardContainerH = cardHeight + 4;
+const resetGameVars = () => {
+    GameVars.cardContX = 0;
+    GameVars.cardContY = 0;
+    GameVars.cardContW = 0;
+    GameVars.cardContH = cardH + 4;
 
-    GameVariables.reaper = null;
+    GameVars.reaper = null;
 
-    GameVariables.soulsContainers = [];
-    GameVariables.souls = [];
-    GameVariables.soulsInGame = 0;
+    GameVars.soulsConts = [];
+    GameVars.souls = [];
+    GameVars.soulsInGame = 0;
 
-    GameVariables.previousSoul = null;
-    GameVariables.soulInUse = null;
-    GameVariables.nextSoul = null;
+    GameVars.prevSoul = null;
+    GameVars.soulInUse = null;
+    GameVars.nextSoul = null;
 
-    GameVariables.playerCards = [];
+    GameVars.playerCards = [];
 
-    GameVariables.maxPlayCards = 2;
-    GameVariables.cardsPlayed = 0;
-    GameVariables.drawCardNumber = 5;
+    GameVars.maxPlayCards = 2;
+    GameVars.cardsPlayed = 0;
+    GameVars.drawCardNumb = 5;
 
-    GameVariables.isPlayerTurn = true;
-    GameVariables.turnCounter = 0;
-    GameVariables.reaperNextEventTurn = 6;
-    GameVariables.soulNextEventTurn = 3;
+    GameVars.isPlayerTurn = true;
+    GameVars.turnCount = 0;
+    GameVars.reaperNextEventTurn = 6;
+    GameVars.soulNextEventTurn = 3;
 
-    GameVariables.soulLife = 10;
-    GameVariables.soulLifeBuff = 5;
+    GameVars.soulLife = 10;
+    GameVars.soulLifeBuff = 5;
 
-    GameVariables.cardDmg = 2;
-    GameVariables.cardDmgBuff = 4;
-    GameVariables.cardShield = 2;
-    GameVariables.cardShieldBuff = 4;
+    GameVars.cardDmg = 2;
+    GameVars.cardDmgBuff = 4;
+    GameVars.cardShield = 2;
+    GameVars.cardShieldBuff = 4;
 
-    GameVariables.isGameOver = false;
-    GameVariables.isEventRunning = false;
-    GameVariables.isEventFinished = false;
+    GameVars.isGameOver = false;
+    GameVars.isEventRunning = false;
+    GameVars.isEventFinished = false;
 }
 
-export const GameVariables = {
-    gameWidth,
-    gameHeight,
+export const GameVars = {
+    gameW,
+    gameH,
 
     pixelSize,
-    gameWidthAsPixels,
-    gameHeightAsPixels,
-    calculatePixelSize,
+    gameWdAsPixels,
+    gameHgAsPixels,
+    calcPixelSize,
 
-    reaperWidth,
-    reaperHeight,
+    reaperW,
+    reaperH,
 
-    soulWidth,
-    soulHeight,
+    soulW,
+    soulH,
 
-    cardWidth,
-    cardHeight,
+    cardW,
+    cardH,
 
-    cardContainerX,
-    cardContainerY,
-    cardContainerW,
-    cardContainerH,
+    cardContX,
+    cardContY,
+    cardContW,
+    cardContH,
 
     reaper,
 
-    soulsContainers,
+    soulsConts,
     souls,
     soulsInGame,
 
-    previousSoul,
+    prevSoul,
     soulInUse,
     nextSoul,
 
@@ -145,12 +141,12 @@ export const GameVariables = {
 
     maxPlayCards,
     cardsPlayed,
-    drawCardNumber,
+    drawCardNumb,
 
-    statusBarHeight,
+    statsBarH,
 
     isPlayerTurn,
-    turnCounter,
+    turnCount,
     reaperNextEventTurn,
     soulNextEventTurn,
 
@@ -166,5 +162,5 @@ export const GameVariables = {
     isEventRunning,
     isEventFinished,
 
-    resetGameVariables
+    resetGameVars
 }

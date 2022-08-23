@@ -1,10 +1,10 @@
-import { GameVariables } from "../game-variables";
+import { GameVars } from "../game-variables";
 import { SoundInstance } from "../utilities/sound";
 import { Status } from "./status";
 const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, scytheIcon, buffIcon } = require("../objects/icons");
 const { generateSmallBox } = require("../utilities/box-generator");
-const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
+const { convertTextToPixelArt, drawPixelTextInCanvasCtx } = require("../utilities/text");
 
 export class Reaper {
     constructor(gameDiv) {
@@ -19,10 +19,10 @@ export class Reaper {
 
         this.reaperContainer = createElemOnElem(gameDiv, "div", null, ["reaper-container"]);
 
-        this.reaperActionCanvas = createElemOnElem(this.reaperContainer, "canvas", "reaper-action", null, (scytheIcon[0].length + 4) * GameVariables.pixelSize, (scytheIcon.length + 4) * GameVariables.pixelSize);
+        this.reaperActionCanvas = createElemOnElem(this.reaperContainer, "canvas", "reaper-action", null, (scytheIcon[0].length + 4) * GameVars.pixelSize, (scytheIcon.length + 4) * GameVars.pixelSize);
         this.reaperActionCtx = this.reaperActionCanvas.getContext("2d");
 
-        this.reaperCanvas = createElemOnElem(this.reaperContainer, "canvas", "reaper", null, grimReaper[0].length * GameVariables.pixelSize, grimReaper.length * GameVariables.pixelSize);
+        this.reaperCanvas = createElemOnElem(this.reaperContainer, "canvas", "reaper", null, grimReaper[0].length * GameVars.pixelSize, grimReaper.length * GameVars.pixelSize);
         this.reaperCanvas.style.animation = "addsoul 500ms ease-in-out";
         this.reaperCanvas.addEventListener("animationend", () => {
             this.isDeadAndAnimationEnded = this.reaperStatus.lifeValue <= 0;
@@ -43,8 +43,8 @@ export class Reaper {
     }
 
     translateReaper() {
-        let reaperX = ((GameVariables.gameWidth / 4) * 3) - (this.reaperContainer.clientWidth / 2);
-        let reaperY = (GameVariables.gameHeight / 2) - ((this.reaperContainer.clientHeight / 4) * 3);
+        let reaperX = ((GameVars.gameW / 4) * 3) - (this.reaperContainer.clientWidth / 2);
+        let reaperY = (GameVars.gameH / 2) - ((this.reaperContainer.clientHeight / 4) * 3);
         this.reaperContainer.style.transform = "translate(" + reaperX + "px," + reaperY + "px)";
     }
 
@@ -56,14 +56,14 @@ export class Reaper {
     }
 
     calculateReaperNextAction() {
-        if (GameVariables.turnCounter === GameVariables.reaperNextEventTurn) {
-            GameVariables.reaperNextEventTurn = GameVariables.reaperNextEventTurn * 2;
+        if (GameVars.turnCount === GameVars.reaperNextEventTurn) {
+            GameVars.reaperNextEventTurn = GameVars.reaperNextEventTurn * 2;
             this.reaperAction = ReaperActions.BUFF;
         } else {
             let visibleSouls = [];
             let normalAtkKillsSouls = [];
             let aoeAtkKills = 0;
-            GameVariables.souls.forEach((row) => row.forEach((soul) => {
+            GameVars.souls.forEach((row) => row.forEach((soul) => {
                 if (soul && soul.soulStatus.lifeValue > 0) {
                     visibleSouls.push(soul);
                     let soulTotalLife = soul.soulStatus.lifeValue + soul.soulStatus.shieldValue;
@@ -116,9 +116,9 @@ export class Reaper {
     }
 
     drawAction(actionIcon, actionValue) {
-        drawSprite(this.reaperActionCtx, actionIcon, GameVariables.pixelSize, 4);
-        generateSmallBox(this.reaperActionCanvas, 0, actionIcon.length - 6, 9, 9, GameVariables.pixelSize, "black", "white");
-        drawPixelTextInCanvasContext(convertTextToPixelArt(actionValue), this.reaperActionCtx, GameVariables.pixelSize, 5, actionIcon.length - 1, "black");
+        drawSprite(this.reaperActionCtx, actionIcon, GameVars.pixelSize, 4);
+        generateSmallBox(this.reaperActionCanvas, 0, actionIcon.length - 6, 9, 9, GameVars.pixelSize, "black", "white");
+        drawPixelTextInCanvasCtx(convertTextToPixelArt(actionValue), this.reaperActionCtx, GameVars.pixelSize, 5, actionIcon.length - 1, "black");
     }
 
     processReaperAction() {
@@ -133,14 +133,14 @@ export class Reaper {
                         this.reaperLockOnSoul.takeDamage(this.reaperAtk);
                     } else {
                         let soulsAlive = [];
-                        GameVariables.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStatus.lifeValue > 0) soulsAlive.push(soul); }));
+                        GameVars.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStatus.lifeValue > 0) soulsAlive.push(soul); }));
                         soulsAlive[Math.floor(Math.random() * soulsAlive.length)].takeDamage(this.reaperAtk);
                     }
                 }, 250);
                 break;
             case ReaperActions.AOE_ATK:
                 setTimeout(() => {
-                    GameVariables.souls.forEach((row) => row.forEach((soul) => {
+                    GameVars.souls.forEach((row) => row.forEach((soul) => {
                         if (soul) {
                             soul.takeDamage(this.reaperAoeAtk);
                         }
@@ -173,8 +173,8 @@ export class Reaper {
     }
 
     draw(color = null) {
-        this.reaperCtx.clearRect(0, 0, GameVariables.reaperWidth, GameVariables.reaperHeight);
-        drawSprite(this.reaperCanvas.getContext("2d"), grimReaper, GameVariables.pixelSize, 0, 0, color);
+        this.reaperCtx.clearRect(0, 0, GameVars.reaperW, GameVars.reaperH);
+        drawSprite(this.reaperCanvas.getContext("2d"), grimReaper, GameVars.pixelSize, 0, 0, color);
     }
 
     dispose() {

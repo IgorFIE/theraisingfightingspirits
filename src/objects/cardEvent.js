@@ -1,16 +1,16 @@
-import { GameVariables } from "../game-variables";
+import { GameVars } from "../game-variables";
 import { EventBtn, UpStatsType } from "./EventBtn";
-const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
+const { convertTextToPixelArt, drawPixelTextInCanvasCtx } = require("../utilities/text");
 const { createElemOnElem } = require("../utilities/draw-utilities");
 
 export class CardEvent {
     constructor(gameDiv) {
         this.cardEventDiv = createElemOnElem(gameDiv, "div", null, ["hidden"]);
-        this.cardEventCanvas = createElemOnElem(this.cardEventDiv, "canvas", null, ["on-top"], GameVariables.gameWidth, GameVariables.gameHeight, "rgba(150,150,150,0.8)");
+        this.cardEventCanvas = createElemOnElem(this.cardEventDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,150,0.8)");
         this.selectionContainerDiv = createElemOnElem(this.cardEventDiv, "div");
 
-        drawPixelTextInCanvasContext(convertTextToPixelArt("event"), this.cardEventCanvas.getContext("2d"), GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, GameVariables.gameHeightAsPixels / 14, "black", 6);
-        drawPixelTextInCanvasContext(convertTextToPixelArt("select a power up"), this.cardEventCanvas.getContext("2d"), GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, GameVariables.gameHeightAsPixels / 4, "black", 2);
+        drawPixelTextInCanvasCtx(convertTextToPixelArt("event"), this.cardEventCanvas.getContext("2d"), GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 14, "black", 6);
+        drawPixelTextInCanvasCtx(convertTextToPixelArt("select a power up"), this.cardEventCanvas.getContext("2d"), GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 4, "black", 2);
     }
 
     startEvent() {

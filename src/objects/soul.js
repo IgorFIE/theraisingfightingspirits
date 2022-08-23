@@ -1,4 +1,4 @@
-import { GameVariables } from "../game-variables";
+import { GameVars } from "../game-variables";
 import { SoundInstance } from "../utilities/sound";
 import { Status } from "./status";
 const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
@@ -12,10 +12,10 @@ export class Soul {
         this.spriteInUse = (this.isMale ? maleSoul : femaleSoul);
         this.isDeadAndAnimationEnded = false;
 
-        this.soulSelectedArrowCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul-selection-arrow", "hidden"], selectedArrow[0].length * GameVariables.pixelSize, selectedArrow.length * GameVariables.pixelSize);
-        drawSprite(this.soulSelectedArrowCanvas.getContext("2d"), selectedArrow, GameVariables.pixelSize);
+        this.soulSelectedArrowCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul-selection-arrow", "hidden"], selectedArrow[0].length * GameVars.pixelSize, selectedArrow.length * GameVars.pixelSize);
+        drawSprite(this.soulSelectedArrowCanvas.getContext("2d"), selectedArrow, GameVars.pixelSize);
 
-        this.soulCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul"], this.spriteInUse[0].length * GameVariables.pixelSize, this.spriteInUse.length * GameVariables.pixelSize, null, (e) => {
+        this.soulCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul"], this.spriteInUse[0].length * GameVars.pixelSize, this.spriteInUse.length * GameVars.pixelSize, null, (e) => {
             this.selectSoul()
             SoundInstance.clickSound();
         });
@@ -26,16 +26,16 @@ export class Soul {
             this.draw();
         });
         this.soulCtx = this.soulCanvas.getContext("2d");
-        this.soulStatus = new Status(soulContainer, 33, GameVariables.soulLife, 0);
+        this.soulStatus = new Status(soulContainer, 33, GameVars.soulLife, 0);
 
         this.draw();
     }
 
     selectSoul() {
-        if (GameVariables.soulInUse) {
-            GameVariables.soulInUse.deselectSoul();
+        if (GameVars.soulInUse) {
+            GameVars.soulInUse.deselectSoul();
         }
-        GameVariables.soulInUse = GameVariables.souls[this.arrayPosY][this.arrayPosX];
+        GameVars.soulInUse = GameVars.souls[this.arrayPosY][this.arrayPosX];
         this.soulSelectedArrowCanvas.classList.remove("hidden");
     }
 
@@ -55,8 +55,8 @@ export class Soul {
     }
 
     draw(color = null) {
-        this.soulCtx.clearRect(0, 0, GameVariables.soulWidth, GameVariables.soulHeight);
-        drawSprite(this.soulCtx, this.spriteInUse, GameVariables.pixelSize, 0, 0, color);
+        this.soulCtx.clearRect(0, 0, GameVars.soulW, GameVars.soulH);
+        drawSprite(this.soulCtx, this.spriteInUse, GameVars.pixelSize, 0, 0, color);
     }
 
     dispose() {
