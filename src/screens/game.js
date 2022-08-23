@@ -1,10 +1,10 @@
 import { GameVariables } from "../game-variables";
 import { CardEvent } from "../objects/cardEvent";
 import { UI } from "../objects/ui";
-import { SoundInstance } from "../utilities/sound";
 const { Reaper } = require("../objects/reaper");
 const { Soul } = require("../objects/soul");
 const { Background } = require("../objects/background");
+const { createElemOnElem } = require("../utilities/draw-utilities");
 
 export class Game {
     constructor(gameDiv) {
@@ -31,10 +31,8 @@ export class Game {
     }
 
     generateSoulsContainers() {
-        let fakeSoulContainer = document.createElement("div");
-        fakeSoulContainer.classList.add("soul-container");
+        let fakeSoulContainer = createElemOnElem(this.gameDiv, "div", null, ["soul-container"]);
         let fakeSoul = new Soul(fakeSoulContainer, 0, 0);
-        this.gameDiv.appendChild(fakeSoulContainer);
 
         const containerW = fakeSoulContainer.clientWidth;
         const containerH = fakeSoulContainer.clientHeight;
@@ -48,12 +46,10 @@ export class Game {
             let newSoulContainerArray = [];
             let newSoulArray = [];
             for (let x = 0; x < 3; x++) {
-                let soulContainer = document.createElement("div");
-                soulContainer.classList.add("soul-container");
+                let soulContainer = createElemOnElem(this.gameDiv, "div", null, ["soul-container"]);
                 soulContainer.style.transform = "translate(" +
                     (containerX + (containerW * x)) + "px," +
                     (containerY + (containerH * y)) + "px)";
-                this.gameDiv.appendChild(soulContainer);
                 newSoulContainerArray.push(soulContainer);
                 newSoulArray.push(null);
             }

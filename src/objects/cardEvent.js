@@ -1,26 +1,16 @@
 import { GameVariables } from "../game-variables";
 import { EventBtn, UpStatsType } from "./EventBtn";
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
+const { createElemOnElem } = require("../utilities/draw-utilities");
 
 export class CardEvent {
     constructor(gameDiv) {
-        this.cardEventDiv = document.createElement("div");
-        this.cardEventDiv.classList.add("hidden");
-        gameDiv.appendChild(this.cardEventDiv);
-
-        this.cardEventCanvas = document.createElement("canvas");
-        this.cardEventCanvas.width = GameVariables.gameWidth;
-        this.cardEventCanvas.height = GameVariables.gameHeight;
-        this.cardEventCanvas.style.backgroundColor = "rgba(150,150,150,0.8)";
-        this.cardEventCanvas.style.zIndex = 999;
-        this.cardEventDiv.appendChild(this.cardEventCanvas);
+        this.cardEventDiv = createElemOnElem(gameDiv, "div", null, ["hidden"]);
+        this.cardEventCanvas = createElemOnElem(this.cardEventDiv, "canvas", null, ["on-top"], GameVariables.gameWidth, GameVariables.gameHeight, "rgba(150,150,150,0.8)");
+        this.selectionContainerDiv = createElemOnElem(this.cardEventDiv, "div");
 
         drawPixelTextInCanvasContext(convertTextToPixelArt("event"), this.cardEventCanvas.getContext("2d"), GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, GameVariables.gameHeightAsPixels / 14, "black", 6);
-
-        drawPixelTextInCanvasContext(convertTextToPixelArt("select a stat power up"), this.cardEventCanvas.getContext("2d"), GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, GameVariables.gameHeightAsPixels / 4, "black", 2);
-
-        this.selectionContainerDiv = document.createElement("div");
-        this.cardEventDiv.appendChild(this.selectionContainerDiv);
+        drawPixelTextInCanvasContext(convertTextToPixelArt("select a power up"), this.cardEventCanvas.getContext("2d"), GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, GameVariables.gameHeightAsPixels / 4, "black", 2);
     }
 
     startEvent() {
@@ -38,8 +28,3 @@ export class CardEvent {
         }
     }
 }
-
-const EventType = {
-    UP_STATS: 0,
-    // NEW_CARD: 1
-};

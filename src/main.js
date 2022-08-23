@@ -2,14 +2,12 @@ const { GameVariables } = require("./game-variables");
 const { Game } = require("./screens/game");
 const { grimReaper } = require("./objects/reaper");
 const { maleSoul, femaleSoul } = require("./objects/soul");
-const { drawSprite } = require("./utilities/draw-utilities");
+const { drawSprite, createElemOnElem } = require("./utilities/draw-utilities");
 const { SoundInstance } = require("./utilities/sound");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("./utilities/text");
 const { generateLargeBox } = require("./utilities/box-generator");
 
 let mainDiv;
-
-let sound;
 
 let mainMenuCanvas;
 let gameTutorialDiv;
@@ -30,17 +28,11 @@ function init() {
     createGameOverMenu();
     createWinScreenMenu();
     createMainMenu();
-
-    // remove me
-    // startGame();
 }
 
 function createMainMenu() {
-    mainMenuCanvas = createElemOnMainDiv("main-menu", "canvas");
-    mainMenuCanvas.width = GameVariables.gameWidth;
-    mainMenuCanvas.height = GameVariables.gameHeight;
+    mainMenuCanvas = createElemOnElem(mainDiv, "canvas", "main-menu", null, GameVariables.gameWidth, GameVariables.gameHeight, "gray", (e) => startGame());
     let mainMenuCtx = mainMenuCanvas.getContext("2d");
-    mainMenuCanvas.style.backgroundColor = "gray";
 
     let scale = GameVariables.pixelSize * 5;
     drawSprite(mainMenuCtx, grimReaper, scale,
@@ -69,24 +61,15 @@ function createMainMenu() {
     drawPixelTextInCanvasContext(convertTextToPixelArt("click/touch"), mainMenuCtx, GameVariables.pixelSize, halfScreenWidthAsPixels, (GameVariables.gameHeightAsPixels / 2) + 10, "#10495E", 2);
     drawPixelTextInCanvasContext(convertTextToPixelArt("to Start Game"), mainMenuCtx, GameVariables.pixelSize, halfScreenWidthAsPixels, (GameVariables.gameHeightAsPixels / 2) + 25, "#10495E", 2);
 
-    drawPixelTextInCanvasContext(convertTextToPixelArt("js13kgames 2022"), mainMenuCtx, GameVariables.pixelSize, halfScreenWidthAsPixels, ((GameVariables.gameHeightAsPixels / 24) * 23) - 15, "#10495E", 2);
-    drawPixelTextInCanvasContext(convertTextToPixelArt("game by igor estevao"), mainMenuCtx, GameVariables.pixelSize, halfScreenWidthAsPixels, (GameVariables.gameHeightAsPixels / 24) * 23, "#10495E", 2);
-
-    mainMenuCanvas.addEventListener('click', (e) => startGame());
+    drawPixelTextInCanvasContext(convertTextToPixelArt("js13kgames 2022 game by igor estevao"), mainMenuCtx, GameVariables.pixelSize, halfScreenWidthAsPixels, (GameVariables.gameHeightAsPixels / 24) * 23, "#10495E", 2);
 }
 
 function createGameTutorialMenu() {
-    gameTutorialDiv = createElemOnMainDiv("game-tutorial", "div");
-    gameTutorialDiv.classList.add("hidden");
+    gameTutorialDiv = createElemOnElem(mainDiv, "div", "game-tutorial", ["hidden"]);
 
-    let gameTutorialCanvas = document.createElement("canvas");
-    gameTutorialCanvas.style.backgroundColor = "rgba(150,150,150,0.8)";
-    gameTutorialCanvas.style.zIndex = 999;
+    let gameTutorialCanvas = createElemOnElem(gameTutorialDiv, "canvas", null, ["on-top"], GameVariables.gameWidth, GameVariables.gameHeight, "rgba(150,150,150,0.8)");
     gameTutorialCanvas.style.transform = "translateZ(999px)";
-    gameTutorialCanvas.width = GameVariables.gameWidth;
-    gameTutorialCanvas.height = GameVariables.gameHeight;
     let gameTutorialCtx = gameTutorialCanvas.getContext("2d");
-    gameTutorialDiv.appendChild(gameTutorialCanvas);
 
     drawPixelTextInCanvasContext(convertTextToPixelArt("Tutorial"), gameTutorialCtx, GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, GameVariables.gameHeightAsPixels / 14, "black", 6);
 
@@ -100,73 +83,52 @@ function createGameTutorialMenu() {
 
     drawPixelTextInCanvasContext(convertTextToPixelArt("drag cards off the hand area to play them"), gameTutorialCtx, GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, GameVariables.gameHeightAsPixels - 100);
 
-    let gameTutorialSkipCanvas = document.createElement("canvas");
-    let gameTutorialSkipCtx = gameTutorialSkipCanvas.getContext("2d");
-    gameTutorialSkipCanvas.width = 140 * GameVariables.pixelSize;
-    gameTutorialSkipCanvas.height = 40 * GameVariables.pixelSize;
-    gameTutorialSkipCanvas.style.zIndex = 999;
+    let gameTutorialSkipCanvas = createElemOnElem(gameTutorialDiv, "canvas", null, ["on-top"], 140 * GameVariables.pixelSize, 40 * GameVariables.pixelSize, null,
+        (e) => {
+            SoundInstance.clickSound();
+            gameTutorialDiv.classList.add("hidden")
+        });
     gameTutorialSkipCanvas.style.transform = "translateZ(999px)";
     gameTutorialSkipCanvas.style.translate = ((GameVariables.gameWidth - gameTutorialSkipCanvas.width) / 2) + "px " + (GameVariables.gameHeight - gameTutorialSkipCanvas.height - (120 * GameVariables.pixelSize)) + "px";
+    let gameTutorialSkipCtx = gameTutorialSkipCanvas.getContext("2d");
+
     generateLargeBox(gameTutorialSkipCanvas, 0, 0, 139, 39, GameVariables.pixelSize, "black", "rgba(150,150,150,0.8)");
     drawPixelTextInCanvasContext(convertTextToPixelArt("skip tutorial"), gameTutorialSkipCtx, GameVariables.pixelSize, 70, 20, "black", 2);
-
-    gameTutorialSkipCanvas.addEventListener('click', (e) => {
-        SoundInstance.clickSound();
-        gameTutorialDiv.classList.add("hidden")
-    });
-    gameTutorialDiv.appendChild(gameTutorialSkipCanvas);
-
 }
 
 function createGameContainer() {
-    gameDiv = createElemOnMainDiv("game", "div");
+    gameDiv = createElemOnElem(mainDiv, "div", "game");
 }
 
 function createGameOverMenu() {
-    gameOverCanvas = createElemOnMainDiv("game-over", "canvas");
-    gameOverCanvas.classList.add("hidden");
-    gameOverCanvas.style.backgroundColor = "darkred";
-    gameOverCanvas.style.opacity = "0.9";
-    gameOverCanvas.style.zIndex = 999;
-    gameOverCanvas.width = GameVariables.gameWidth;
-    gameOverCanvas.height = GameVariables.gameHeight;
+    gameOverCanvas = createElemOnElem(mainDiv, "canvas", "game-over-screen", ["hidden", "on-top"], GameVariables.gameWidth, GameVariables.gameHeight, "darkred",
+        (e) => {
+            SoundInstance.clickSound();
+            gameOverCanvas.classList.add("hidden");
+            mainMenuCanvas.classList.remove("hidden");
+            game.dispose();
+            game = null;
+        });
+    gameOverCanvas.style.transform = "translateZ(999px)";
     let gameOverCtx = gameOverCanvas.getContext("2d");
     drawPixelTextInCanvasContext(convertTextToPixelArt("CROSSED OVER"), gameOverCtx, GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, (GameVariables.gameHeightAsPixels / 2) - 6, "black", 6);
 
-    gameOverCanvas.addEventListener('click', (e) => {
-        SoundInstance.clickSound();
-        gameOverCanvas.classList.add("hidden");
-        mainMenuCanvas.classList.remove("hidden");
-        game.dispose();
-        game = null;
-    });
 }
 
 function createWinScreenMenu() {
-    winScreenCanvas = createElemOnMainDiv("game-over", "canvas");
-    winScreenCanvas.classList.add("hidden");
-    winScreenCanvas.style.backgroundColor = "lightblue";
-    winScreenCanvas.style.opacity = "0.9";
-    winScreenCanvas.style.zIndex = 999;
-    winScreenCanvas.width = GameVariables.gameWidth;
-    winScreenCanvas.height = GameVariables.gameHeight;
+    winScreenCanvas = createElemOnElem(mainDiv, "canvas", "win-screen", ["hidden", "on-top"], GameVariables.gameWidth, GameVariables.gameHeight, "lightblue",
+        (e) => {
+            SoundInstance.clickSound();
+            winScreenCanvas.classList.add("hidden");
+            mainMenuCanvas.classList.remove("hidden");
+            game.dispose();
+            game = null;
+        });
+    winScreenCanvas.style.transform = "translateZ(999px)";
     let winScreenCtx = winScreenCanvas.getContext("2d");
+
     drawPixelTextInCanvasContext(convertTextToPixelArt("win!!!"), winScreenCtx, GameVariables.pixelSize, GameVariables.gameWidthAsPixels / 2, (GameVariables.gameHeightAsPixels / 2) - 6, "black", 6);
 
-    winScreenCanvas.addEventListener('click', (e) => {
-        SoundInstance.clickSound();
-        winScreenCanvas.classList.add("hidden");
-        mainMenuCanvas.classList.remove("hidden");
-        game.dispose();
-        game = null;
-    });
-}
-
-function createElemOnMainDiv(id, elemType) {
-    let elem = document.createElement(elemType);
-    elem.id = id;
-    mainDiv.appendChild(elem);
-    return elem;
 }
 
 function startGame() {
@@ -174,8 +136,7 @@ function startGame() {
     gameTutorialDiv.classList.remove("hidden");
     wasScheduledToShowWinScreen = false;
     game = new Game(gameDiv);
-    sound = SoundInstance;
-    sound.initSound();
+    SoundInstance.initSound();
     SoundInstance.clickSound();
     window.requestAnimationFrame(() => gameLoop());
 }
@@ -191,7 +152,7 @@ function gameLoop() {
             wasScheduledToShowWinScreen = true;
             setTimeout(() => winScreenCanvas.classList.remove("hidden"), 250);
         }
-        sound.playMusic();
+        SoundInstance.playMusic();
         window.requestAnimationFrame(() => gameLoop());
     }
 }

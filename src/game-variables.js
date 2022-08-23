@@ -1,5 +1,3 @@
-import { Game } from "./screens/game";
-
 const gameWidth = window.innerWidth;
 const gameHeight = window.innerHeight;
 

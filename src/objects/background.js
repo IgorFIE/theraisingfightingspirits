@@ -1,14 +1,10 @@
 import { GameVariables } from "../game-variables";
+const { createElemOnElem } = require("../utilities/draw-utilities");
 
 export class Background {
     constructor(gameDiv) {
-        this.bckElem = document.createElement("canvas");
+        this.bckElem = createElemOnElem(gameDiv, "canvas", "gameBackground", null, GameVariables.gameWidth, GameVariables.gameHeight, "#686B7A");
         this.bckCtx = this.bckElem.getContext("2d");
-        this.bckElem.width = GameVariables.gameWidth;
-        this.bckElem.height = GameVariables.gameHeight;
-        this.bckElem.id = "gameBackground";
-        this.bckElem.style.backgroundColor = "#686B7A";
-        gameDiv.appendChild(this.bckElem);
     }
 
     generate(reaper) {

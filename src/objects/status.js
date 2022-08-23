@@ -1,7 +1,7 @@
 import { GameVariables } from "../game-variables";
 import { SoundInstance } from "../utilities/sound";
 const { defIcon } = require("../objects/icons");
-const { drawSprite } = require("../utilities/draw-utilities");
+const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
 const { generateSmallBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
 
@@ -10,18 +10,11 @@ export class Status {
         this.maxLifeValue = lifeValue;
         this.lifeValue = lifeValue;
         this.shieldValue = shieldValue;
-
         this.originalWidth = w;
 
-        this.statusCanvas = document.createElement("canvas");
-        this.statusCanvas.width = (18 + w) * GameVariables.pixelSize;
-        this.statusCanvas.height = GameVariables.statusBarHeight * GameVariables.pixelSize;
-        this.statusCanvas.classList.add("status");
+        this.statusCanvas = createElemOnElem(parentdiv, "canvas", null, ["status"], (18 + w) * GameVariables.pixelSize, GameVariables.statusBarHeight * GameVariables.pixelSize);
         this.statusCanvas.addEventListener("animationend", () => this.statusCanvas.style.animation = "");
-        parentdiv.appendChild(this.statusCanvas);
-
         this.statusCtx = this.statusCanvas.getContext("2d");
-
         this.draw();
     }
 

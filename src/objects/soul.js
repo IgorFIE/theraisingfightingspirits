@@ -1,7 +1,7 @@
 import { GameVariables } from "../game-variables";
 import { SoundInstance } from "../utilities/sound";
 import { Status } from "./status";
-const { drawSprite } = require("../utilities/draw-utilities");
+const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
 
 export class Soul {
     constructor(soulContainer, arrayPosX, arrayPosY) {
@@ -12,35 +12,21 @@ export class Soul {
         this.spriteInUse = (this.isMale ? maleSoul : femaleSoul);
         this.isDeadAndAnimationEnded = false;
 
-        this.soulSelectedArrowCanvas = document.createElement("canvas");
-        this.soulSelectedArrowCanvas.width = selectedArrow[0].length * GameVariables.pixelSize;
-        this.soulSelectedArrowCanvas.height = selectedArrow.length * GameVariables.pixelSize;
-        this.soulSelectedArrowCanvas.classList.add("soul-selection-arrow", "hidden");
+        this.soulSelectedArrowCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul-selection-arrow", "hidden"], selectedArrow[0].length * GameVariables.pixelSize, selectedArrow.length * GameVariables.pixelSize);
         drawSprite(this.soulSelectedArrowCanvas.getContext("2d"), selectedArrow, GameVariables.pixelSize);
-        soulContainer.appendChild(this.soulSelectedArrowCanvas);
 
-        this.soulCanvas = document.createElement("canvas");
-        this.soulCanvas.width = this.spriteInUse[0].length * GameVariables.pixelSize;
-        this.soulCanvas.height = this.spriteInUse.length * GameVariables.pixelSize;
-        this.soulCanvas.classList.add("soul");
-
+        this.soulCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul"], this.spriteInUse[0].length * GameVariables.pixelSize, this.spriteInUse.length * GameVariables.pixelSize, null, (e) => {
+            this.selectSoul()
+            SoundInstance.clickSound();
+        });
         this.soulCanvas.style.animation = "addsoul 500ms ease-in-out";
         this.soulCanvas.addEventListener("animationend", () => {
             this.soulCanvas.style.animation = "soulAnim 6s infinite ease-in-out";
             this.isDeadAndAnimationEnded = this.soulStatus.lifeValue <= 0;
             this.draw();
         });
-
-        soulContainer.appendChild(this.soulCanvas);
-
         this.soulCtx = this.soulCanvas.getContext("2d");
-
         this.soulStatus = new Status(soulContainer, 33, GameVariables.soulLife, 0);
-
-        soulContainer.addEventListener('click', (e) => {
-            this.selectSoul()
-            SoundInstance.clickSound();
-        });
 
         this.draw();
     }

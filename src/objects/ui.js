@@ -3,55 +3,39 @@ import { SoundInstance } from "../utilities/sound";
 const { Card } = require("../objects/card");
 const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
+const { createElemOnElem } = require("../utilities/draw-utilities");
 
 export class UI {
     constructor(gameDiv) {
         this.currentEnergy = 0;
-        this.uiContainer = document.createElement("div");
-        this.uiContainer.id = "ui-container";
-        gameDiv.appendChild(this.uiContainer);
 
-        this.turnCounterCanvas = document.createElement("canvas");
-        this.turnCounterCanvas.width = 300;
-        this.turnCounterCanvas.height = 100;
+        this.uiContainer = createElemOnElem(gameDiv, "div", "ui-container");
+
+        this.turnCounterCanvas = createElemOnElem(this.uiContainer, "canvas", null, null, 300, 100);
         this.turnCounterCanvas.style.transform = "translate(" + ((GameVariables.gameWidth / 2) - (this.turnCounterCanvas.width / 2)) + "px,0px)";
         this.turnCounterCtx = this.turnCounterCanvas.getContext("2d");
-        this.uiContainer.appendChild(this.turnCounterCanvas);
 
-        this.energyCanvas = document.createElement("canvas");
+        this.energyCanvas = createElemOnElem(this.uiContainer, "canvas");
         this.energyCanvasCtx = this.energyCanvas.getContext("2d");
-        this.uiContainer.appendChild(this.energyCanvas);
         this.populateEnergyCanvas();
 
-        this.turnControllersCanvas = document.createElement("canvas");
+        this.turnControllersCanvas = createElemOnElem(this.uiContainer, "canvas");
         this.turnControllersCtx = this.turnControllersCanvas.getContext("2d");
-        this.uiContainer.appendChild(this.turnControllersCanvas);
 
-        this.nextSoulCanvas = document.createElement("canvas");
+        this.nextSoulCanvas = createElemOnElem(this.uiContainer, "canvas", null, null, null, null, null, (e) => this.selectNextSoul());
         this.nextSoulCtx = this.nextSoulCanvas.getContext("2d");
-        this.nextSoulCanvas.addEventListener('click', (e) => this.selectNextSoul());
-        this.uiContainer.appendChild(this.nextSoulCanvas);
 
-        this.previousSoulCanvas = document.createElement("canvas");
+        this.previousSoulCanvas = createElemOnElem(this.uiContainer, "canvas", null, null, null, null, null, (e) => this.selectPreviousSoul());
         this.previousSoulCtx = this.previousSoulCanvas.getContext("2d");
-        this.previousSoulCanvas.addEventListener('click', (e) => this.selectPreviousSoul());
-        this.uiContainer.appendChild(this.previousSoulCanvas);
 
-        this.endTurnCanvas = document.createElement("canvas");
+        this.endTurnCanvas = createElemOnElem(this.uiContainer, "canvas", null, null, null, null, null, (e) => this.endTurn());
         this.endTurnCtx = this.endTurnCanvas.getContext("2d");
-        this.endTurnCanvas.addEventListener('click', (e) => this.endTurn());
-        this.uiContainer.appendChild(this.endTurnCanvas);
 
         this.populateTurnControllersCanvas();
 
-        this.cardContainer = document.createElement("div");
-        this.cardContainer.id = "card-container";
-        gameDiv.appendChild(this.cardContainer);
+        this.cardContainer = createElemOnElem(gameDiv, "div", "card-container");
         GameVariables.cards = [];
 
-        // this.test = document.createElement("canvas");
-        // this.test.id = "test";
-        // this.gameDiv.appendChild(this.test);
         this.calculateCardsArea();
     }
 
@@ -106,13 +90,8 @@ export class UI {
 
     calculateCardsArea() {
         GameVariables.cardContainerW = Math.round((GameVariables.gameWidth / 2) / GameVariables.pixelSize);
-        // this.test.width = GameVariables.cardContainerW * GameVariables.pixelSize;
-        // this.test.height = GameVariables.cardContainerH * GameVariables.pixelSize;
-
         GameVariables.cardContainerX = ((GameVariables.gameWidth / 2) - ((GameVariables.cardContainerW / 2) * GameVariables.pixelSize));
         GameVariables.cardContainerY = (GameVariables.gameHeight - (GameVariables.cardContainerH * GameVariables.pixelSize));
-
-        // this.test.style.transform = "translate(" + GameVariables.cardContainerX + "px, " + GameVariables.cardContainerY + "px)";
     }
 
     selectNextSoul() {

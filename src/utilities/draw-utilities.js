@@ -12,3 +12,15 @@ export const drawSprite = (ctx, sprite, pixelSize, startX = 0, startY = 0, color
         }
     }
 };
+
+export const createElemOnElem = (parentElem, elemType, id, classList, width, height, backgroundColor, clickFn) => {
+    let elem = document.createElement(elemType);
+    if (id) elem.id = id;
+    if (classList) classList.forEach((e) => elem.classList.add(e));
+    if (width) elem.width = width;
+    if (height) elem.height = height;
+    if (backgroundColor) elem.style.backgroundColor = backgroundColor;
+    if (clickFn) elem.addEventListener('click', clickFn);
+    parentElem.appendChild(elem);
+    return elem;
+}

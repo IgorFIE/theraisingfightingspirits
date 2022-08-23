@@ -1,6 +1,6 @@
 import { GameVariables } from "../game-variables";
 const { Soul } = require("../objects/soul");
-const { drawSprite } = require("../utilities/draw-utilities");
+const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, minionIcon } = require("../objects/icons");
 const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
@@ -9,16 +9,13 @@ export class Card {
     constructor(gameDiv, cardX, cardY) {
         this.isUsed = false;
         this.isDispose = false;
-        this.cardCanvas = document.createElement("canvas");
-        this.cardCanvas.width = GameVariables.cardWidth * GameVariables.pixelSize;
-        this.cardCanvas.height = GameVariables.cardHeight * GameVariables.pixelSize;
-        this.cardCanvas.classList.add("card");
+
+        this.cardCanvas = createElemOnElem(gameDiv, "canvas", null, ["card"], GameVariables.cardWidth * GameVariables.pixelSize, GameVariables.cardHeight * GameVariables.pixelSize);
         this.cardCanvas.style.animation = "cardturn 500ms linear";
+        this.cardCtx = this.cardCanvas.getContext("2d");
+
         this.updateCardPosition(cardX, cardY);
         this.dragElement(this);
-        gameDiv.appendChild(this.cardCanvas);
-
-        this.cardCtx = this.cardCanvas.getContext("2d");
 
         this.cardType = Math.floor(Math.random() * Object.keys(CardTypes).length);
         this.drawCard();
@@ -159,7 +156,7 @@ export class Card {
                 startX = e.clientX;
                 startY = e.clientY;
             }
-            card.cardCanvas.classList.add("on-drag");
+            card.cardCanvas.classList.add("on-top");
 
             document.onmouseup = closeDragElement;
             document.onmousemove = elementDrag;
@@ -201,7 +198,7 @@ export class Card {
                 card.cardCanvas.style.top = null;
                 card.cardCanvas.style.left = null;
             }
-            card.cardCanvas.classList.remove("on-drag");
+            card.cardCanvas.classList.remove("on-top");
         }
     }
 }

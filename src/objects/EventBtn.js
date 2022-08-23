@@ -2,43 +2,38 @@ import { GameVariables } from "../game-variables";
 import { SoundInstance } from "../utilities/sound";
 const { convertTextToPixelArt, drawPixelTextInCanvasContext } = require("../utilities/text");
 const { generateLargeBox } = require("../utilities/box-generator");
+const { createElemOnElem } = require("../utilities/draw-utilities");
 
 export class EventBtn {
     constructor(btnContainer, x, y, upstatusType) {
         this.upStatusType = upstatusType;
 
-        let eventBtnCanvas = document.createElement("canvas");
-        let eventBtnCtx = eventBtnCanvas.getContext("2d");
-        eventBtnCanvas.width = 140 * GameVariables.pixelSize;
-        eventBtnCanvas.height = 40 * GameVariables.pixelSize;
-        eventBtnCanvas.style.zIndex = 999;
-        eventBtnCanvas.style.translate = ((GameVariables.gameWidth / 2) - (x * (eventBtnCanvas.width + (10 * GameVariables.pixelSize)))) + "px " +
-            ((GameVariables.gameHeight / 2) - (y * (eventBtnCanvas.height + (10 * GameVariables.pixelSize)))) + "px";
-        generateLargeBox(eventBtnCanvas, 0, 0, 139, 39, GameVariables.pixelSize, "black", "rgba(150,150,150,0.8)");
-        drawPixelTextInCanvasContext(this.retrieveBtnText(), eventBtnCtx, GameVariables.pixelSize, 70, 20, "black", 1);
-
-        eventBtnCanvas.addEventListener('click', () => {
+        let eventBtnCanvas = createElemOnElem(btnContainer, "canvas", null, ["on-top"], 140 * GameVariables.pixelSize, 40 * GameVariables.pixelSize, null, () => {
             SoundInstance.buffSound();
             this.useBtn();
             btnContainer.parentElement.classList.add("hidden");
             btnContainer.innerHTML = "";
             GameVariables.isEventFinished = true;
         });
-        btnContainer.appendChild(eventBtnCanvas);
+        let eventBtnCtx = eventBtnCanvas.getContext("2d");
+        eventBtnCanvas.style.translate = ((GameVariables.gameWidth / 2) - (x * (eventBtnCanvas.width + (10 * GameVariables.pixelSize)))) + "px " +
+            ((GameVariables.gameHeight / 2) - (y * (eventBtnCanvas.height + (10 * GameVariables.pixelSize)))) + "px";
+        generateLargeBox(eventBtnCanvas, 0, 0, 139, 39, GameVariables.pixelSize, "black", "rgba(150,150,150,0.8)");
+        drawPixelTextInCanvasContext(this.retrieveBtnText(), eventBtnCtx, GameVariables.pixelSize, 70, 20, "black", 1);
     }
 
     retrieveBtnText() {
         switch (this.upStatusType) {
             case UpStatsType.CARD_DMG:
-                return convertTextToPixelArt("up cards damage by " + GameVariables.cardDmgBuff);
+                return convertTextToPixelArt("cards damage +" + GameVariables.cardDmgBuff);
             case UpStatsType.ENERGY:
-                return convertTextToPixelArt("up energy by 1");
+                return convertTextToPixelArt("energy +1");
             case UpStatsType.MINIONS_LIFE:
-                return convertTextToPixelArt("up minion life by " + GameVariables.soulLifeBuff);
+                return convertTextToPixelArt("souls life +" + GameVariables.soulLifeBuff);
             case UpStatsType.DRAW_CARD:
-                return convertTextToPixelArt("up draw cards by 1");
+                return convertTextToPixelArt("cards draw +1");
             default:
-                return convertTextToPixelArt("up cards shield by " + GameVariables.cardShieldBuff);
+                return convertTextToPixelArt("cards shield +" + GameVariables.cardShieldBuff);
         }
     }
 

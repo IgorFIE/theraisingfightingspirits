@@ -26,43 +26,43 @@ class Sound {
 
     clickSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 174.6, 0.5, 0, 2); // Bb5
+            this.playSound("square", 174.6, 0.5, 0, 2);
         }
     }
 
     takeDamageSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 32.70, 1, 0, 1); // C1
-            this.playSound("square", 36.71, 0.8, 0.1, 2); // D1
-            this.playSound("square", 16.35, 1, 0.2, 3); // C0
+            this.playSound("square", 32.70, 1, 0, 1);
+            this.playSound("square", 36.71, 0.8, 0.1, 2);
+            this.playSound("square", 16.35, 1, 0.2, 3);
         }
     }
 
     gainShield() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 233.1, 0.2, 0, 1); // Bb3
-            this.playSound("square", 466.2, 0.4, 0.1, 2); // Bb4
+            this.playSound("square", 233.1, 0.2, 0, 1);
+            this.playSound("square", 466.2, 0.4, 0.1, 2);
         }
     }
 
     spawnSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 293.7, 0.4, 0, 3); // D4
+            this.playSound("square", 293.7, 0.4, 0, 3);
         }
     }
 
     deadSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 18.35, 0.3, 0, 1); // D0
-            this.playSound("square", 36.71, 0.5, 0.1, 2); // D1
-            this.playSound("square", 73.42, 0.8, 0.2, 3); // D2
+            this.playSound("square", 18.35, 0.3, 0, 1);
+            this.playSound("square", 36.71, 0.5, 0.1, 2);
+            this.playSound("square", 73.42, 0.8, 0.2, 3);
         }
     }
 
     buffSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 932.3, 0.3, 0, 1); // Bb5
-            this.playSound("square", 1865, 0.5, 0.1, 2); // Bb6
+            this.playSound("square", 932.3, 0.3, 0, 1);
+            this.playSound("square", 1865, 0.5, 0.1, 2);
         }
     }
 
@@ -90,9 +90,9 @@ class Sound {
 
     playGameOverSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 32.70, 0.5, 0, 0.1); // C1
-            this.playSound("square", 36.71, 0.3, 0.1, 0.2); // D1
-            this.playSound("square", 16.35, 0.5, 0.2, 1); // C0
+            this.playSound("square", 32.70, 0.5, 0, 0.1);
+            this.playSound("square", 36.71, 0.3, 0.1, 0.2);
+            this.playSound("square", 16.35, 0.5, 0.2, 1);
         }
     }
 
@@ -110,51 +110,28 @@ class Sound {
     }
 }
 
-const bassB = 61.74;
-const bassFs = 92.50;
-const bassD = 73.42;
-const bassA = 110.0;
-
 const musicbass = [
-    bassB, null, bassFs, null, bassB, null, bassFs, null, bassB, null, bassFs, null, bassB, null, bassFs, null,
-    bassD, null, bassA, null, bassD, null, bassA, null, bassD, null, bassA, null, bassD, null, bassA, null
+    61.74, null, 92.50, null, 61.74, null, 92.50, null, 61.74, null, 92.50, null, 61.74, null, 92.50, null,
+    73.42, null, 110.0, null, 73.42, null, 110.0, null, 73.42, null, 110.0, null, 73.42, null, 110.0, null
 ];
 
-const melodyB = 246.9;
-const melodyBHigh = 493.9;
-const melodyCs = 277.2;
-const melodyD = 293.7;
-const melodyE = 329.6;
-const melodyFs = 370.0;
-const melodyF = 349.2;
-const melodyA = 440.0;
-const melodyC = 261.6;
-
-const highG = 784.0;
-const highA = 880.0;
-const highB = 987.8;
-const highC = 1047;
-const highD = 1175;
-const highDs = 1245;
-const highE = 1319;
-
 const musicMelody = [
-    melodyB, melodyCs, melodyD, melodyE, melodyFs, melodyD, melodyFs, null,
-    melodyF, melodyCs, melodyF, null, melodyE, melodyC, melodyE, null,
-    melodyB, melodyCs, melodyD, melodyE, melodyFs, melodyD, melodyFs, melodyBHigh,
-    melodyA, melodyFs, melodyD, melodyFs, melodyA, null, null, null,
-    melodyB, melodyCs, melodyD, melodyE, melodyFs, melodyD, melodyFs, null,
-    melodyF, melodyCs, melodyF, null, melodyE, melodyC, melodyE, null,
-    melodyB, melodyCs, melodyD, melodyE, melodyFs, melodyD, melodyFs, melodyBHigh,
-    melodyA, melodyFs, melodyD, melodyFs, melodyA, null, null, null,
-    highG, highA, highB, highC, highD, highB, highD, null,
-    highDs, highB, highDs, null, highD, highB, highD, null,
-    highG, highA, highB, highC, highD, highB, highD, null,
-    highE, highB, highE, null, highD, null, null, null,
-    highG, highA, highB, highC, highD, highB, highD, null,
-    highDs, highB, highDs, null, highD, highB, highD, null,
-    highG, highA, highB, highC, highD, highB, highD, null,
-    highE, highB, highE, null, highD, null, null, null,
+    246.9, 277.2, 293.7, 329.6, 370.0, 293.7, 370.0, null,
+    349.2, 277.2, 349.2, null, 329.6, 261.6, 329.6, null,
+    246.9, 277.2, 293.7, 329.6, 370.0, 293.7, 370.0, 493.9,
+    440.0, 370.0, 293.7, 370.0, 440.0, null, null, null,
+    246.9, 277.2, 293.7, 329.6, 370.0, 293.7, 370.0, null,
+    349.2, 277.2, 349.2, null, 329.6, 261.6, 329.6, null,
+    246.9, 277.2, 293.7, 329.6, 370.0, 293.7, 370.0, 493.9,
+    440.0, 370.0, 293.7, 370.0, 440.0, null, null, null,
+    784.0, 880.0, 987.8, 1047, 1175, 987.8, 1175, null,
+    1245, 987.8, 1245, null, 1175, 987.8, 1175, null,
+    784.0, 880.0, 987.8, 1047, 1175, 987.8, 1175, null,
+    1319, 987.8, 1319, null, 1175, null, null, null,
+    784.0, 880.0, 987.8, 1047, 1175, 987.8, 1175, null,
+    1245, 987.8, 1245, null, 1175, 987.8, 1175, null,
+    784.0, 880.0, 987.8, 1047, 1175, 987.8, 1175, null,
+    1319, 987.8, 1319, null, 1175, null, null, null,
 ];
 
 export const SoundInstance = new Sound();

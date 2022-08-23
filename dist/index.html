@@ -15,11 +15,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: monospace;
-            font-size: 1.2em;
-        }
-
-        canvas {
             image-rendering: -moz-crisp-edges;
             image-rendering: -webkit-crisp-edges;
             image-rendering: pixelated;
@@ -35,6 +30,11 @@
             height: 100%;
             width: 100%;
             display: initial;
+        }
+
+        #game-over-screen,
+        #win-screen {
+            opacity: 0.9;
         }
 
         #gameBackground {
@@ -78,7 +78,7 @@
             z-index: 1;
         }
 
-        .on-drag {
+        .on-top {
             z-index: 999;
         }
 
