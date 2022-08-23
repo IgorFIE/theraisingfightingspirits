@@ -70,14 +70,14 @@ class Sound {
         if (this.isSoundOn && this.isSoundInitialized) {
             if (this.currentTime >= (this.loopMaxTime / this.notesPeerLoop)) {
 
-                this.playSound("triangle", musicbass[this.musicBassNote], 1, 0, 2);
+                this.playSound("triangle", mB[this.musicBassNote], 1, 0, 2);
                 this.musicBassNote++;
-                if (this.musicBassNote >= musicbass.length) {
+                if (this.musicBassNote >= mB.length) {
                     this.musicBassNote = 0;
                 }
-                this.playSound("square", musicMelody[this.musicMelodyNote], 0.2, 0, 2);
+                this.playSound("square", mM[this.musicMelodyNote], 0.2, 0, 2);
                 this.musicMelodyNote++;
-                if (this.musicMelodyNote >= musicMelody.length) {
+                if (this.musicMelodyNote >= mM.length) {
                     this.musicMelodyNote = 0;
                 }
 
@@ -110,12 +110,12 @@ class Sound {
     }
 }
 
-const musicbass = [
+const mB = [
     61.74, null, 92.50, null, 61.74, null, 92.50, null, 61.74, null, 92.50, null, 61.74, null, 92.50, null,
     73.42, null, 110.0, null, 73.42, null, 110.0, null, 73.42, null, 110.0, null, 73.42, null, 110.0, null
 ];
 
-const musicMelody = [
+const mM = [
     246.9, 277.2, 293.7, 329.6, 370.0, 293.7, 370.0, null,
     349.2, 277.2, 349.2, null, 329.6, 261.6, 329.6, null,
     246.9, 277.2, 293.7, 329.6, 370.0, 293.7, 370.0, 493.9,

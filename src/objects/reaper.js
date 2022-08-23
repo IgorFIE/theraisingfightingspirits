@@ -193,8 +193,8 @@ const ReaperActions = {
 }
 
 const nu = null;
-const bl = "#000000"
-const wb = "#EDEEF7"
+const bl = "#000000";
+const wb = "#EDEEF7";
 
 export const grimReaper = [
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],

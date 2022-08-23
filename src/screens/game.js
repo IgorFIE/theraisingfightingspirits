@@ -11,8 +11,6 @@ export class Game {
         this.gameDiv = gameDiv;
 
         this.background = new Background(gameDiv);
-        GameVariables.resetGameVariables();
-        GameVariables.calculatePixelSize();
 
         this.generateSoulsContainers();
         GameVariables.souls[1][1] = new Soul(GameVariables.soulsContainers[1][1], 1, 1);

@@ -21,6 +21,7 @@ let game;
 function init() {
     mainDiv = document.getElementById("main");
 
+    GameVariables.resetGameVariables();
     GameVariables.calculatePixelSize();
 
     createGameContainer();
