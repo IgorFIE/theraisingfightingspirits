@@ -1,5 +1,6 @@
 import { GameVars } from "../game-variables";
 import { randomNumb } from "../utilities/general-utilities";
+import { EventBtn } from "./EventBtn";
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 const { createElem } = require("../utilities/draw-utilities");
 

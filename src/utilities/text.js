@@ -5,129 +5,126 @@ export const drawPixelTextInCanvas = (pixelText, canvas, pixelSize, startX, star
     const halfHeightPixelTextSize = (pixelText.length * textPixelSize) / 2;
     const textWidthStartPosition = (startX * pixelSize) - halfWidthPixelTextSize;
     const textHeightStartPosition = (startY * pixelSize) - halfHeightPixelTextSize;
-    for (let y = 0; y < pixelText.length; y++) {
-        for (let x = 0; x < pixelText[y].length; x++) {
-            const drawPixel = pixelText[y][x];
-            if (drawPixel) {
-                ctx.beginPath();
-                ctx.fillStyle = color;
-                ctx.fillRect(
-                    Math.round(textWidthStartPosition + (x * textPixelSize)),
-                    Math.round(textHeightStartPosition + (y * textPixelSize)),
-                    textPixelSize, textPixelSize);
-            }
+    pixelText.forEach((row, y) => row.forEach((val, x) => {
+        if (val) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.fillRect(
+                Math.round(textWidthStartPosition + (x * textPixelSize)),
+                Math.round(textHeightStartPosition + (y * textPixelSize)),
+                textPixelSize, textPixelSize);
         }
-    }
+    }));
 }
 
 export const convertTextToPixelArt = (text) => {
     const textLetters = text.toString().split('');
     let pixelText = [];
-    for (let pixelLetterHeight = 0; pixelLetterHeight < SPACE.length; pixelLetterHeight++) {
+    space.forEach((val, pixelLetterHeight) => {
         let newPixelTextArray = [];
-        for (let letterPos = 0; letterPos < textLetters.length; letterPos++) {
+        textLetters.forEach((val, letterPos) => {
             if (letterPos > 0) {
                 newPixelTextArray.push([false]);
             }
             const currentPixelLetter = retrievePixelLetter(textLetters[letterPos]);
             newPixelTextArray.push(currentPixelLetter[pixelLetterHeight]);
-        }
+        });
         pixelText.push(newPixelTextArray.flat());
-    }
+    });
     return pixelText;
 }
 
 const retrievePixelLetter = (letter) => {
-    switch (letter.toUpperCase()) {
-        case 'A':
-            return A;
-        case 'B':
-            return B;
-        case 'C':
-            return C;
-        case 'D':
-            return D;
-        case 'E':
-            return E;
-        case 'F':
-            return F;
-        case 'G':
-            return G;
-        case 'H':
-            return H;
-        case 'I':
-            return I;
-        case 'J':
-            return J;
-        case 'K':
-            return K;
-        case 'L':
-            return L;
-        case 'M':
-            return M;
-        case 'N':
-            return N;
-        case 'O':
-            return O;
-        case 'P':
-            return P;
-        case 'Q':
-            return Q;
-        case 'R':
-            return R;
-        case 'S':
-            return S;
-        case 'T':
-            return T;
-        case 'U':
-            return U;
-        case 'V':
-            return V;
-        case 'W':
-            return W;
-        case 'X':
-            return X;
-        case 'Y':
-            return Y;
-        case 'Z':
-            return Z;
-
+    switch (letter.toLowerCase()) {
+        case 'a':
+            return a;
+        case 'b':
+            return b;
+        case 'c':
+            return c;
+        case 'd':
+            return d;
+        case 'e':
+            return e;
+        case 'f':
+            return f;
+        case 'g':
+            return g;
+        case 'h':
+            return h;
+        case 'i':
+            return i;
+        case 'j':
+            return j;
+        case 'k':
+            return k;
+        case 'l':
+            return l;
+        case 'm':
+            return m;
+        case 'n':
+            return n;
+        case 'o':
+            return o;
+        case 'p':
+            return p;
+        case 'q':
+            return q;
+        case 'r':
+            return r;
+        case 's':
+            return s;
+        case 't':
+            return t;
+        case 'u':
+            return u;
+        case 'v':
+            return v;
+        case 'w':
+            return w;
+        case 'x':
+            return x;
+        case 'y':
+            return y;
+        case 'z':
+            return z;
+            
         case '?':
-            return INTERROGATION_MARK;
+            return inte;
         case '!':
-            return EXCLAMATION_MARK;
+            return excl;
         case '+':
-            return PLUS_MARK;
+            return plus;
         case '/':
-            return SLASH_MARK;
+            return slash;
 
         case '0':
-            return ZERO;
+            return zer;
         case '1':
-            return ONE;
+            return one;
         case '2':
-            return TWO;
+            return two;
         case '3':
-            return THREE;
+            return thr;
         case '4':
-            return FOUR;
+            return fou;
         case '5':
-            return FIVE;
+            return fiv;
         case '6':
-            return SIX;
+            return six;
         case '7':
-            return SEVEN;
+            return sev;
         case '8':
-            return EIGHT;
+            return eig;
         case '9':
-            return NINE;
+            return nin;
 
         default:
-            return SPACE;
+            return space;
     }
 };
 
-const SPACE = [
+const space = [
     [false],
     [false],
     [false],
@@ -135,7 +132,7 @@ const SPACE = [
     [false]
 ];
 
-const A = [
+const a = [
     [true, true, true],
     [true, false, true],
     [true, true, true],
@@ -143,7 +140,7 @@ const A = [
     [true, false, true]
 ];
 
-const B = [
+const b = [
     [true, true, false],
     [true, false, true],
     [true, true, true],
@@ -151,7 +148,7 @@ const B = [
     [true, true, true]
 ];
 
-const C = [
+const c = [
     [true, true, true],
     [true, false, false],
     [true, false, false],
@@ -159,7 +156,7 @@ const C = [
     [true, true, true]
 ];
 
-const D = [
+const d = [
     [true, true, false],
     [true, false, true],
     [true, false, true],
@@ -167,7 +164,7 @@ const D = [
     [true, true, true]
 ];
 
-const E = [
+const e = [
     [true, true, true],
     [true, false, false],
     [true, true, true],
@@ -175,7 +172,7 @@ const E = [
     [true, true, true]
 ];
 
-const F = [
+const f = [
     [true, true, true],
     [true, false, false],
     [true, true, true],
@@ -183,7 +180,7 @@ const F = [
     [true, false, false]
 ];
 
-const G = [
+const g = [
     [true, true, true],
     [true, false, false],
     [true, false, true],
@@ -191,7 +188,7 @@ const G = [
     [true, true, true]
 ];
 
-const H = [
+const h = [
     [true, false, true],
     [true, false, true],
     [true, true, true],
@@ -199,7 +196,7 @@ const H = [
     [true, false, true]
 ];
 
-const I = [
+const i = [
     [true],
     [true],
     [true],
@@ -207,7 +204,7 @@ const I = [
     [true]
 ];
 
-const J = [
+const j = [
     [true, true, true],
     [false, false, true],
     [true, false, true],
@@ -215,7 +212,7 @@ const J = [
     [true, true, true]
 ];
 
-const K = [
+const k = [
     [true, false, true],
     [true, false, true],
     [true, true, false],
@@ -223,7 +220,7 @@ const K = [
     [true, false, true]
 ];
 
-const L = [
+const l = [
     [true, false, false],
     [true, false, false],
     [true, false, false],
@@ -231,7 +228,7 @@ const L = [
     [true, true, true]
 ];
 
-const M = [
+const m = [
     [true, true, true, true, true],
     [true, false, true, false, true],
     [true, false, true, false, true],
@@ -239,7 +236,7 @@ const M = [
     [true, false, true, false, true]
 ];
 
-const N = [
+const n = [
     [true, true, true],
     [true, false, true],
     [true, false, true],
@@ -247,7 +244,7 @@ const N = [
     [true, false, true]
 ];
 
-const O = [
+const o = [
     [true, true, true],
     [true, false, true],
     [true, false, true],
@@ -255,7 +252,7 @@ const O = [
     [true, true, true]
 ];
 
-const P = [
+const p = [
     [true, true, true],
     [true, false, true],
     [true, true, true],
@@ -263,7 +260,7 @@ const P = [
     [true, false, false]
 ];
 
-const Q = [
+const q = [
     [true, true, true],
     [true, false, true],
     [true, false, true],
@@ -271,7 +268,7 @@ const Q = [
     [false, false, true]
 ];
 
-const R = [
+const r = [
     [true, true, true],
     [true, false, true],
     [true, true, false],
@@ -279,7 +276,7 @@ const R = [
     [true, false, true]
 ];
 
-const S = [
+const s = [
     [true, true, true],
     [true, false, false],
     [true, true, true],
@@ -287,7 +284,7 @@ const S = [
     [true, true, true]
 ];
 
-const T = [
+const t = [
     [true, true, true],
     [false, true, false],
     [false, true, false],
@@ -295,7 +292,7 @@ const T = [
     [false, true, false]
 ];
 
-const U = [
+const u = [
     [true, false, true],
     [true, false, true],
     [true, false, true],
@@ -303,7 +300,7 @@ const U = [
     [true, true, true]
 ];
 
-const V = [
+const v = [
     [true, false, true],
     [true, false, true],
     [true, false, true],
@@ -311,7 +308,7 @@ const V = [
     [false, true, false]
 ];
 
-const W = [
+const w = [
     [true, false, true, false, true],
     [true, false, true, false, true],
     [true, false, true, false, true],
@@ -319,7 +316,7 @@ const W = [
     [true, true, true, true, true]
 ];
 
-const X = [
+const x = [
     [true, false, true],
     [true, true, true],
     [false, true, false],
@@ -327,7 +324,7 @@ const X = [
     [true, false, true]
 ];
 
-const Y = [
+const y = [
     [true, false, true],
     [true, false, true],
     [true, true, true],
@@ -335,7 +332,7 @@ const Y = [
     [false, true, false]
 ];
 
-const Z = [
+const z = [
     [true, true, true],
     [false, false, true],
     [false, true, false],
@@ -343,7 +340,7 @@ const Z = [
     [true, true, true]
 ];
 
-const INTERROGATION_MARK = [
+const inte = [
     [true, true, true],
     [false, true, true],
     [false, true, true],
@@ -351,7 +348,7 @@ const INTERROGATION_MARK = [
     [false, true, false]
 ];
 
-const EXCLAMATION_MARK = [
+const excl = [
     [true, true],
     [true, true],
     [true, false],
@@ -359,7 +356,7 @@ const EXCLAMATION_MARK = [
     [true, false]
 ];
 
-const PLUS_MARK = [
+const plus = [
     [false, false, false],
     [false, true, false],
     [true, true, true],
@@ -367,7 +364,7 @@ const PLUS_MARK = [
     [false, false, false]
 ];
 
-const SLASH_MARK = [
+const slash = [
     [false, true],
     [false, true],
     [true, true],
@@ -375,7 +372,7 @@ const SLASH_MARK = [
     [true, false]
 ];
 
-const ZERO = [
+const zer = [
     [true, true, true],
     [true, false, true],
     [true, false, true],
@@ -383,7 +380,7 @@ const ZERO = [
     [true, true, true]
 ];
 
-const ONE = [
+const one = [
     [false, true, false],
     [true, true, false],
     [false, true, false],
@@ -391,7 +388,7 @@ const ONE = [
     [true, true, true]
 ];
 
-const TWO = [
+const two = [
     [true, true, true],
     [false, false, true],
     [true, true, true],
@@ -399,7 +396,7 @@ const TWO = [
     [true, true, true]
 ];
 
-const THREE = [
+const thr = [
     [true, true, true],
     [false, false, true],
     [true, true, true],
@@ -407,7 +404,7 @@ const THREE = [
     [true, true, true]
 ];
 
-const FOUR = [
+const fou = [
     [false, true, true],
     [true, false, true],
     [true, false, true],
@@ -415,7 +412,7 @@ const FOUR = [
     [false, false, true]
 ];
 
-const FIVE = [
+const fiv = [
     [true, true, true],
     [true, false, false],
     [true, true, true],
@@ -423,7 +420,7 @@ const FIVE = [
     [true, true, true]
 ];
 
-const SIX = [
+const six = [
     [true, true, true],
     [true, false, false],
     [true, true, true],
@@ -431,7 +428,7 @@ const SIX = [
     [true, true, true]
 ];
 
-const SEVEN = [
+const sev = [
     [true, true, true],
     [false, false, true],
     [false, false, true],
@@ -439,7 +436,7 @@ const SEVEN = [
     [false, true, false]
 ];
 
-const EIGHT = [
+const eig = [
     [true, true, true],
     [true, false, true],
     [true, true, true],
@@ -447,7 +444,7 @@ const EIGHT = [
     [true, true, true]
 ];
 
-const NINE = [
+const nin = [
     [true, true, true],
     [true, false, true],
     [true, true, true],

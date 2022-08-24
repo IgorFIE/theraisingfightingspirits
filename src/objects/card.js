@@ -136,8 +136,8 @@ export class Card {
         let clientX = 0, clientY = 0;
         let newX = 0, newY = 0, startX = 0, startY = 0;
         let lastTopValue = 0;
-        card.cardCanvas.onmousedown = dragMouseDown;
-        card.cardCanvas.ontouchstart = dragMouseDown;
+        card.cardCanv.onmousedown = dragMouseDown;
+        card.cardCanv.ontouchstart = dragMouseDown;
 
         function dragMouseDown(e) {
             e = e || window.event;
@@ -149,7 +149,7 @@ export class Card {
                 startX = e.clientX;
                 startY = e.clientY;
             }
-            card.cardCanvas.classList.add("on-top");
+            card.cardCanv.classList.add("on-top");
 
             document.onmouseup = closeDragElement;
             document.onmousemove = elementDrag;
@@ -172,9 +172,9 @@ export class Card {
             newY = startY - clientY;
             startX = clientX;
             startY = clientY;
-            lastTopValue = (card.cardCanvas.offsetTop - newY);
-            card.cardCanvas.style.top = lastTopValue + "px";
-            card.cardCanvas.style.left = (card.cardCanvas.offsetLeft - newX) + "px";
+            lastTopValue = (card.cardCanv.offsetTop - newY);
+            card.cardCanv.style.top = lastTopValue + "px";
+            card.cardCanv.style.left = (card.cardCanv.offsetLeft - newX) + "px";
         }
 
         function closeDragElement(e) {
@@ -185,13 +185,13 @@ export class Card {
             document.ontouchmove = null;
 
             if (GameVars.cardsPlayed < GameVars.maxPlayCards &&
-                card.cardY - Math.abs(lastTopValue) < card.cardY - card.cardCanvas.height) {
+                card.cardY - Math.abs(lastTopValue) < card.cardY - card.cardCanv.height) {
                 card.useCard();
             } else {
-                card.cardCanvas.style.top = null;
-                card.cardCanvas.style.left = null;
+                card.cardCanv.style.top = null;
+                card.cardCanv.style.left = null;
             }
-            card.cardCanvas.classList.remove("on-top");
+            card.cardCanv.classList.remove("on-top");
         }
     }
 }

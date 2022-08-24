@@ -78,50 +78,38 @@ export class Game {
                 this.ui.startPlayerTurn();
             }
         }
-
         this.retrieveNextPrevSoul();
     }
 
     retrieveNextPrevSoul() {
         if (GameVars.soulsInGame > 1) {
-            let soul = GameVars.soulInUse;
-            let prevSoul = null;
-            let nextSoul = null;
-            for (let y = 0; y < GameVars.souls.length; y++) {
-                for (let x = 0; x < GameVars.souls[0].length; x++) {
-                    if (y === soul.y && x === soul.x) {
-                        continue;
+            const soulInUse = GameVars.soulInUse;
+            GameVars.prevSoul = null;
+            GameVars.nextSoul = null;
+            GameVars.souls.forEach(row => row.forEach(soul => {
+                if (soul && soul !== soulInUse) {
+                    if (soul.y < soulInUse.y || (soul.y === soulInUse.y && soul.x < soulInUse.x)) {
+                        GameVars.prevSoul = soul;
                     }
-                    if (GameVars.souls[y][x] !== null) {
-                        if (y < soul.y || (y === soul.y && x < soul.x)) {
-                            prevSoul = GameVars.souls[y][x];
-                        }
-
-                        if (nextSoul === null && (y > soul.y || (y === soul.y && x > soul.x))) {
-                            nextSoul = GameVars.souls[y][x];
-                        }
+                    if (GameVars.nextSoul === null && (soul.y > soulInUse.y || (soul.y === soulInUse.y && soul.x > soulInUse.x))) {
+                        GameVars.nextSoul = soul;
                     }
                 }
-            }
-            GameVars.prevSoul = prevSoul;
-            GameVars.nextSoul = nextSoul;
+            }));
         }
     }
 
     cleanDeadSouls() {
-        for (let y = 0; y < GameVars.souls.length; y++) {
-            for (let x = 0; x < GameVars.souls[0].length; x++) {
-                let currentSoul = GameVars.souls[y][x];
-                if (currentSoul && currentSoul.isDead) {
-                    if (currentSoul === GameVars.soulInUse) {
-                        GameVars.soulInUse = null;
-                    }
-                    currentSoul.dispose();
-                    GameVars.souls[y][x] = null;
-                    GameVars.soulsInGame--;
+        GameVars.souls.forEach((row, y) => row.forEach((soul, x) => {
+            if (soul && soul.isDead) {
+                if (soul === GameVars.soulInUse) {
+                    GameVars.soulInUse = null;
                 }
+                soul.dispose();
+                GameVars.souls[y][x] = null;
+                GameVars.soulsInGame--;
             }
-        }
+        }));
 
         if (GameVars.soulInUse === null && GameVars.soulsInGame > 0) {
             let soulCoords = retrieveSoulCoords(GameVars.souls, (y, x) => GameVars.souls[y][x] === null);
