@@ -31,14 +31,13 @@ export class Game {
 
     generateSoulsContainers() {
         let fakeSoulContainer = createElem(this.gameDiv, "div", null, ["soul-container"]);
-        let fakeSoul = new Soul(fakeSoulContainer, 0, 0);
+        new Soul(fakeSoulContainer, 0, 0);
 
         const containerW = fakeSoulContainer.clientWidth;
         const containerH = fakeSoulContainer.clientHeight;
         const containerX = (GameVars.gameW / 4) - ((containerW / 2) * 3);
         const containerY = (GameVars.gameH / 2) - (containerH * 2);
 
-        fakeSoul.dispose();
         fakeSoulContainer.parentElement.removeChild(fakeSoulContainer);
 
         for (let y = 0; y < 3; y++) {
@@ -105,7 +104,7 @@ export class Game {
                 if (soul === GameVars.soulInUse) {
                     GameVars.soulInUse = null;
                 }
-                soul.dispose();
+                soul.soulCanv.parentElement.innerHTML = "";
                 GameVars.souls[y][x] = null;
                 GameVars.soulsInGame--;
             }
@@ -125,11 +124,5 @@ export class Game {
     draw() {
         this.ui.draw();
         GameVars.cards.forEach(card => card.draw());
-    }
-
-    dispose() {
-        if (this.gameDiv.parentNode !== null) {
-            this.gameDiv.innerHTML = "";
-        }
     }
 }

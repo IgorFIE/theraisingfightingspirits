@@ -55,14 +55,6 @@ export class Soul {
         this.soulCtx.clearRect(0, 0, this.soulCanv.width, this.soulCanv.height);
         drawSprite(this.soulCanv, soul, GameVars.pixelSize, 0, 0, color);
     }
-
-    dispose() {
-        if (this.soulCanv.parentNode !== null) {
-            this.soulStats.dispose();
-            this.arrowCanv.parentElement.removeChild(this.arrowCanv);
-            this.soulCanv.parentElement.removeChild(this.soulCanv);
-        }
-    }
 }
 
 const nu = null;

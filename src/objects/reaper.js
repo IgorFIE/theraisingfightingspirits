@@ -29,8 +29,6 @@ export class Reaper {
             if (!this.isDead) {
                 this.rCanv.style.animation = "reaperAnim 6s infinite ease-in-out";
                 this.draw();
-            } else {
-                this.dispose();
             }
         });
         this.rCtx = this.rCanv.getContext("2d");
@@ -175,13 +173,6 @@ export class Reaper {
     draw(color = null) {
         this.rCtx.clearRect(0, 0, this.rCanv.width, this.rCanv.height);
         drawSprite(this.rCanv, grimReaper, GameVars.pixelSize, 0, 0, color);
-    }
-
-    dispose() {
-        if (this.reaperCont.parentNode !== null) {
-            this.rStats.dispose();
-            this.reaperCont.parentElement.removeChild(this.reaperCont);
-        }
     }
 }
 

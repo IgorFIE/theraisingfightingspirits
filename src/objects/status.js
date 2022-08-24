@@ -68,10 +68,4 @@ export class Status {
             (this.lifeValue * ((this.originalWidth - 2) * GameVars.pixelSize)) / this.maxLifeValue,
             8 * GameVars.pixelSize);
     }
-
-    dispose() {
-        if (this.statusCanvas.parentNode !== null) {
-            this.statusCanvas.parentElement.removeChild(this.statusCanvas);
-        }
-    }
 }

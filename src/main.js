@@ -105,7 +105,7 @@ function createGameOverMenu() {
             GameVars.sound.clickSound();
             gameOverCanv.classList.add("hidden");
             mainMenuCanv.classList.remove("hidden");
-            game.dispose();
+            gameDiv.innerHTML = "";
             game = null;
         });
     gameOverCanv.style.transform = "translateZ(999px)";
@@ -118,7 +118,7 @@ function createWinScreenMenu() {
             GameVars.sound.clickSound();
             winScreenCanv.classList.add("hidden");
             mainMenuCanv.classList.remove("hidden");
-            game.dispose();
+            gameDiv.innerHTML = "";
             game = null;
         });
     winScreenCanv.style.transform = "translateZ(999px)";
