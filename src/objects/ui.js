@@ -95,14 +95,14 @@ export class UI {
     selectNextSoul() {
         if (GameVars.nextSoul) {
             GameVars.sound.clickSound();
-            GameVars.nextSoul.selectSoul();
+            GameVars.nextSoul.select();
         }
     }
 
     selectPreviousSoul() {
         if (GameVars.prevSoul) {
             GameVars.sound.clickSound();
-            GameVars.prevSoul.selectSoul();
+            GameVars.prevSoul.select();
         }
     }
 

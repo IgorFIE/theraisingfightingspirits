@@ -15,7 +15,7 @@ export class Game {
 
         this.generateSoulsContainers();
         GameVars.souls[1][1] = new Soul(GameVars.soulsConts[1][1], 1, 1);
-        GameVars.souls[1][1].selectSoul();
+        GameVars.souls[1][1].select();
         GameVars.soulsInGame++;
 
         GameVars.reaper = new Reaper(gameDiv);
@@ -89,15 +89,15 @@ export class Game {
             let nextSoul = null;
             for (let y = 0; y < GameVars.souls.length; y++) {
                 for (let x = 0; x < GameVars.souls[0].length; x++) {
-                    if (y === soul.arrayPosY && x === soul.arrayPosX) {
+                    if (y === soul.y && x === soul.x) {
                         continue;
                     }
                     if (GameVars.souls[y][x] !== null) {
-                        if (y < soul.arrayPosY || (y === soul.arrayPosY && x < soul.arrayPosX)) {
+                        if (y < soul.y || (y === soul.y && x < soul.x)) {
                             prevSoul = GameVars.souls[y][x];
                         }
 
-                        if (nextSoul === null && (y > soul.arrayPosY || (y === soul.arrayPosY && x > soul.arrayPosX))) {
+                        if (nextSoul === null && (y > soul.y || (y === soul.y && x > soul.x))) {
                             nextSoul = GameVars.souls[y][x];
                         }
                     }
@@ -112,7 +112,7 @@ export class Game {
         for (let y = 0; y < GameVars.souls.length; y++) {
             for (let x = 0; x < GameVars.souls[0].length; x++) {
                 let currentSoul = GameVars.souls[y][x];
-                if (currentSoul && currentSoul.isDeadAndAnimationEnded) {
+                if (currentSoul && currentSoul.isDead) {
                     if (currentSoul === GameVars.soulInUse) {
                         GameVars.soulInUse = null;
                     }
@@ -131,7 +131,7 @@ export class Game {
                 x = randomNumb(GameVars.souls[0].length);
             }
             GameVars.soulInUse = GameVars.souls[y][x];
-            GameVars.soulInUse.selectSoul();
+            GameVars.soulInUse.select();
         }
 
         if (GameVars.soulsInGame <= 0) {

@@ -1,7 +1,7 @@
 const { GameVars } = require("./game-variables");
 const { Game } = require("./screens/game");
 const { grimReaper } = require("./objects/reaper");
-const { maleSoul } = require("./objects/soul");
+const { soul } = require("./objects/soul");
 const { drawSprite, createElemOnElem } = require("./utilities/draw-utilities");
 const { Sound } = require("./utilities/sound");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
@@ -41,19 +41,19 @@ function createMainMenu() {
         Math.round((((GameVars.gameH / scale) / 6) * 4) - (grimReaper.length / 2)));
 
     let soulsmallScale = GameVars.pixelSize * 2;
-    drawSprite(mainMenuCanv, maleSoul, soulsmallScale,
-        Math.round((((GameVars.gameW / soulsmallScale) / 24) * 8) - (maleSoul[0].length / 2)),
-        Math.round((((GameVars.gameH / soulsmallScale) / 24) * 11) - (maleSoul.length / 2)));
+    drawSprite(mainMenuCanv, soul, soulsmallScale,
+        Math.round((((GameVars.gameW / soulsmallScale) / 24) * 8) - (soul[0].length / 2)),
+        Math.round((((GameVars.gameH / soulsmallScale) / 24) * 11) - (soul.length / 2)));
 
     let soulMiddleScale = GameVars.pixelSize * 4;
-    drawSprite(mainMenuCanv, maleSoul, soulMiddleScale,
-        Math.round((((GameVars.gameW / soulMiddleScale) / 8) * 1) - (maleSoul[0].length / 2)),
-        Math.round((((GameVars.gameH / soulMiddleScale) / 8) * 3) - (maleSoul.length / 2)));
+    drawSprite(mainMenuCanv, soul, soulMiddleScale,
+        Math.round((((GameVars.gameW / soulMiddleScale) / 8) * 1) - (soul[0].length / 2)),
+        Math.round((((GameVars.gameH / soulMiddleScale) / 8) * 3) - (soul.length / 2)));
 
     let soulCloseScale = GameVars.pixelSize * 6;
-    drawSprite(mainMenuCanv, maleSoul, soulCloseScale,
-        Math.round((((GameVars.gameW / soulCloseScale) / 4) * 1) - (maleSoul[0].length / 2)),
-        Math.round((((GameVars.gameH / soulCloseScale) / 6) * 4) - (maleSoul.length / 2)));
+    drawSprite(mainMenuCanv, soul, soulCloseScale,
+        Math.round((((GameVars.gameW / soulCloseScale) / 4) * 1) - (soul[0].length / 2)),
+        Math.round((((GameVars.gameH / soulCloseScale) / 6) * 4) - (soul.length / 2)));
 
     let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
     drawPixelTextInCanvas(convertTextToPixelArt("The Raising"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "#10495E", 6);
@@ -142,7 +142,7 @@ function gameLoop() {
         if (GameVars.isGameOver) {
             gameOverCanv.classList.remove("hidden");
         }
-        if (GameVars.reaper.isDeadAndAnimationEnded && !wasScheduledToShowWinScreen) {
+        if (GameVars.reaper.isDead && !wasScheduledToShowWinScreen) {
             wasScheduledToShowWinScreen = true;
             setTimeout(() => winScreenCanv.classList.remove("hidden"), 250);
         }

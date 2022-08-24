@@ -1,67 +1,66 @@
 import { GameVars } from "../game-variables";
-import { randomNumb } from "../utilities/general-utilities";
 import { Status } from "./status";
 const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
 
 export class Soul {
-    constructor(soulContainer, arrayPosX, arrayPosY) {
+    constructor(soulContainer, containerPosX, containerPosY) {
         GameVars.sound.spawnSound();
-        this.arrayPosX = arrayPosX;
-        this.arrayPosY = arrayPosY;
-        this.isDeadAndAnimationEnded = false;
+        this.x = containerPosX;
+        this.y = containerPosY;
+        this.isDead = false;
 
-        this.soulSelectedArrowCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul-selection-arrow", "hidden"], selectedArrow[0].length * GameVars.pixelSize, selectedArrow.length * GameVars.pixelSize);
-        drawSprite(this.soulSelectedArrowCanvas, selectedArrow, GameVars.pixelSize);
+        this.arrowCanv = createElemOnElem(soulContainer, "canvas", null, ["soul-selection-arrow", "hidden"], arrow[0].length * GameVars.pixelSize, arrow.length * GameVars.pixelSize);
+        drawSprite(this.arrowCanv, arrow, GameVars.pixelSize);
 
-        this.soulCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul"], maleSoul[0].length * GameVars.pixelSize, maleSoul.length * GameVars.pixelSize, null, (e) => {
-            this.selectSoul()
+        this.soulCanv = createElemOnElem(soulContainer, "canvas", null, ["soul"], soul[0].length * GameVars.pixelSize, soul.length * GameVars.pixelSize, null, (e) => {
+            this.select()
             GameVars.sound.clickSound();
         });
-        this.soulCanvas.style.animation = "addsoul 500ms ease-in-out";
-        this.soulCanvas.addEventListener("animationend", () => {
-            this.soulCanvas.style.animation = "soulAnim 6s infinite ease-in-out";
-            this.isDeadAndAnimationEnded = this.soulStatus.lifeValue <= 0;
+        this.soulCanv.style.animation = "addsoul 500ms ease-in-out";
+        this.soulCanv.addEventListener("animationend", () => {
+            this.soulCanv.style.animation = "soulAnim 6s infinite ease-in-out";
+            this.isDead = this.soulStats.lifeValue <= 0;
             this.draw();
         });
-        this.soulCtx = this.soulCanvas.getContext("2d");
-        this.soulStatus = new Status(soulContainer, 33, GameVars.soulLife, 0);
+        this.soulCtx = this.soulCanv.getContext("2d");
+        this.soulStats = new Status(soulContainer, 33, GameVars.soulLife, 0);
 
         this.draw();
     }
 
-    selectSoul() {
+    select() {
         if (GameVars.soulInUse) {
-            GameVars.soulInUse.deselectSoul();
+            GameVars.soulInUse.deselect();
         }
-        GameVars.soulInUse = GameVars.souls[this.arrayPosY][this.arrayPosX];
-        this.soulSelectedArrowCanvas.classList.remove("hidden");
+        GameVars.soulInUse = GameVars.souls[this.y][this.x];
+        this.arrowCanv.classList.remove("hidden");
     }
 
-    deselectSoul() {
-        this.soulSelectedArrowCanvas.classList.add("hidden");
+    deselect() {
+        this.arrowCanv.classList.add("hidden");
     }
 
-    takeDamage(dmg) {
-        this.soulStatus.takeDamage(dmg);
+    takeDmg(dmg) {
+        this.soulStats.takeDmg(dmg);
         this.draw("red");
-        if (this.soulStatus.lifeValue > 0) {
-            this.soulCanvas.style.animation = "takedmg 400ms ease-in-out";
+        if (this.soulStats.lifeValue > 0) {
+            this.soulCanv.style.animation = "takedmg 400ms ease-in-out";
         } else {
-            this.soulCanvas.style.animation = "addsoul 500ms reverse ease-in-out";
+            this.soulCanv.style.animation = "addsoul 500ms reverse ease-in-out";
             GameVars.sound.deadSound();
         }
     }
 
     draw(color = null) {
         this.soulCtx.clearRect(0, 0, GameVars.soulW, GameVars.soulH);
-        drawSprite(this.soulCanvas, maleSoul, GameVars.pixelSize, 0, 0, color);
+        drawSprite(this.soulCanv, soul, GameVars.pixelSize, 0, 0, color);
     }
 
     dispose() {
-        if (this.soulCanvas.parentNode !== null) {
-            this.soulStatus.dispose();
-            this.soulSelectedArrowCanvas.parentElement.removeChild(this.soulSelectedArrowCanvas);
-            this.soulCanvas.parentElement.removeChild(this.soulCanvas);
+        if (this.soulCanv.parentNode !== null) {
+            this.soulStats.dispose();
+            this.arrowCanv.parentElement.removeChild(this.arrowCanv);
+            this.soulCanv.parentElement.removeChild(this.soulCanv);
         }
     }
 }
@@ -71,7 +70,7 @@ const db = "#10495E";
 const lb = "#9BF2FA";
 const wb = "#EDEEF7";
 
-export const maleSoul = [
+export const soul = [
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, db, wb, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, wb, db, db, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu],
@@ -109,7 +108,7 @@ export const maleSoul = [
 const yl = "#FFFF57";
 const bl = "#000000"
 
-const selectedArrow = [
+const arrow = [
     [nu, nu, nu, nu, wb, wb, wb, nu, nu, nu, nu],
     [nu, nu, nu, wb, bl, bl, bl, wb, nu, nu, nu],
     [nu, nu, wb, bl, yl, yl, yl, bl, wb, nu, nu],

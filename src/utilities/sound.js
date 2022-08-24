@@ -30,7 +30,7 @@ export class Sound {
         }
     }
 
-    takeDamageSound() {
+    takeDmgSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
             this.playSound("square", 32.70, 1, 0, 1);
             this.playSound("square", 36.71, 0.8, 0.1, 2);

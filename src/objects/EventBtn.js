@@ -47,8 +47,8 @@ export class EventBtn {
             case UpStatsType.MINIONS_LIFE:
                 GameVars.souls.forEach((row) => row.forEach((soul) => {
                     if (soul) {
-                        soul.soulStatus.maxLifeValue += GameVars.soulLifeBuff;
-                        soul.soulStatus.draw();
+                        soul.soulStats.maxLifeValue += GameVars.soulLifeBuff;
+                        soul.soulStats.draw();
                     }
                 }));
                 GameVars.soulLife += GameVars.soulLifeBuff;

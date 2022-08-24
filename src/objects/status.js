@@ -17,8 +17,8 @@ export class Status {
         this.draw();
     }
 
-    takeDamage(dmg) {
-        GameVars.sound.takeDamageSound();
+    takeDmg(dmg) {
+        GameVars.sound.takeDmgSound();
         if (this.shieldValue > 0) {
             this.shieldValue -= dmg;
             if (this.shieldValue <= 0) {

@@ -57,16 +57,16 @@ export class Card {
     useCard() {
         switch (this.cardType) {
             case CardTypes.ATK:
-                GameVars.soulInUse.soulCanvas.style.animation = "";
-                requestAnimationFrame(() => setTimeout(() => GameVars.soulInUse.soulCanvas.style.animation = "soulatk 900ms ease-in-out", 0));
-                setTimeout(() => GameVars.reaper.takeDamage(GameVars.cardDmg), 250)
+                GameVars.soulInUse.soulCanv.style.animation = "";
+                requestAnimationFrame(() => setTimeout(() => GameVars.soulInUse.soulCanv.style.animation = "soulatk 900ms ease-in-out", 0));
+                setTimeout(() => GameVars.reaper.takeDmg(GameVars.cardDmg), 250)
                 this.afterUseCardsSettings();
                 break;
             case CardTypes.MINION:
                 this.generateNewMinion();
                 break;
             default:
-                GameVars.soulInUse.soulStatus.addShield(GameVars.cardShield);
+                GameVars.soulInUse.soulStats.addShield(GameVars.cardShield);
                 this.afterUseCardsSettings();
                 break;
         }
