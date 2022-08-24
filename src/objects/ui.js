@@ -2,36 +2,36 @@ import { GameVars } from "../game-variables";
 const { Card } = require("../objects/card");
 const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
-const { createElemOnElem } = require("../utilities/draw-utilities");
+const { createElem } = require("../utilities/draw-utilities");
 
 export class UI {
     constructor(gameDiv) {
         this.currentEnergy = 0;
 
-        this.uiContainer = createElemOnElem(gameDiv, "div", "ui-container");
+        this.uiContainer = createElem(gameDiv, "div", "ui-container");
 
-        this.turnCounterCanvas = createElemOnElem(this.uiContainer, "canvas", null, null, 300, 100);
+        this.turnCounterCanvas = createElem(this.uiContainer, "canvas", null, null, 300, 100);
         this.turnCounterCanvas.style.transform = "translate(" + ((GameVars.gameW / 2) - (this.turnCounterCanvas.width / 2)) + "px,0px)";
         this.turnCounterCtx = this.turnCounterCanvas.getContext("2d");
 
-        this.energyCanvas = createElemOnElem(this.uiContainer, "canvas");
+        this.energyCanvas = createElem(this.uiContainer, "canvas");
         this.energyCanvasCtx = this.energyCanvas.getContext("2d");
         this.populateEnergyCanvas();
 
-        this.turnControllersCanvas = createElemOnElem(this.uiContainer, "canvas");
+        this.turnControllersCanvas = createElem(this.uiContainer, "canvas");
 
-        this.nextSoulCanvas = createElemOnElem(this.uiContainer, "canvas", null, null, null, null, null, (e) => this.selectNextSoul());
+        this.nextSoulCanvas = createElem(this.uiContainer, "canvas", null, null, null, null, null, (e) => this.selectNextSoul());
         this.nextSoulCtx = this.nextSoulCanvas.getContext("2d");
 
-        this.previousSoulCanvas = createElemOnElem(this.uiContainer, "canvas", null, null, null, null, null, (e) => this.selectPreviousSoul());
+        this.previousSoulCanvas = createElem(this.uiContainer, "canvas", null, null, null, null, null, (e) => this.selectPreviousSoul());
         this.previousSoulCtx = this.previousSoulCanvas.getContext("2d");
 
-        this.endTurnCanvas = createElemOnElem(this.uiContainer, "canvas", null, null, null, null, null, (e) => this.endTurn());
+        this.endTurnCanvas = createElem(this.uiContainer, "canvas", null, null, null, null, null, (e) => this.endTurn());
         this.endTurnCtx = this.endTurnCanvas.getContext("2d");
 
         this.populateTurnControllersCanvas();
 
-        this.cardContainer = createElemOnElem(gameDiv, "div", "card-container");
+        this.cardContainer = createElem(gameDiv, "div", "card-container");
         GameVars.cards = [];
 
         this.calculateCardsArea();

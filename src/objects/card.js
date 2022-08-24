@@ -1,7 +1,7 @@
 import { GameVars } from "../game-variables";
 import { randomNumb } from "../utilities/general-utilities";
 const { Soul } = require("../objects/soul");
-const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
+const { drawSprite, createElem } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, minionIcon } = require("../objects/icons");
 const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
@@ -11,7 +11,7 @@ export class Card {
         this.isUsed = false;
         this.isDispose = false;
 
-        this.cardCanvas = createElemOnElem(gameDiv, "canvas", null, ["card"], GameVars.cardW * GameVars.pixelSize, GameVars.cardH * GameVars.pixelSize);
+        this.cardCanvas = createElem(gameDiv, "canvas", null, ["card"], GameVars.cardW * GameVars.pixelSize, GameVars.cardH * GameVars.pixelSize);
         this.cardCanvas.style.animation = "cardturn 500ms linear";
 
         this.updateCardPosition(cardX, cardY);

@@ -1,10 +1,10 @@
 import { GameVars } from "../game-variables";
 import { randomNumbOnRange } from "../utilities/general-utilities";
-const { createElemOnElem } = require("../utilities/draw-utilities");
+const { createElem } = require("../utilities/draw-utilities");
 
 export class Background {
     constructor(gameDiv) {
-        this.bckElem = createElemOnElem(gameDiv, "canvas", "gameBackground", null, GameVars.gameW, GameVars.gameH, "#686B7A");
+        this.bckElem = createElem(gameDiv, "canvas", "gameBackground", null, GameVars.gameW, GameVars.gameH, "#686B7A");
         this.bckCtx = this.bckElem.getContext("2d");
     }
 

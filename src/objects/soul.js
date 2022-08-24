@@ -1,6 +1,6 @@
 import { GameVars } from "../game-variables";
 import { Status } from "./status";
-const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
+const { drawSprite, createElem } = require("../utilities/draw-utilities");
 
 export class Soul {
     constructor(soulContainer, containerPosX, containerPosY) {
@@ -9,10 +9,10 @@ export class Soul {
         this.y = containerPosY;
         this.isDead = false;
 
-        this.arrowCanv = createElemOnElem(soulContainer, "canvas", null, ["soul-selection-arrow", "hidden"], arrow[0].length * GameVars.pixelSize, arrow.length * GameVars.pixelSize);
+        this.arrowCanv = createElem(soulContainer, "canvas", null, ["arrow", "hidden"], arrow[0].length * GameVars.pixelSize, arrow.length * GameVars.pixelSize);
         drawSprite(this.arrowCanv, arrow, GameVars.pixelSize);
 
-        this.soulCanv = createElemOnElem(soulContainer, "canvas", null, ["soul"], soul[0].length * GameVars.pixelSize, soul.length * GameVars.pixelSize, null, (e) => {
+        this.soulCanv = createElem(soulContainer, "canvas", null, ["soul"], soul[0].length * GameVars.pixelSize, soul.length * GameVars.pixelSize, null, (e) => {
             this.select()
             GameVars.sound.clickSound();
         });

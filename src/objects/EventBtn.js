@@ -1,13 +1,13 @@
 import { GameVars } from "../game-variables";
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 const { generateLargeBox } = require("../utilities/box-generator");
-const { createElemOnElem } = require("../utilities/draw-utilities");
+const { createElem } = require("../utilities/draw-utilities");
 
 export class EventBtn {
     constructor(btnContainer, x, y, upstatusType) {
         this.upStatusType = upstatusType;
 
-        let eventBtnCanvas = createElemOnElem(btnContainer, "canvas", null, ["on-top"], 140 * GameVars.pixelSize, 40 * GameVars.pixelSize, null, () => {
+        let eventBtnCanvas = createElem(btnContainer, "canvas", null, ["on-top"], 140 * GameVars.pixelSize, 40 * GameVars.pixelSize, null, () => {
             GameVars.sound.buffSound();
             this.useBtn();
             btnContainer.parentElement.classList.add("hidden");

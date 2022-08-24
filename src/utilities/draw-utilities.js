@@ -14,7 +14,7 @@ export const drawSprite = (canvas, sprite, pixelSize, startX = 0, startY = 0, co
     }
 };
 
-export const createElemOnElem = (parentElem, elemType, id, classList, width, height, backgroundColor, clickFn) => {
+export const createElem = (parentElem, elemType, id, classList, width, height, backgroundColor, clickFn) => {
     let elem = document.createElement(elemType);
     if (id) elem.id = id;
     if (classList) classList.forEach((e) => elem.classList.add(e));

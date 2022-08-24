@@ -1,6 +1,6 @@
 import { GameVars } from "../game-variables";
 const { defIcon } = require("../objects/icons");
-const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
+const { drawSprite, createElem } = require("../utilities/draw-utilities");
 const { generateSmallBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 
@@ -11,7 +11,7 @@ export class Status {
         this.shieldValue = shieldValue;
         this.originalWidth = w;
 
-        this.statusCanvas = createElemOnElem(parentdiv, "canvas", null, ["status"], (18 + w) * GameVars.pixelSize, GameVars.statsBarH * GameVars.pixelSize);
+        this.statusCanvas = createElem(parentdiv, "canvas", null, ["status"], (18 + w) * GameVars.pixelSize, GameVars.statsBarH * GameVars.pixelSize);
         this.statusCanvas.addEventListener("animationend", () => this.statusCanvas.style.animation = "");
         this.statusCtx = this.statusCanvas.getContext("2d");
         this.draw();

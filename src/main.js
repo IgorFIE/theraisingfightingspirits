@@ -2,7 +2,7 @@ const { GameVars } = require("./game-variables");
 const { Game } = require("./screens/game");
 const { grimReaper } = require("./objects/reaper");
 const { soul } = require("./objects/soul");
-const { drawSprite, createElemOnElem } = require("./utilities/draw-utilities");
+const { drawSprite, createElem } = require("./utilities/draw-utilities");
 const { Sound } = require("./utilities/sound");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { generateLargeBox } = require("./utilities/box-generator");
@@ -33,7 +33,7 @@ function init() {
 }
 
 function createMainMenu() {
-    mainMenuCanv = createElemOnElem(mainDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH, "gray", (e) => startGame());
+    mainMenuCanv = createElem(mainDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH, "gray", (e) => startGame());
 
     let scale = GameVars.pixelSize * 5;
     drawSprite(mainMenuCanv, grimReaper, scale,
@@ -66,9 +66,9 @@ function createMainMenu() {
 }
 
 function createGameTutorialMenu() {
-    gameTutorDiv = createElemOnElem(mainDiv, "div", "game-tutorial", ["hidden"]);
+    gameTutorDiv = createElem(mainDiv, "div", "game-tutorial", ["hidden"]);
 
-    let gameTutorialCanvas = createElemOnElem(gameTutorDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,150,0.8)");
+    let gameTutorialCanvas = createElem(gameTutorDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,150,0.8)");
     gameTutorialCanvas.style.transform = "translateZ(999px)";
 
     drawPixelTextInCanvas(convertTextToPixelArt("Tutorial"), gameTutorialCanvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 14, "black", 6);
@@ -83,7 +83,7 @@ function createGameTutorialMenu() {
 
     drawPixelTextInCanvas(convertTextToPixelArt("drag cards off the hand area to play them"), gameTutorialCanvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 100);
 
-    let gameTutorialSkipCanvas = createElemOnElem(gameTutorDiv, "canvas", null, ["on-top"], 140 * GameVars.pixelSize, 40 * GameVars.pixelSize, null,
+    let gameTutorialSkipCanvas = createElem(gameTutorDiv, "canvas", null, ["on-top"], 140 * GameVars.pixelSize, 40 * GameVars.pixelSize, null,
         (e) => {
             GameVars.sound.clickSound();
             gameTutorDiv.classList.add("hidden")
@@ -96,11 +96,11 @@ function createGameTutorialMenu() {
 }
 
 function createGameContainer() {
-    gameDiv = createElemOnElem(mainDiv, "div", "game");
+    gameDiv = createElem(mainDiv, "div", "game");
 }
 
 function createGameOverMenu() {
-    gameOverCanv = createElemOnElem(mainDiv, "canvas", "game-over-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "darkred",
+    gameOverCanv = createElem(mainDiv, "canvas", "game-over-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "darkred",
         (e) => {
             GameVars.sound.clickSound();
             gameOverCanv.classList.add("hidden");
@@ -113,7 +113,7 @@ function createGameOverMenu() {
 }
 
 function createWinScreenMenu() {
-    winScreenCanv = createElemOnElem(mainDiv, "canvas", "win-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "lightblue",
+    winScreenCanv = createElem(mainDiv, "canvas", "win-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "lightblue",
         (e) => {
             GameVars.sound.clickSound();
             winScreenCanv.classList.add("hidden");

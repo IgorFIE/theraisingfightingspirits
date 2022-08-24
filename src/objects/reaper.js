@@ -1,7 +1,7 @@
 import { GameVars } from "../game-variables";
 import { randomNumb } from "../utilities/general-utilities";
 import { Status } from "./status";
-const { drawSprite, createElemOnElem } = require("../utilities/draw-utilities");
+const { drawSprite, createElem } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, scytheIcon, buffIcon } = require("../objects/icons");
 const { generateSmallBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
@@ -17,12 +17,12 @@ export class Reaper {
         this.isReaperPlaying = false;
         this.isDead = false;
 
-        this.reaperContainer = createElemOnElem(gameDiv, "div", null, ["reaper-container"]);
+        this.reaperContainer = createElem(gameDiv, "div", null, ["reaper-container"]);
 
-        this.reaperActionCanvas = createElemOnElem(this.reaperContainer, "canvas", "reaper-action", null, (scytheIcon[0].length + 4) * GameVars.pixelSize, (scytheIcon.length + 4) * GameVars.pixelSize);
+        this.reaperActionCanvas = createElem(this.reaperContainer, "canvas", "reaper-action", null, (scytheIcon[0].length + 4) * GameVars.pixelSize, (scytheIcon.length + 4) * GameVars.pixelSize);
         this.reaperActionCtx = this.reaperActionCanvas.getContext("2d");
 
-        this.reaperCanvas = createElemOnElem(this.reaperContainer, "canvas", "reaper", null, grimReaper[0].length * GameVars.pixelSize, grimReaper.length * GameVars.pixelSize);
+        this.reaperCanvas = createElem(this.reaperContainer, "canvas", "reaper", null, grimReaper[0].length * GameVars.pixelSize, grimReaper.length * GameVars.pixelSize);
         this.reaperCanvas.style.animation = "addsoul 500ms ease-in-out";
         this.reaperCanvas.addEventListener("animationend", () => {
             this.isDead = this.reaperStats.lifeValue <= 0;
