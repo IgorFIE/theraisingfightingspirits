@@ -52,7 +52,7 @@ export class Soul {
     }
 
     draw(color = null) {
-        this.soulCtx.clearRect(0, 0, GameVars.soulW, GameVars.soulH);
+        this.soulCtx.clearRect(0, 0, this.soulCanv.width, this.soulCanv.height);
         drawSprite(this.soulCanv, soul, GameVars.pixelSize, 0, 0, color);
     }
 

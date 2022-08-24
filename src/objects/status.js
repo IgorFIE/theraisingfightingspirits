@@ -11,7 +11,7 @@ export class Status {
         this.shieldValue = shieldValue;
         this.originalWidth = w;
 
-        this.statusCanvas = createElem(parentdiv, "canvas", null, ["status"], (18 + w) * GameVars.pixelSize, GameVars.statsBarH * GameVars.pixelSize);
+        this.statusCanvas = createElem(parentdiv, "canvas", null, ["status"], (18 + w) * GameVars.pixelSize, 18 * GameVars.pixelSize);
         this.statusCanvas.addEventListener("animationend", () => this.statusCanvas.style.animation = "");
         this.statusCtx = this.statusCanvas.getContext("2d");
         this.draw();

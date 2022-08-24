@@ -173,7 +173,7 @@ export class Reaper {
     }
 
     draw(color = null) {
-        this.rCtx.clearRect(0, 0, GameVars.reaperW, GameVars.reaperH);
+        this.rCtx.clearRect(0, 0, this.rCanv.width, this.rCanv.height);
         drawSprite(this.rCanv, grimReaper, GameVars.pixelSize, 0, 0, color);
     }
 

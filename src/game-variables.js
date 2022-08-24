@@ -15,12 +15,6 @@ const calcPixelSize = () => {
     GameVars.gameHgAsPixels = GameVars.gameH / GameVars.pixelSize;
 };
 
-const reaperW = 200;
-const reaperH = 300;
-
-const soulW = 200;
-const soulH = 200;
-
 const cardW = 53;
 const cardH = 85;
 
@@ -28,8 +22,6 @@ let cardContX;
 let cardContY;
 let cardContW;
 let cardContH;
-
-const statsBarH = 18;
 
 let sound;
 
@@ -115,12 +107,6 @@ export const GameVars = {
     gameHgAsPixels,
     calcPixelSize,
 
-    reaperW,
-    reaperH,
-
-    soulW,
-    soulH,
-
     cardW,
     cardH,
 
@@ -146,8 +132,6 @@ export const GameVars = {
     maxPlayCards,
     cardsPlayed,
     drawCardNumb,
-
-    statsBarH,
 
     isPlayerTurn,
     turnCount,

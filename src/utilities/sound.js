@@ -26,43 +26,43 @@ export class Sound {
 
     clickSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 174.6, 0.5, 0, 2);
+            this.playSound(square, 174.6, 0.5, 0, 2);
         }
     }
 
     takeDmgSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 32.70, 1, 0, 1);
-            this.playSound("square", 36.71, 0.8, 0.1, 2);
-            this.playSound("square", 16.35, 1, 0.2, 3);
+            this.playSound(square, 32.70, 1, 0, 1);
+            this.playSound(square, 36.71, 0.8, 0.1, 2);
+            this.playSound(square, 16.35, 1, 0.2, 3);
         }
     }
 
     gainShield() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 233.1, 0.2, 0, 1);
-            this.playSound("square", 466.2, 0.4, 0.1, 2);
+            this.playSound(square, 233.1, 0.2, 0, 1);
+            this.playSound(square, 466.2, 0.4, 0.1, 2);
         }
     }
 
     spawnSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 293.7, 0.4, 0, 3);
+            this.playSound(square, 293.7, 0.4, 0, 3);
         }
     }
 
     deadSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 18.35, 0.3, 0, 1);
-            this.playSound("square", 36.71, 0.5, 0.1, 2);
-            this.playSound("square", 73.42, 0.8, 0.2, 3);
+            this.playSound(square, 18.35, 0.3, 0, 1);
+            this.playSound(square, 36.71, 0.5, 0.1, 2);
+            this.playSound(square, 73.42, 0.8, 0.2, 3);
         }
     }
 
     buffSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 932.3, 0.3, 0, 1);
-            this.playSound("square", 1865, 0.5, 0.1, 2);
+            this.playSound(square, 932.3, 0.3, 0, 1);
+            this.playSound(square, 1865, 0.5, 0.1, 2);
         }
     }
 
@@ -75,7 +75,7 @@ export class Sound {
                 if (this.musicBassNote >= mB.length) {
                     this.musicBassNote = 0;
                 }
-                this.playSound("square", mM[this.musicMelodyNote], 0.2, 0, 2);
+                this.playSound(square, mM[this.musicMelodyNote], 0.2, 0, 2);
                 this.musicMelodyNote++;
                 if (this.musicMelodyNote >= mM.length) {
                     this.musicMelodyNote = 0;
@@ -90,9 +90,9 @@ export class Sound {
 
     playGameOverSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound("square", 32.70, 0.5, 0, 0.1);
-            this.playSound("square", 36.71, 0.3, 0.1, 0.2);
-            this.playSound("square", 16.35, 0.5, 0.2, 1);
+            this.playSound(square, 32.70, 0.5, 0, 0.1);
+            this.playSound(square, 36.71, 0.3, 0.1, 0.2);
+            this.playSound(square, 16.35, 0.5, 0.2, 1);
         }
     }
 
@@ -109,6 +109,8 @@ export class Sound {
         o.stop(this.context.currentTime + end);
     }
 }
+
+const square = "square";
 
 const mB = [
     61.74, null, 92.50, null, 61.74, null, 92.50, null, 61.74, null, 92.50, null, 61.74, null, 92.50, null,

@@ -68,8 +68,6 @@ const retrievePixelLetter = (letter) => {
             return o;
         case 'p':
             return p;
-        case 'q':
-            return q;
         case 'r':
             return r;
         case 's':
@@ -88,9 +86,7 @@ const retrievePixelLetter = (letter) => {
             return y;
         case 'z':
             return z;
-            
-        case '?':
-            return inte;
+
         case '!':
             return excl;
         case '+':
@@ -260,14 +256,6 @@ const p = [
     [true, false, false]
 ];
 
-const q = [
-    [true, true, true],
-    [true, false, true],
-    [true, false, true],
-    [true, true, true],
-    [false, false, true]
-];
-
 const r = [
     [true, true, true],
     [true, false, true],
@@ -340,14 +328,6 @@ const z = [
     [true, true, true]
 ];
 
-const inte = [
-    [true, true, true],
-    [false, true, true],
-    [false, true, true],
-    [false, false, false],
-    [false, true, false]
-];
-
 const excl = [
     [true, true],
     [true, true],
@@ -381,11 +361,11 @@ const zer = [
 ];
 
 const one = [
-    [false, true, false],
-    [true, true, false],
-    [false, true, false],
-    [false, true, false],
-    [true, true, true]
+    [true],
+    [true],
+    [true],
+    [true],
+    [true]
 ];
 
 const two = [
