@@ -1,5 +1,5 @@
 import { GameVars } from "../game-variables";
-import { randomNumb } from "../utilities/general-utilities";
+import { randomNumb, retrieveSoulCoords } from "../utilities/general-utilities";
 const { Soul } = require("../objects/soul");
 const { drawSprite, createElem } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, minionIcon } = require("../objects/icons");
@@ -11,61 +11,59 @@ export class Card {
         this.isUsed = false;
         this.isDispose = false;
 
-        this.cardCanvas = createElem(gameDiv, "canvas", null, ["card"], GameVars.cardW * GameVars.pixelSize, GameVars.cardH * GameVars.pixelSize);
-        this.cardCanvas.style.animation = "cardturn 500ms linear";
+        this.cardCanv = createElem(gameDiv, "canvas", null, ["card"], GameVars.cardW * GameVars.pixelSize, GameVars.cardH * GameVars.pixelSize);
+        this.cardCanv.style.animation = "cardturn 500ms linear";
 
-        this.updateCardPosition(cardX, cardY);
+        this.updateCardPos(cardX, cardY);
         this.dragElement(this);
 
-        this.cardType = randomNumb(Object.keys(CardTypes).length);
+        this.cardType = randomNumb(3);
         this.drawCard();
     }
 
     drawCard(bckColor = "White") {
-        generateLargeBox(this.cardCanvas, 2, 2, GameVars.cardW - 3, GameVars.cardH - 3, GameVars.pixelSize, "black", bckColor);
-        generateSmallBox(this.cardCanvas, 7, 14, 40, 31, GameVars.pixelSize, "black", bckColor);
-        generateSmallBox(this.cardCanvas, 7, 48, 40, 31, GameVars.pixelSize, "black", bckColor);
-        generateSmallBox(this.cardCanvas, 13, 42, 28, 9, GameVars.pixelSize, "black", bckColor);
+        generateLargeBox(this.cardCanv, 2, 2, GameVars.cardW - 3, GameVars.cardH - 3, GameVars.pixelSize, "black", bckColor);
+        generateSmallBox(this.cardCanv, 7, 14, 40, 31, GameVars.pixelSize, "black", bckColor);
+        generateSmallBox(this.cardCanv, 7, 48, 40, 31, GameVars.pixelSize, "black", bckColor);
+        generateSmallBox(this.cardCanv, 13, 42, 28, 9, GameVars.pixelSize, "black", bckColor);
 
         switch (this.cardType) {
-            case CardTypes.ATK:
-                drawSprite(this.cardCanvas, atkIcon, GameVars.pixelSize);
-                drawSprite(this.cardCanvas, shockAtkIcon, GameVars.pixelSize, 10, 19);
-                this.generateCardText("SHOCK", "ATK", GameVars.cardDmg + " DAMAGE");
+            case 0:
+                drawSprite(this.cardCanv, atkIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanv, shockImg, GameVars.pixelSize, 10, 19);
+                this.generateCardText("shock", "atk", GameVars.cardDmg + " damage");
                 break;
-
-            case CardTypes.MINION:
-                drawSprite(this.cardCanvas, minionIcon, GameVars.pixelSize);
-                drawSprite(this.cardCanvas, spiritMinionIcon, GameVars.pixelSize, 21, 16);
-                this.generateCardText("SPIRIT", "MINION", "+1 SOUL");
+            case 1:
+                drawSprite(this.cardCanv, minionIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanv, spiritImg, GameVars.pixelSize, 21, 16);
+                this.generateCardText("spirit", "minion", "+1 soul");
                 break;
-
             default:
-                drawSprite(this.cardCanvas, defIcon, GameVars.pixelSize);
-                drawSprite(this.cardCanvas, hardenDefIcon, GameVars.pixelSize, 20, 20);
-                this.generateCardText("HARDEN", "DEF", GameVars.cardShield + " SHIELD");
+                drawSprite(this.cardCanv, defIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanv, hardenImg, GameVars.pixelSize, 20, 20);
+                this.generateCardText("harden", "def", GameVars.cardShield + " shield");
                 break;
         }
     }
 
     generateCardText(cardName, cardType, cardDescription) {
-        drawPixelTextInCanvas(convertTextToPixelArt(cardName), this.cardCanvas, GameVars.pixelSize, 32, 9);
-        drawPixelTextInCanvas(convertTextToPixelArt(cardType), this.cardCanvas, GameVars.pixelSize, 27, 47);
-        drawPixelTextInCanvas(convertTextToPixelArt(cardDescription), this.cardCanvas, GameVars.pixelSize, 28, 64);
+        drawPixelTextInCanvas(convertTextToPixelArt(cardName), this.cardCanv, GameVars.pixelSize, 32, 9);
+        drawPixelTextInCanvas(convertTextToPixelArt(cardType), this.cardCanv, GameVars.pixelSize, 27, 47);
+        drawPixelTextInCanvas(convertTextToPixelArt(cardDescription), this.cardCanv, GameVars.pixelSize, 28, 64);
     }
 
     useCard() {
         switch (this.cardType) {
-            case CardTypes.ATK:
+            case 0: // damage card
                 GameVars.soulInUse.soulCanv.style.animation = "";
                 requestAnimationFrame(() => setTimeout(() => GameVars.soulInUse.soulCanv.style.animation = "soulatk 900ms ease-in-out", 0));
                 setTimeout(() => GameVars.reaper.takeDmg(GameVars.cardDmg), 250)
                 this.afterUseCardsSettings();
                 break;
-            case CardTypes.MINION:
+            case 1: // new soul minion card
                 this.generateNewMinion();
                 break;
-            default:
+            default: // add shield
                 GameVars.soulInUse.soulStats.addShield(GameVars.cardShield);
                 this.afterUseCardsSettings();
                 break;
@@ -81,60 +79,55 @@ export class Card {
 
     generateNewMinion() {
         if (GameVars.soulsInGame != GameVars.souls.length * GameVars.souls[0].length) {
-            let y = randomNumb(GameVars.souls.length);
-            let x = randomNumb(GameVars.souls[0].length);
-            while (GameVars.souls[y][x] !== null) {
-                y = randomNumb(GameVars.souls.length);
-                x = randomNumb(GameVars.souls[0].length);
-            }
-            GameVars.souls[y][x] = new Soul(GameVars.soulsConts[y][x], x, y);
+            let soulCoords = retrieveSoulCoords(GameVars.souls, (y, x) => GameVars.souls[y][x] !== null);
+            GameVars.souls[soulCoords.y][soulCoords.x] = new Soul(GameVars.soulsConts[soulCoords.y][soulCoords.x], soulCoords.x, soulCoords.y);
             GameVars.soulsInGame++;
             this.afterUseCardsSettings();
         } else {
-            this.cardCanvas.style.top = null;
-            this.cardCanvas.style.left = null;
+            this.cardCanv.style.top = null;
+            this.cardCanv.style.left = null;
         }
     }
 
     refreshPlayerCards() {
-        const cardSpace = (GameVars.cardContW * GameVars.pixelSize) / (GameVars.drawCardNumb - GameVars.cardsPlayed);
-        const cardX = (cardSpace / 2) - (this.cardCanvas.width / 2);
+        const cardSpace = ((GameVars.cardContW * GameVars.pixelSize) / (GameVars.drawCardNumb - GameVars.cardsPlayed));
+        const cardX = (cardSpace / 2) - (this.cardCanv.width / 2);
         const cardY = GameVars.cardContY + (2 * GameVars.pixelSize);
         let placementCounter = 0;
-        for (let i = 0; i < GameVars.cards.length; i++) {
-            if (!GameVars.cards[i].isUsed) {
-                GameVars.cards[i].updateCardPosition(GameVars.cardContX + (placementCounter * cardSpace + cardX), cardY);
+        GameVars.cards.forEach((card) => {
+            if (!card.isUsed) {
+                card.updateCardPos(GameVars.cardContX + (placementCounter * cardSpace + cardX), cardY);
                 placementCounter++;
             }
-        }
+        });
     }
 
-    updateCardPosition(cardX, cardY) {
+    updateCardPos(cardX, cardY) {
         this.cardX = cardX;
         this.cardY = cardY;
-        this.cardCanvas.style.translate = + cardX + "px " + cardY + "px " + this.cardCanvas.width + "px";
+        this.cardCanv.style.translate = + cardX + "px " + cardY + "px " + this.cardCanv.width + "px";
     }
 
     draw() {
-        if (this.cardType === CardTypes.MINION) {
+        if (this.cardType === 1) {
             if (GameVars.soulsInGame === GameVars.souls.length * GameVars.souls[0].length) {
-                this.drawCard("Gray");
+                this.drawCard("gray");
             } else {
                 this.drawCard();
             }
         }
         if (GameVars.maxPlayCards - GameVars.cardsPlayed <= 0) {
-            this.drawCard("Gray");
+            this.drawCard("gray");
         }
     }
 
     dispose() {
-        if (this.cardCanvas.parentNode !== null) {
+        if (this.cardCanv.parentNode !== null) {
             if (!this.isDispose) {
                 this.isDispose = true;
-                this.cardCanvas.style.animation = "";
-                requestAnimationFrame(() => setTimeout(() => this.cardCanvas.style.animation = "cardturn 200ms reverse linear", 0));
-                setTimeout(() => this.cardCanvas.parentElement.removeChild(this.cardCanvas), 200);
+                this.cardCanv.style.animation = "";
+                requestAnimationFrame(() => setTimeout(() => this.cardCanv.style.animation = "cardturn 200ms reverse linear", 0));
+                setTimeout(() => this.cardCanv.parentElement.removeChild(this.cardCanv), 200);
             }
         }
     }
@@ -203,16 +196,10 @@ export class Card {
     }
 }
 
-const CardTypes = {
-    ATK: 0,
-    DEF: 1,
-    MINION: 2
-}
-
 const nu = null;
 const bl = "#000000";
 
-const shockAtkIcon = [
+const shockImg = [
     [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
@@ -234,7 +221,7 @@ const shockAtkIcon = [
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu]
 ];
 
-const hardenDefIcon = [
+const hardenImg = [
     [nu, nu, nu, nu, nu, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, bl, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu],
@@ -254,7 +241,7 @@ const hardenDefIcon = [
     [nu, nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu]
 ];
 
-const spiritMinionIcon = [
+const spiritImg = [
     [nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu],

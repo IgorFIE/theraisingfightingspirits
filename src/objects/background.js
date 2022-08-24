@@ -4,23 +4,22 @@ const { createElem } = require("../utilities/draw-utilities");
 
 export class Background {
     constructor(gameDiv) {
-        this.bckElem = createElem(gameDiv, "canvas", "gameBackground", null, GameVars.gameW, GameVars.gameH, "#686B7A");
+        this.bckElem = createElem(gameDiv, "canvas", "gameBack", null, GameVars.gameW, GameVars.gameH, "#686b7a");
         this.bckCtx = this.bckElem.getContext("2d");
     }
 
     generate(reaper) {
         const reaperBox = reaper.reaperCont.getBoundingClientRect();
-        let reaperX = Math.round(reaperBox.left / GameVars.pixelSize);
-        let reaperY = Math.round(reaperBox.top / GameVars.pixelSize);
+        let reaperCoords = { x: Math.round(reaperBox.left / GameVars.pixelSize), y: Math.round(reaperBox.top / GameVars.pixelSize) };
 
-        this.generateDeepTerrain(reaperY);
-        this.generateMiddleTerrain(reaperY);
-        this.generateWaterTerrain(reaperY);
-        this.generateCloseTerrain(reaperX, reaperY);
+        this.generateDeepTerrain(reaperCoords);
+        this.generateMiddleTerrain(reaperCoords);
+        this.generateWaterTerrain(reaperCoords);
+        this.generateCloseTerrain(reaperCoords);
     }
 
-    generateDeepTerrain(reaperY) {
-        let deepTerrainCoords = { x: GameVars.gameWdAsPixels, y: reaperY + 10 };
+    generateDeepTerrain(reaperCoords) {
+        let deepTerrainCoords = { x: GameVars.gameWdAsPixels, y: reaperCoords.y + 10 };
         let treeX = 0;
         this.bckCtx.fillStyle = "#333940";
         for (let i = 0; i < 130; i++) {
@@ -29,31 +28,31 @@ export class Background {
         }
     }
 
-    generateMiddleTerrain(reaperY) {
-        let deepTerrainCoords = { x: GameVars.gameWdAsPixels, y: reaperY + 60 };
+    generateMiddleTerrain(reaperCoords) {
+        let deepTerrainCoords = { x: GameVars.gameWdAsPixels, y: reaperCoords.y + 60 };
         let treeX = -10;
-        this.bckCtx.fillStyle = "#19191F";
+        this.bckCtx.fillStyle = "#19191f";
         for (let i = 0; i < 130; i++) {
             deepTerrainCoords = this.generateRandomTerrain(deepTerrainCoords, 10, 25, -4, 4, 30, 200);
             treeX = this.generateRandomTrees(treeX, 60, 180, 60);
         }
     }
 
-    generateWaterTerrain(reaperY) {
-        let waterTerrainCoords = { x: GameVars.gameWdAsPixels, y: reaperY + 125 };
-        this.bckCtx.fillStyle = "#E0E8F0";
+    generateWaterTerrain(reaperCoords) {
+        let waterTerrainCoords = { x: GameVars.gameWdAsPixels, y: reaperCoords.y + 125 };
+        this.bckCtx.fillStyle = "#e0e8f0";
         for (let i = 0; i < 130; i++) {
             waterTerrainCoords = this.generateRandomTerrain(waterTerrainCoords, 30, 30, -1, 1, 100, 800);
         }
     }
 
-    generateCloseTerrain(reaperX, reaperY) {
-        let closerTerrainCoords = { x: reaperX + 20, y: reaperY + 112 };
-        let graveX = reaperX + 40;
-        this.bckCtx.fillStyle = "#0F0E11";
+    generateCloseTerrain(reaperCoords) {
+        let closerTerrainCoords = { x: reaperCoords.x + 20, y: reaperCoords.y + 112 };
+        let graveX = reaperCoords.x + 40;
+        this.bckCtx.fillStyle = "#0f0e11";
         this.bckCtx.fillRect(closerTerrainCoords.x * GameVars.pixelSize, closerTerrainCoords.y * GameVars.pixelSize, 400 * GameVars.pixelSize, 800 * GameVars.pixelSize);
         for (let i = 0; i < 160; i++) {
-            graveX = this.generateInLineGraves(graveX, reaperY, 16, 25, 65, 90);
+            graveX = this.generateInLineGraves(graveX, reaperCoords.y, 16, 25, 65, 90);
             closerTerrainCoords = this.generateRandomTerrain(closerTerrainCoords, 4, 8, -6, 12, 30, 800);
         }
     }
@@ -63,13 +62,10 @@ export class Background {
             let newX = terrainCoords.x - randomNumbOnRange(spaceMin, spaceMax);
             let newY = terrainCoords.y + randomNumbOnRange(heightMin, heightMax);
             let yDiff = Math.abs(newY) - Math.abs(terrainCoords.y);
-            let forceBreak = 0;
             while (terrainCoords.y !== newY) {
                 this.bckCtx.fillRect(terrainCoords.x * GameVars.pixelSize, terrainCoords.y * GameVars.pixelSize, size * GameVars.pixelSize, fillHeight * GameVars.pixelSize);
                 if (terrainCoords.x !== newX) terrainCoords.x -= randomNumbOnRange(1, spaceMin);
                 if (terrainCoords.y !== newY) yDiff > 0 ? terrainCoords.y++ : terrainCoords.y--;
-                forceBreak++;
-                if (forceBreak > 500) break;
             }
         }
         return terrainCoords;

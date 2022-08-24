@@ -1,4 +1,6 @@
+.DS_Store
 node_modules
+dist/.DS_Store
 dist/main.js
 dist/main_min.js
 dist/main_min_convertion.txt

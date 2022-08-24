@@ -27,7 +27,6 @@ export const convertTextToPixelArt = (text) => {
         let newPixelTextArray = [];
         for (let letterPos = 0; letterPos < textLetters.length; letterPos++) {
             if (letterPos > 0) {
-                // space between letters
                 newPixelTextArray.push([false]);
             }
             const currentPixelLetter = retrievePixelLetter(textLetters[letterPos]);

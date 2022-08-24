@@ -1,5 +1,5 @@
 const { GameVars } = require("./game-variables");
-const { Game } = require("./screens/game");
+const { Game } = require("./game");
 const { grimReaper } = require("./objects/reaper");
 const { soul } = require("./objects/soul");
 const { drawSprite, createElem } = require("./utilities/draw-utilities");
@@ -56,13 +56,13 @@ function createMainMenu() {
         Math.round((((GameVars.gameH / soulCloseScale) / 6) * 4) - (soul.length / 2)));
 
     let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
-    drawPixelTextInCanvas(convertTextToPixelArt("The Raising"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "#10495E", 6);
-    drawPixelTextInCanvas(convertTextToPixelArt("Fighting Spirits"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 36, "#10495E", 6);
+    drawPixelTextInCanvas(convertTextToPixelArt("the raising"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "#10495e", 6);
+    drawPixelTextInCanvas(convertTextToPixelArt("fighting spirits"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 36, "#10495e", 6);
 
-    drawPixelTextInCanvas(convertTextToPixelArt("click/touch"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 2) + 10, "#10495E", 2);
-    drawPixelTextInCanvas(convertTextToPixelArt("to Start Game"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 2) + 25, "#10495E", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("click/touch"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 2) + 10, "#10495e", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("to start game"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 2) + 25, "#10495e", 2);
 
-    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2022 game by igor estevao"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 24) * 23, "#10495E", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2022 game by igor estevao"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 24) * 23, "#10495e", 2);
 }
 
 function createGameTutorialMenu() {
@@ -71,14 +71,14 @@ function createGameTutorialMenu() {
     let gameTutorialCanvas = createElem(gameTutorDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,150,0.8)");
     gameTutorialCanvas.style.transform = "translateZ(999px)";
 
-    drawPixelTextInCanvas(convertTextToPixelArt("Tutorial"), gameTutorialCanvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 14, "black", 6);
+    drawPixelTextInCanvas(convertTextToPixelArt("tutorial"), gameTutorialCanvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 14, "black", 6);
 
     drawPixelTextInCanvas(convertTextToPixelArt("click/touch to select a soul"), gameTutorialCanvas, GameVars.pixelSize, (GameVars.gameWdAsPixels / 4) + 10, (GameVars.gameHgAsPixels / 2) - 72);
     drawPixelTextInCanvas(convertTextToPixelArt("or use the buttons at the bottom right"), gameTutorialCanvas, GameVars.pixelSize, (GameVars.gameWdAsPixels / 4) + 10, (GameVars.gameHgAsPixels / 2) - 62);
 
     drawPixelTextInCanvas(convertTextToPixelArt("reaper next turn action"), gameTutorialCanvas, GameVars.pixelSize, ((GameVars.gameWdAsPixels / 4) * 3) + 10, (GameVars.gameHgAsPixels / 2) - 112);
 
-    drawPixelTextInCanvas(convertTextToPixelArt("Cards you can play"), gameTutorialCanvas, GameVars.pixelSize, 34, GameVars.gameHgAsPixels - 120);
+    drawPixelTextInCanvas(convertTextToPixelArt("cards you can play"), gameTutorialCanvas, GameVars.pixelSize, 34, GameVars.gameHgAsPixels - 120);
     drawPixelTextInCanvas(convertTextToPixelArt("per turn"), gameTutorialCanvas, GameVars.pixelSize, 34, GameVars.gameHgAsPixels - 110);
 
     drawPixelTextInCanvas(convertTextToPixelArt("drag cards off the hand area to play them"), gameTutorialCanvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 100);
@@ -109,7 +109,7 @@ function createGameOverMenu() {
             game = null;
         });
     gameOverCanv.style.transform = "translateZ(999px)";
-    drawPixelTextInCanvas(convertTextToPixelArt("CROSSED OVER"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 6, "black", 6);
+    drawPixelTextInCanvas(convertTextToPixelArt("crossed over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 6, "black", 6);
 }
 
 function createWinScreenMenu() {

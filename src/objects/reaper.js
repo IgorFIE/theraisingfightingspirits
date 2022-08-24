@@ -8,34 +8,34 @@ const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/t
 
 export class Reaper {
     constructor(gameDiv) {
-        this.reaperAtk = 4;
-        this.reaperAoeAtk = 3;
-        this.reaperDef = 2;
-        this.reaperBuffPower = 1;
-        this.reaperAct = ReaperActs.DEF;
-        this.reaperLockOnSoul = null;
+        this.rAtk = 4;
+        this.rAoeAtk = 3;
+        this.rDef = 2;
+        this.rBuffPwr = 1;
+        this.rAct = 0; // def
+        this.rLckOnSoul = null;
         this.isReaperPlaying = false;
         this.isDead = false;
 
         this.reaperCont = createElem(gameDiv, "div", null, ["reaper-container"]);
 
-        this.reaperActCanv = createElem(this.reaperCont, "canvas", "reaper-action", null, (scytheIcon[0].length + 4) * GameVars.pixelSize, (scytheIcon.length + 4) * GameVars.pixelSize);
-        this.reaperActCtx = this.reaperActCanv.getContext("2d");
+        this.rActCanv = createElem(this.reaperCont, "canvas", "reaper-action", null, (scytheIcon[0].length + 4) * GameVars.pixelSize, (scytheIcon.length + 4) * GameVars.pixelSize);
+        this.rActCtx = this.rActCanv.getContext("2d");
 
-        this.reaperCanv = createElem(this.reaperCont, "canvas", "reaper", null, grimReaper[0].length * GameVars.pixelSize, grimReaper.length * GameVars.pixelSize);
-        this.reaperCanv.style.animation = "addsoul 500ms ease-in-out";
-        this.reaperCanv.addEventListener("animationend", () => {
-            this.isDead = this.reaperStats.lifeValue <= 0;
+        this.rCanv = createElem(this.reaperCont, "canvas", "reaper", null, grimReaper[0].length * GameVars.pixelSize, grimReaper.length * GameVars.pixelSize);
+        this.rCanv.style.animation = "addsoul 500ms ease-in-out";
+        this.rCanv.addEventListener("animationend", () => {
+            this.isDead = this.rStats.lifeValue <= 0;
             if (!this.isDead) {
-                this.reaperCanv.style.animation = "reaperAnim 6s infinite ease-in-out";
+                this.rCanv.style.animation = "reaperAnim 6s infinite ease-in-out";
                 this.draw();
             } else {
                 this.dispose();
             }
         });
-        this.reaperCtx = this.reaperCanv.getContext("2d");
+        this.rCtx = this.rCanv.getContext("2d");
 
-        this.reaperStats = new Status(this.reaperCont, 36, 999, 0);
+        this.rStats = new Status(this.reaperCont, 36, 999, 0);
 
         this.transReaper();
         this.draw();
@@ -58,7 +58,7 @@ export class Reaper {
     calcReaperNextAct() {
         if (GameVars.turnCount === GameVars.reaperNextEventTurn) {
             GameVars.reaperNextEventTurn = GameVars.reaperNextEventTurn * 2;
-            this.reaperAct = ReaperActs.BUFF;
+            this.rAct = 3; // buff
         } else {
             let visibleSouls = [];
             let normalAtkKillsSouls = [];
@@ -67,30 +67,30 @@ export class Reaper {
                 if (soul && soul.soulStats.lifeValue > 0) {
                     visibleSouls.push(soul);
                     let soulTotalLife = soul.soulStats.lifeValue + soul.soulStats.shieldValue;
-                    if (soulTotalLife - this.reaperAtk <= 0) {
+                    if (soulTotalLife - this.rAtk <= 0) {
                         normalAtkKillsSouls.push(soul);
                     }
-                    if (soulTotalLife - this.reaperAoeAtk <= 0) aoeAtkKills++;
+                    if (soulTotalLife - this.rAoeAtk <= 0) aoeAtkKills++;
                 }
             }));
             if (aoeAtkKills > normalAtkKillsSouls.length) {
-                this.reaperAct = ReaperActs.AOE_ATK;
+                this.rAct = 2; // aoe atk
             } else if (normalAtkKillsSouls.length > aoeAtkKills) {
-                this.reaperAct = ReaperActs.ATK;
-                this.reaperLockOnSoul = normalAtkKillsSouls[randomNumb(normalAtkKillsSouls.length)];
+                this.rAct = 1; // atk
+                this.rLckOnSoul = normalAtkKillsSouls[randomNumb(normalAtkKillsSouls.length)];
             } else {
                 let randomValue = randomNumb(100);
                 if (randomValue < 40) {
-                    this.reaperAct = ReaperActs.AOE_ATK;
+                    this.rAct = 2; // aoe atk
                 } else if (randomValue < 80) {
-                    this.reaperAct = ReaperActs.ATK;
+                    this.rAct = 1; // atk
                     if (normalAtkKillsSouls.length > 0) {
-                        this.reaperLockOnSoul = normalAtkKillsSouls[randomNumb(normalAtkKillsSouls.length)];
+                        this.rLckOnSoul = normalAtkKillsSouls[randomNumb(normalAtkKillsSouls.length)];
                     } else {
-                        this.reaperLockOnSoul = visibleSouls[randomNumb(visibleSouls.length)];
+                        this.rLckOnSoul = visibleSouls[randomNumb(visibleSouls.length)];
                     }
                 } else {
-                    this.reaperAct = ReaperActs.DEF;
+                    this.rAct = 0; // shield
                 }
             }
         }
@@ -98,103 +98,96 @@ export class Reaper {
     }
 
     drawReaperAct() {
-        this.reaperActCtx.clearRect(0, 0, this.reaperActCanv.width, this.reaperActCanv.height);
-        switch (this.reaperAct) {
-            case ReaperActs.ATK:
-                this.drawAct(atkIcon, this.reaperAtk);
+        this.rActCtx.clearRect(0, 0, this.rActCanv.width, this.rActCanv.height);
+        switch (this.rAct) {
+            case 1: // atk
+                this.drawAct(atkIcon, this.rAtk);
                 break;
-            case ReaperActs.AOE_ATK:
-                this.drawAct(scytheIcon, this.reaperAoeAtk);
+            case 2: // aoe atk
+                this.drawAct(scytheIcon, this.rAoeAtk);
                 break;
-            case ReaperActs.BUFF:
-                this.drawAct(buffIcon, this.reaperBuffPower);
+            case 3: // buff
+                this.drawAct(buffIcon, this.rBuffPwr);
                 break;
-            default:
-                this.drawAct(defIcon, this.reaperDef);
+            default: // shield
+                this.drawAct(defIcon, this.rDef);
                 break;
         }
     }
 
     drawAct(actionIcon, actionValue) {
-        drawSprite(this.reaperActCanv, actionIcon, GameVars.pixelSize, 4);
-        generateSmallBox(this.reaperActCanv, 0, actionIcon.length - 6, 9, 9, GameVars.pixelSize, "black", "white");
-        drawPixelTextInCanvas(convertTextToPixelArt(actionValue), this.reaperActCanv, GameVars.pixelSize, 5, actionIcon.length - 1, "black");
+        drawSprite(this.rActCanv, actionIcon, GameVars.pixelSize, 4);
+        generateSmallBox(this.rActCanv, 0, actionIcon.length - 6, 9, 9, GameVars.pixelSize, "black", "white");
+        drawPixelTextInCanvas(convertTextToPixelArt(actionValue), this.rActCanv, GameVars.pixelSize, 5, actionIcon.length - 1, "black");
     }
 
     processReaperAct() {
-        if (this.reaperAct === ReaperActs.ATK || this.reaperAct === ReaperActs.AOE_ATK) {
-            this.reaperCanv.style.animation = "";
-            requestAnimationFrame(() => setTimeout(() => this.reaperCanv.style.animation = "reaperatk 1s ease-in-out", 0));
+        if (this.rAct === 1 || this.rAct === 2) { // atk or aoe atk
+            this.rCanv.style.animation = "";
+            requestAnimationFrame(() => setTimeout(() => this.rCanv.style.animation = "reaperatk 1s ease-in-out", 0));
         }
-        switch (this.reaperAct) {
-            case ReaperActs.ATK:
+        switch (this.rAct) {
+            case 1: // atk
                 setTimeout(() => {
-                    if (this.reaperLockOnSoul.soulStats.lifeValue > 0) {
-                        this.reaperLockOnSoul.takeDmg(this.reaperAtk);
+                    if (this.rLckOnSoul.soulStats.lifeValue > 0) {
+                        this.rLckOnSoul.takeDmg(this.rAtk);
                     } else {
                         let soulsAlive = [];
                         GameVars.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStats.lifeValue > 0) soulsAlive.push(soul); }));
-                        soulsAlive[randomNumb(soulsAlive.length)].takeDmg(this.reaperAtk);
+                        soulsAlive[randomNumb(soulsAlive.length)].takeDmg(this.rAtk);
                     }
                 }, 250);
                 break;
-            case ReaperActs.AOE_ATK:
+            case 2: // aoe atk
                 setTimeout(() => {
                     GameVars.souls.forEach((row) => row.forEach((soul) => {
                         if (soul) {
-                            soul.takeDmg(this.reaperAoeAtk);
+                            soul.takeDmg(this.rAoeAtk);
                         }
                     }));
                 }, 250);
                 break;
-            case ReaperActs.BUFF:
-                this.reaperCanv.style.animation = "addshield 500ms ease-in-out";
-                this.reaperAtk += this.reaperBuffPower;
-                this.reaperAoeAtk += this.reaperBuffPower;
-                this.reaperDef += this.reaperBuffPower;
-                this.reaperBuffPower++;
+            case 3: // buff
+                this.rCanv.style.animation = "addshield 500ms ease-in-out";
+                this.rAtk += this.rBuffPwr;
+                this.rAoeAtk += this.rBuffPwr;
+                this.rDef += this.rBuffPwr;
+                this.rBuffPwr++;
                 GameVars.sound.buffSound();
                 break;
             default:
-                this.reaperStats.addShield(this.reaperDef);
+                this.rStats.addShield(this.rDef);
                 break;
         }
     }
 
     takeDmg(dmg) {
-        this.reaperStats.takeDmg(dmg);
+        this.rStats.takeDmg(dmg);
         this.draw("red");
-        if (this.reaperStats.lifeValue > 0) {
-            this.reaperCanv.style.animation = "takedmg 400ms ease-in-out";
+        if (this.rStats.lifeValue > 0) {
+            this.rCanv.style.animation = "takedmg 400ms ease-in-out";
         } else {
-            this.reaperCanv.style.animation = "addsoul 500ms reverse ease-in-out";
+            this.rCanv.style.animation = "addsoul 500ms reverse ease-in-out";
             GameVars.sound.deadSound();
         }
     }
 
     draw(color = null) {
-        this.reaperCtx.clearRect(0, 0, GameVars.reaperW, GameVars.reaperH);
-        drawSprite(this.reaperCanv, grimReaper, GameVars.pixelSize, 0, 0, color);
+        this.rCtx.clearRect(0, 0, GameVars.reaperW, GameVars.reaperH);
+        drawSprite(this.rCanv, grimReaper, GameVars.pixelSize, 0, 0, color);
     }
 
     dispose() {
         if (this.reaperCont.parentNode !== null) {
-            this.reaperStats.dispose();
+            this.rStats.dispose();
             this.reaperCont.parentElement.removeChild(this.reaperCont);
         }
     }
 }
 
-const ReaperActs = {
-    ATK: 0,
-    AOE_ATK: 1,
-    DEF: 2,
-    BUFF: 3,
-}
-
 const nu = null;
 const bl = "#000000";
-const wb = "#EDEEF7";
+const wb = "#edeef7";
 
 export const grimReaper = [
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],

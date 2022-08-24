@@ -1,6 +1,6 @@
 const nu = null;
 const bl = "#000000"
-const wb = "#EDEEF7"
+const wb = "#edeef7"
 
 export const atkIcon = [
     [nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu],
@@ -129,32 +129,6 @@ export const deckIcon = [
     [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl],
-    [bl, bl, nu, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl],
-];
-
-export const graveyardIcon = [
-    [bl, bl, nu, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl],
-    [bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [bl, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, bl],
-    [bl, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, bl],
-    [bl, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, bl],
-    [bl, nu, nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, bl],
-    [bl, nu, nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, bl],
-    [bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, bl],
-    [bl, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, bl],
-    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
-    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
-    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
-    [nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu],
-    [nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu],
-    [nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu],
     [bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl],
     [bl, bl, nu, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl],
 ];

@@ -1,6 +1,5 @@
 import { GameVars } from "../game-variables";
 import { randomNumb } from "../utilities/general-utilities";
-import { EventBtn, UpStatsType } from "./EventBtn";
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 const { createElem } = require("../utilities/draw-utilities");
 
@@ -19,9 +18,9 @@ export class CardEvent {
         let upsStatusUsed = {};
         for (let y = 0; y < 2; y++) {
             for (let x = 0; x < 2; x++) {
-                let randomUpStatusType = randomNumb(Object.keys(UpStatsType).length);
+                let randomUpStatusType = randomNumb(5);
                 while (upsStatusUsed[randomUpStatusType + ""]) {
-                    randomUpStatusType = randomNumb(Object.keys(UpStatsType).length);
+                    randomUpStatusType = randomNumb(5);
                 }
                 upsStatusUsed[randomUpStatusType + ""] = 1;
                 new EventBtn(this.selectionContainerDiv, x, y, randomUpStatusType);

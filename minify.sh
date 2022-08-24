@@ -1,40 +1,6 @@
 #!/bin/bash
 
 props=(
-    convertTextToPixelArt
-    drawPixelTextInCanvas
-    generateMiddleTerrain
-    generateRandomTerrain
-    generateRandomTrees
-    generateCloseTerrain
-    generateWaterTerrain
-    generateDeepTerrain
-    generateInLineGraves
-    updateCardPosition
-    generateGrave
-    gameWdAsPixels
-    generateLargeBox
-    generateSmallBox
-    generateNewMinion
-    reaperNextEventTurn
-    soulNextEventTurn
-    gameHgAsPixels
-    pixelSize
-    playSound
-    isSoundInitialized
-    notesPeerLoop
-    musicBassNote
-    musicMelodyNote
-    processReaperAction
-    reaperActionCanvas
-    reaperCanvas
-    reaperBuffPower
-    reaperAoeAtk
-    reaperActionCtx
-    isReaperPlaying
-    reaperContainer
-    calculateReaperNextAction
-    GameVars
 );
 mainJS=$(cat dist/main.js);
 minifiedMainJsPath="dist/main_min.js";

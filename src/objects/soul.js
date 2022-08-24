@@ -66,9 +66,9 @@ export class Soul {
 }
 
 const nu = null;
-const db = "#10495E";
-const lb = "#9BF2FA";
-const wb = "#EDEEF7";
+const db = "#10495e";
+const lb = "#9bf2fa";
+const wb = "#edeef7";
 
 export const soul = [
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu],
@@ -105,7 +105,7 @@ export const soul = [
     [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu]
 ];
 
-const yl = "#FFFF57";
+const yl = "#ffff57";
 const bl = "#000000"
 
 const arrow = [

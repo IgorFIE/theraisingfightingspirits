@@ -22,13 +22,13 @@ export class EventBtn {
 
     retrieveBtnText() {
         switch (this.upStatusType) {
-            case UpStatsType.CARD_DMG:
+            case 0:
                 return convertTextToPixelArt("cards damage +" + GameVars.cardDmgBuff);
-            case UpStatsType.ENERGY:
+            case 1:
                 return convertTextToPixelArt("energy +1");
-            case UpStatsType.MINIONS_LIFE:
+            case 2:
                 return convertTextToPixelArt("souls life +" + GameVars.soulLifeBuff);
-            case UpStatsType.DRAW_CARD:
+            case 3:
                 return convertTextToPixelArt("cards draw +1");
             default:
                 return convertTextToPixelArt("cards shield +" + GameVars.cardShieldBuff);
@@ -37,14 +37,14 @@ export class EventBtn {
 
     useBtn() {
         switch (this.upStatusType) {
-            case UpStatsType.CARD_DMG:
+            case 0:
                 GameVars.cardDmg += GameVars.cardDmgBuff;
                 GameVars.cardDmgBuff++;
                 break;
-            case UpStatsType.ENERGY:
+            case 1:
                 GameVars.maxPlayCards++;
                 break;
-            case UpStatsType.MINIONS_LIFE:
+            case 2:
                 GameVars.souls.forEach((row) => row.forEach((soul) => {
                     if (soul) {
                         soul.soulStats.maxLifeValue += GameVars.soulLifeBuff;
@@ -54,22 +54,13 @@ export class EventBtn {
                 GameVars.soulLife += GameVars.soulLifeBuff;
                 GameVars.soulLifeBuff++;
                 break;
-            case UpStatsType.DRAW_CARD:
+            case 3:
                 GameVars.drawCardNumb++;
                 break;
             default:
                 GameVars.cardShield += GameVars.cardShieldBuff;
                 GameVars.cardShieldBuff++;
                 break;
-
         }
     }
 }
-
-export const UpStatsType = {
-    CARD_DMG: 0,
-    CARD_SHIELD: 1,
-    ENERGY: 2,
-    MINIONS_LIFE: 3,
-    DRAW_CARD: 4
-};
