@@ -1,2 +1,4 @@
 node_modules
 dist/main.js
+dist/main_min.js
+dist/main_min_convertion.txt

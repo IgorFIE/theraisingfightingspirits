@@ -9,7 +9,7 @@ export class Background {
     }
 
     generate(reaper) {
-        const reaperBox = reaper.reaperContainer.getBoundingClientRect();
+        const reaperBox = reaper.reaperCont.getBoundingClientRect();
         let reaperX = Math.round(reaperBox.left / GameVars.pixelSize);
         let reaperY = Math.round(reaperBox.top / GameVars.pixelSize);
 
