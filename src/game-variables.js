@@ -31,6 +31,8 @@ let cardContH;
 
 const statsBarH = 18;
 
+let sound;
+
 let reaper;
 
 let soulsConts;
@@ -126,6 +128,8 @@ export const GameVars = {
     cardContY,
     cardContW,
     cardContH,
+
+    sound,
 
     reaper,
 

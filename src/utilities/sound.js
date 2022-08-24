@@ -1,4 +1,4 @@
-class Sound {
+export class Sound {
     constructor() {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         this.context = new AudioContext();
@@ -133,5 +133,3 @@ const mM = [
     784.0, 880.0, 987.8, 1047, 1175, 987.8, 1175, null,
     1319, 987.8, 1319, null, 1175, null, null, null,
 ];
-
-export const SoundInstance = new Sound();

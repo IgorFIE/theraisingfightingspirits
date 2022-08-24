@@ -79,61 +79,39 @@ export class Game {
             }
         }
 
-        this.retrievePreviousSoul();
-        this.retrieveNextSoul();
+        this.retrieveNextPrevSoul();
     }
 
-    retrieveNextSoul() {
+    retrieveNextPrevSoul() {
         if (GameVars.soulsInGame > 1) {
             let soul = GameVars.soulInUse;
-            let soulExists = false;
-            for (let y = soul.arrayPosY; y < GameVars.souls.length; y++) {
-                for (let x = (y == soul.arrayPosY ? soul.arrayPosX : 0); x < GameVars.souls[0].length; x++) {
+            let prevSoul = null;
+            let nextSoul = null;
+            for (let y = 0; y < GameVars.souls.length; y++) {
+                for (let x = 0; x < GameVars.souls[0].length; x++) {
                     if (y === soul.arrayPosY && x === soul.arrayPosX) {
                         continue;
                     }
                     if (GameVars.souls[y][x] !== null) {
-                        GameVars.nextSoul = GameVars.souls[y][x];
-                        soulExists = true;
-                        break;
-                    }
-                }
-                if (soulExists) break;
-            }
-            if (!soulExists) {
-                GameVars.nextSoul = null;
-            }
-        }
-    }
+                        if (y < soul.arrayPosY || (y === soul.arrayPosY && x < soul.arrayPosX)) {
+                            prevSoul = GameVars.souls[y][x];
+                        }
 
-    retrievePreviousSoul() {
-        if (GameVars.soulsInGame > 1) {
-            let soul = GameVars.soulInUse;
-            let soulExists = false;
-            for (let y = soul.arrayPosY; y >= 0; y--) {
-                for (let x = (y == soul.arrayPosY ? soul.arrayPosX : GameVars.souls[0].length - 1); x >= 0; x--) {
-                    if (y === soul.arrayPosY && x === soul.arrayPosX) {
-                        continue;
-                    }
-                    if (GameVars.souls[y][x] !== null) {
-                        GameVars.previousSoul = GameVars.souls[y][x];
-                        soulExists = true;
-                        break;
+                        if (nextSoul === null && (y > soul.arrayPosY || (y === soul.arrayPosY && x > soul.arrayPosX))) {
+                            nextSoul = GameVars.souls[y][x];
+                        }
                     }
                 }
-                if (soulExists) break;
             }
-            if (!soulExists) {
-                GameVars.prevSoul = null;
-            }
+            GameVars.prevSoul = prevSoul;
+            GameVars.nextSoul = nextSoul;
         }
     }
 
     cleanDeadSouls() {
-        let currentSoul = null;
         for (let y = 0; y < GameVars.souls.length; y++) {
             for (let x = 0; x < GameVars.souls[0].length; x++) {
-                currentSoul = GameVars.souls[y][x];
+                let currentSoul = GameVars.souls[y][x];
                 if (currentSoul && currentSoul.isDeadAndAnimationEnded) {
                     if (currentSoul === GameVars.soulInUse) {
                         GameVars.soulInUse = null;
