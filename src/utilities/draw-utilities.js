@@ -1,17 +1,15 @@
 export const drawSprite = (canvas, sprite, pixelSize, startX = 0, startY = 0, color = null) => {
     const ctx = canvas.getContext("2d");
-    for (let y = 0; y < sprite.length; y++) {
-        for (let x = 0; x < sprite[y].length; x++) {
-            if (sprite[y][x] !== null) {
-                ctx.fillStyle = color ? color : sprite[y][x];
-                ctx.fillRect(
-                    (startX * pixelSize) + (x * pixelSize),
-                    (startY * pixelSize) + (y * pixelSize),
-                    pixelSize,
-                    pixelSize);
-            }
+    sprite.forEach((row, y) => row.forEach((val, x) => {
+        if (val !== null) {
+            ctx.fillStyle = color ? color : val;
+            ctx.fillRect(
+                (startX * pixelSize) + (x * pixelSize),
+                (startY * pixelSize) + (y * pixelSize),
+                pixelSize,
+                pixelSize);
         }
-    }
+    }));
 };
 
 export const createElem = (parentElem, elemType, id, classList, width, height, backgroundColor, clickFn) => {

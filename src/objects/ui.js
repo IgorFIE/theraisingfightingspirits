@@ -142,8 +142,8 @@ export class UI {
         }
         this.drawEndTurnBtn();
         this.drawNexSoulBtn();
-        this.drawPreviousBtn();
-        this.drawTurnCounter();
+        this.drawPrevBtn();
+        this.drawTurnCount();
     }
 
     drawEndTurnBtn() {
@@ -152,7 +152,7 @@ export class UI {
         drawPixelTextInCanvas(convertTextToPixelArt("end turn"), this.endTurnCanv, GameVars.pixelSize, 34, 12);
     }
 
-    drawPreviousBtn() {
+    drawPrevBtn() {
         this.prevSoulCtx.clearRect(0, 0, this.prevSoulCanv.width, this.prevSoulCanv.height);
         generateLargeBox(this.prevSoulCanv, 5, 3, 56, 13, GameVars.pixelSize, "black", GameVars.prevSoul ? "white" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("previous soul"), this.prevSoulCanv, GameVars.pixelSize, 34, 10);
@@ -164,7 +164,7 @@ export class UI {
         drawPixelTextInCanvas(convertTextToPixelArt("next soul"), this.nextSoulCanv, GameVars.pixelSize, 34, 12);
     }
 
-    drawTurnCounter() {
+    drawTurnCount() {
         this.turnCountCtx.clearRect(0, 0, this.turnCountCanv.width, this.turnCountCanv.height);
         drawPixelTextInCanvas(convertTextToPixelArt("turn: " + GameVars.turnCount), this.turnCountCanv, GameVars.pixelSize, 150 / GameVars.pixelSize, 25, "black", 2);
     }
