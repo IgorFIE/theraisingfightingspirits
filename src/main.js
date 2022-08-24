@@ -1,7 +1,7 @@
 const { GameVars } = require("./game-variables");
 const { Game } = require("./screens/game");
 const { grimReaper } = require("./objects/reaper");
-const { maleSoul, femaleSoul } = require("./objects/soul");
+const { maleSoul } = require("./objects/soul");
 const { drawSprite, createElemOnElem } = require("./utilities/draw-utilities");
 const { Sound } = require("./utilities/sound");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");

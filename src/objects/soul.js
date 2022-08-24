@@ -8,14 +8,12 @@ export class Soul {
         GameVars.sound.spawnSound();
         this.arrayPosX = arrayPosX;
         this.arrayPosY = arrayPosY;
-        this.isMale = randomNumb(2) === 0;
-        this.spriteInUse = (this.isMale ? maleSoul : femaleSoul);
         this.isDeadAndAnimationEnded = false;
 
         this.soulSelectedArrowCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul-selection-arrow", "hidden"], selectedArrow[0].length * GameVars.pixelSize, selectedArrow.length * GameVars.pixelSize);
         drawSprite(this.soulSelectedArrowCanvas, selectedArrow, GameVars.pixelSize);
 
-        this.soulCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul"], this.spriteInUse[0].length * GameVars.pixelSize, this.spriteInUse.length * GameVars.pixelSize, null, (e) => {
+        this.soulCanvas = createElemOnElem(soulContainer, "canvas", null, ["soul"], maleSoul[0].length * GameVars.pixelSize, maleSoul.length * GameVars.pixelSize, null, (e) => {
             this.selectSoul()
             GameVars.sound.clickSound();
         });
@@ -56,7 +54,7 @@ export class Soul {
 
     draw(color = null) {
         this.soulCtx.clearRect(0, 0, GameVars.soulW, GameVars.soulH);
-        drawSprite(this.soulCanvas, this.spriteInUse, GameVars.pixelSize, 0, 0, color);
+        drawSprite(this.soulCanvas, maleSoul, GameVars.pixelSize, 0, 0, color);
     }
 
     dispose() {
@@ -106,45 +104,6 @@ export const maleSoul = [
     [nu, nu, nu, nu, wb, wb, db, db, lb, lb, lb, lb, db, db, wb, wb, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, wb, wb, db, db, db, db, wb, wb, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu]
-];
-
-const lp = "#FFBFFF";
-const dp = "#C776CA";
-const dl = "#9F3FA3";
-
-export const femaleSoul = [
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, dp, wb, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, wb, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, wb, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, dp, wb, wb, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, dp, dp, wb],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, dp, lp, dp, wb],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, dp, dp, lp, lp, dp, wb],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, dp, lp, lp, lp, dp, wb, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, wb, dl, dl, lp, lp, lp, dp, wb, nu, nu],
-    [nu, nu, nu, nu, nu, nu, wb, wb, dp, dp, dp, dp, wb, wb, dl, lp, lp, dl, lp, lp, lp, dp, wb, nu],
-    [nu, nu, nu, nu, wb, wb, dp, dp, lp, lp, lp, lp, dp, dl, lp, lp, lp, dl, lp, lp, lp, dp, wb, nu],
-    [nu, nu, nu, wb, dp, dp, lp, lp, lp, lp, lp, lp, lp, dl, lp, lp, lp, dl, dl, lp, lp, dp, wb, nu],
-    [nu, nu, wb, dp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, dl, dl, dl, lp, dl, dl, dl, dp, wb, nu],
-    [nu, wb, dp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, dl, dl, lp, lp, lp, dl, wb, nu],
-    [nu, wb, dp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, dl, lp, lp, lp, dl, wb, nu],
-    [wb, dp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, lp, dl, lp, lp, dl, wb, nu, nu],
-    [wb, dp, lp, lp, lp, lp, lp, wb, wb, wb, wb, wb, wb, lp, lp, lp, lp, lp, dl, dl, wb, nu, nu, nu],
-    [wb, dp, lp, lp, lp, lp, wb, wb, wb, wb, wb, wb, wb, wb, lp, lp, lp, lp, dp, wb, nu, nu, nu, nu],
-    [wb, dp, lp, lp, lp, dp, wb, wb, wb, wb, wb, wb, wb, wb, dp, lp, lp, lp, dp, wb, nu, nu, nu, nu],
-    [wb, dp, lp, lp, lp, wb, dp, dp, wb, wb, wb, wb, dp, dp, wb, lp, lp, lp, dp, wb, nu, nu, nu, nu],
-    [wb, dp, lp, lp, lp, wb, dp, dp, wb, wb, wb, wb, dp, dp, wb, lp, lp, lp, dp, wb, nu, nu, nu, nu],
-    [nu, wb, dp, lp, lp, wb, wb, wb, wb, wb, wb, wb, wb, wb, wb, lp, lp, dp, wb, nu, nu, nu, nu, nu],
-    [nu, wb, dp, lp, lp, lp, wb, wb, wb, dp, dp, wb, wb, wb, lp, lp, lp, dp, wb, nu, nu, nu, nu, nu],
-    [nu, nu, wb, dp, lp, lp, lp, wb, dp, dp, dp, dp, wb, lp, lp, lp, dp, wb, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, wb, dp, dp, lp, lp, lp, dp, dp, lp, lp, lp, dp, dp, wb, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, wb, wb, dp, dp, lp, lp, lp, lp, dp, dp, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, wb, wb, dp, dp, dp, dp, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu]
 ];
 
 const yl = "#FFFF57";
