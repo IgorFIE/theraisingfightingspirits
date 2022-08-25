@@ -35,7 +35,7 @@ export class Card {
                 break;
             case 1:
                 drawSprite(this.cardCanv, minionIcon, GameVars.pixelSize);
-                drawSprite(this.cardCanv, spiritImg, GameVars.pixelSize, 21, 16);
+                drawSprite(this.cardCanv, spiritImg, GameVars.pixelSize, 22, 19);
                 this.generateCardText("spirit", "minion", "+1 soul");
                 break;
             default:
@@ -151,14 +151,14 @@ export class Card {
             }
             card.cardCanv.classList.add("on-top");
 
-            document.onmouseup = closeDragElement;
-            document.onmousemove = elementDrag;
+            document.onmouseup = closeDragElem;
+            document.onmousemove = elemDrag;
 
-            document.ontouchend = closeDragElement;
-            document.ontouchmove = elementDrag;
+            document.ontouchend = closeDragElem;
+            document.ontouchmove = elemDrag;
         }
 
-        function elementDrag(e) {
+        function elemDrag(e) {
             e = e || window.event;
             e.preventDefault();
             if (e.touches && e.touches.length > 0) {
@@ -177,7 +177,7 @@ export class Card {
             card.cardCanv.style.left = (card.cardCanv.offsetLeft - newX) + "px";
         }
 
-        function closeDragElement(e) {
+        function closeDragElem(e) {
             document.onmouseup = null;
             document.onmousemove = null;
 
@@ -242,29 +242,24 @@ const hardenImg = [
 ];
 
 const spiritImg = [
-    [nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu],
-    [nu, nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, bl, bl, bl, bl, nu, nu, bl, nu, nu, nu, nu],
-    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu],
-    [nu, nu, nu, nu, bl, bl, bl, bl, bl, bl, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, bl, bl, bl, bl, nu, nu, nu, nu, nu],
-    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
-    [nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu],
-    [nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu],
-    [nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu],
-    [bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl],
-    [bl, bl, bl, bl, bl, nu, nu, nu, nu, bl, bl, bl, bl, bl],
-    [bl, bl, bl, bl, nu, nu, nu, nu, nu, nu, bl, bl, bl, bl],
-    [bl, bl, bl, bl, nu, nu, nu, nu, nu, nu, bl, bl, bl, bl],
-    [nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu],
-    [nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, bl, bl, bl, nu],
-    [nu, nu, bl, bl, bl, nu, nu, nu, nu, bl, bl, bl, nu, nu],
-    [nu, nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu, nu, nu],
-    [nu, nu, nu, nu, nu, bl, bl, bl, bl, nu, nu, nu, nu, nu]
+    [nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, nu, bl, bl, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, bl, nu, nu, nu, nu],
+    [nu, nu, bl, bl, bl, bl, bl, nu, nu, nu, nu],
+    [nu, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu],
+    [nu, bl, bl, bl, bl, nu, nu, nu, nu, nu, nu],
+    [nu, bl, bl, bl, bl, bl, nu, nu, nu, nu, nu],
+    [nu, nu, bl, bl, bl, bl, bl, bl, nu, nu, nu],
+    [nu, nu, nu, bl, bl, bl, bl, bl, bl, nu, nu],
+    [nu, nu, bl, bl, bl, bl, bl, bl, bl, bl, nu],
+    [nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu],
+    [nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl],
+    [bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl],
+    [bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl],
+    [bl, bl, nu, bl, bl, bl, bl, bl, nu, bl, bl],
+    [bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, bl],
+    [bl, bl, bl, bl, bl, bl, bl, bl, bl, bl, bl],
+    [nu, bl, bl, bl, bl, bl, bl, bl, bl, bl, nu],
+    [nu, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu]
 ];
