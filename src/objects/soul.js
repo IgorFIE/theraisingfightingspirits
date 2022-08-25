@@ -19,7 +19,7 @@ export class Soul {
         this.soulCanv.style.animation = "addsoul 500ms ease-in-out";
         this.soulCanv.addEventListener("animationend", () => {
             this.soulCanv.style.animation = "soulAnim 6s infinite ease-in-out";
-            this.isDead = this.soulStats.lifeValue <= 0;
+            this.isDead = this.soulStats.life <= 0;
             this.draw();
         });
         this.soulCtx = this.soulCanv.getContext("2d");
@@ -43,7 +43,7 @@ export class Soul {
     takeDmg(dmg) {
         this.soulStats.takeDmg(dmg);
         this.draw("red");
-        if (this.soulStats.lifeValue > 0) {
+        if (this.soulStats.life > 0) {
             this.soulCanv.style.animation = "takedmg 400ms ease-in-out";
         } else {
             this.soulCanv.style.animation = "addsoul 500ms reverse ease-in-out";

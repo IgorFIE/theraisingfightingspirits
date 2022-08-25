@@ -25,7 +25,7 @@ export class Reaper {
         this.rCanv = createElem(this.reaperCont, "canvas", "reaper", null, grimReaper[0].length * GameVars.pixelSize, grimReaper.length * GameVars.pixelSize);
         this.rCanv.style.animation = "addsoul 500ms ease-in-out";
         this.rCanv.addEventListener("animationend", () => {
-            this.isDead = this.rStats.lifeValue <= 0;
+            this.isDead = this.rStats.life <= 0;
             if (!this.isDead) {
                 this.rCanv.style.animation = "reaperAnim 6s infinite ease-in-out";
                 this.draw();
@@ -67,9 +67,9 @@ export class Reaper {
             let normalAtkKillsSouls = [];
             let aoeAtkKills = 0;
             GameVars.souls.forEach((row) => row.forEach((soul) => {
-                if (soul && soul.soulStats.lifeValue > 0) {
+                if (soul && soul.soulStats.life > 0) {
                     visibleSouls.push(soul);
-                    let soulTotalLife = soul.soulStats.lifeValue + soul.soulStats.shieldValue;
+                    let soulTotalLife = soul.soulStats.life + soul.soulStats.shield;
                     if (soulTotalLife - this.rAtk <= 0) {
                         normalAtkKillsSouls.push(soul);
                     }
@@ -132,11 +132,11 @@ export class Reaper {
         switch (this.rAct) {
             case 1: // atk
                 setTimeout(() => {
-                    if (this.rLckOnSoul.soulStats.lifeValue > 0) {
+                    if (this.rLckOnSoul.soulStats.life > 0) {
                         this.rLckOnSoul.takeDmg(this.rAtk);
                     } else {
                         let soulsAlive = [];
-                        GameVars.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStats.lifeValue > 0) soulsAlive.push(soul); }));
+                        GameVars.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStats.life > 0) soulsAlive.push(soul); }));
                         soulsAlive[randomNumb(soulsAlive.length)].takeDmg(this.rAtk);
                     }
                 }, 250);
@@ -167,7 +167,7 @@ export class Reaper {
     takeDmg(dmg) {
         this.rStats.takeDmg(dmg);
         this.draw("red");
-        if (this.rStats.lifeValue > 0) {
+        if (this.rStats.life > 0) {
             this.rCanv.style.animation = "takedmg 400ms ease-in-out";
         } else {
             this.rCanv.style.animation = "addsoul 500ms reverse ease-in-out";

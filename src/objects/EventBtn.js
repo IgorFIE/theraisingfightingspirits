@@ -5,7 +5,7 @@ const { createElem } = require("../utilities/draw-utilities");
 
 export class EventBtn {
     constructor(btnContainer, x, y, upstatusType) {
-        this.upStatusType = upstatusType;
+        this.eType = upstatusType;
 
         let eventBtnCanvas = createElem(btnContainer, "canvas", null, ["on-top"], 140 * GameVars.pixelSize, 40 * GameVars.pixelSize, null, () => {
             GameVars.sound.buffSound();
@@ -17,11 +17,11 @@ export class EventBtn {
         eventBtnCanvas.style.translate = ((GameVars.gameW / 2) - (x * (eventBtnCanvas.width + (10 * GameVars.pixelSize)))) + "px " +
             ((GameVars.gameH / 2) - (y * (eventBtnCanvas.height + (10 * GameVars.pixelSize)))) + "px";
         generateLargeBox(eventBtnCanvas, 0, 0, 139, 39, GameVars.pixelSize, "black", "rgba(150,150,150,0.8)");
-        drawPixelTextInCanvas(this.retrieveBtnText(), eventBtnCanvas, GameVars.pixelSize, 70, 20, "black", 1);
+        drawPixelTextInCanvas(this.genBtnText(), eventBtnCanvas, GameVars.pixelSize, 70, 20, "black", 1);
     }
 
-    retrieveBtnText() {
-        switch (this.upStatusType) {
+    genBtnText() {
+        switch (this.eType) {
             case 0:
                 return convertTextToPixelArt("cards damage +" + GameVars.cardDmgBuff);
             case 1:
@@ -36,7 +36,7 @@ export class EventBtn {
     }
 
     useBtn() {
-        switch (this.upStatusType) {
+        switch (this.eType) {
             case 0:
                 GameVars.cardDmg += GameVars.cardDmgBuff;
                 GameVars.cardDmgBuff++;
@@ -47,7 +47,7 @@ export class EventBtn {
             case 2:
                 GameVars.souls.forEach((row) => row.forEach((soul) => {
                     if (soul) {
-                        soul.soulStats.maxLifeValue += GameVars.soulLifeBuff;
+                        soul.soulStats.maxLife += GameVars.soulLifeBuff;
                         soul.soulStats.draw();
                     }
                 }));

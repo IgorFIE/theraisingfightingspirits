@@ -1,5 +1,5 @@
 import { GameVars } from "../game-variables";
-import { CardEvent } from "../objects/cardEvent";
+import { Event } from "../objects/event";
 const { Card } = require("../objects/card");
 const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
@@ -36,7 +36,7 @@ export class UI {
         this.cardCont = createElem(gameDiv, "div", "card-container");
         GameVars.cards = [];
 
-        this.cardEvent = new CardEvent(gameDiv);
+        this.cardEvent = new Event(gameDiv);
 
         this.calcCardsArea();
     }
