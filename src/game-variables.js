@@ -13,10 +13,11 @@ const calcPixelSize = () => {
     GameVars.pixelSize = hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
     GameVars.gameWdAsPixels = GameVars.gameW / GameVars.pixelSize;
     GameVars.gameHgAsPixels = GameVars.gameH / GameVars.pixelSize;
-};
 
-const cardW = 53;
-const cardH = 85;
+    GameVars.cardContW = Math.round((GameVars.gameW / 2) / GameVars.pixelSize);
+    GameVars.cardContX = ((GameVars.gameW / 2) - ((GameVars.cardContW / 2) * GameVars.pixelSize));
+    GameVars.cardContY = (GameVars.gameH - (GameVars.cardContH * GameVars.pixelSize));
+};
 
 let cardContX;
 let cardContY;
@@ -60,7 +61,7 @@ const resetGameVars = () => {
     GameVars.cardContX = 0;
     GameVars.cardContY = 0;
     GameVars.cardContW = 0;
-    GameVars.cardContH = cardH + 4;
+    GameVars.cardContH = 85 + 4;
 
     GameVars.reaper = null;
 
@@ -92,6 +93,8 @@ const resetGameVars = () => {
     GameVars.cardShieldBuff = 4;
 
     GameVars.isEventRunning = false;
+
+    GameVars.calcPixelSize();
 }
 
 export const GameVars = {
@@ -102,9 +105,6 @@ export const GameVars = {
     gameWdAsPixels,
     gameHgAsPixels,
     calcPixelSize,
-
-    cardW,
-    cardH,
 
     cardContX,
     cardContY,

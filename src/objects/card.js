@@ -11,7 +11,7 @@ export class Card {
         this.isUsed = false;
         this.isDispose = false;
 
-        this.cardCanv = createElem(gameDiv, "canvas", null, ["card"], GameVars.cardW * GameVars.pixelSize, GameVars.cardH * GameVars.pixelSize);
+        this.cardCanv = createElem(gameDiv, "canvas", null, ["card"], 53 * GameVars.pixelSize, 85 * GameVars.pixelSize);
         this.cardCanv.style.animation = "cardturn 500ms linear";
 
         this.updateCardPos(cardX, cardY);
@@ -89,7 +89,7 @@ export class Card {
     }
 
     drawCard(bckColor = "White") {
-        generateLargeBox(this.cardCanv, 2, 2, GameVars.cardW - 3, GameVars.cardH - 3, GameVars.pixelSize, "black", bckColor);
+        generateLargeBox(this.cardCanv, 2, 2, 53 - 3, 85 - 3, GameVars.pixelSize, "black", bckColor);
         generateSmallBox(this.cardCanv, 7, 14, 40, 31, GameVars.pixelSize, "black", bckColor);
         generateSmallBox(this.cardCanv, 7, 48, 40, 31, GameVars.pixelSize, "black", bckColor);
         generateSmallBox(this.cardCanv, 13, 42, 28, 9, GameVars.pixelSize, "black", bckColor);

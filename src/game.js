@@ -14,18 +14,6 @@ export class Game {
 
         this.background = new Background(gameDiv);
 
-        this.generateSoulsContainers();
-        GameVars.souls[1][1] = new Soul(GameVars.soulsConts[1][1], 1, 1);
-        GameVars.souls[1][1].select();
-        GameVars.soulsInGame++;
-
-        GameVars.reaper = new Reaper(gameDiv);
-        this.background.generate(GameVars.reaper);
-
-        this.ui = new UI(gameDiv);
-    }
-
-    generateSoulsContainers() {
         let fakeSoulContainer = createElem(this.gameDiv, "div", null, ["soul-container"]);
         new Soul(fakeSoulContainer, 0, 0);
 
@@ -50,18 +38,18 @@ export class Game {
             GameVars.soulsConts.push(newSoulContainerArray);
             GameVars.souls.push(newSoulArray);
         }
+        
+        GameVars.souls[1][1] = new Soul(GameVars.soulsConts[1][1], 1, 1);
+        GameVars.souls[1][1].select();
+        GameVars.soulsInGame++;
+
+        GameVars.reaper = new Reaper(gameDiv);
+        this.background.generate(GameVars.reaper);
+
+        this.ui = new UI(gameDiv);
     }
 
     update() {
-        this.cleanDeadSouls();
-        if (!GameVars.isPlayerTurn) {
-            GameVars.reaper.reaperTurn();
-        } else {
-            this.ui.playerTurn();
-        }
-    }
-
-    cleanDeadSouls() {
         GameVars.souls.forEach((row, y) => row.forEach((soul, x) => {
             if (soul && soul.isDead) {
                 if (soul === GameVars.soulInUse) {
@@ -78,9 +66,12 @@ export class Game {
             GameVars.soulInUse = GameVars.souls[soulCoords.y][soulCoords.x];
             GameVars.soulInUse.select();
         }
-    }
 
-    draw() {
+        if (!GameVars.isPlayerTurn) {
+            GameVars.reaper.reaperTurn();
+        } else {
+            this.ui.playerTurn();
+        }
         this.ui.draw();
         GameVars.cards.forEach(card => card.draw());
     }

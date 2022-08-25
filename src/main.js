@@ -23,7 +23,6 @@ function init() {
     GameVars.sound = new Sound();
 
     GameVars.resetGameVars();
-    GameVars.calcPixelSize();
 
     createGameContainer();
     createGameTutorialMenu();
@@ -138,7 +137,7 @@ function startGame() {
 function gameLoop() {
     if (game) {
         game.update();
-        game.draw();
+
         if (GameVars.soulsInGame <= 0) {
             gameOverCanv.classList.remove("hidden");
         }
