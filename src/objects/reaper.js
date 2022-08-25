@@ -35,21 +35,54 @@ export class Reaper {
 
         this.rStats = new Status(this.reaperCont, 36, 999, 0);
 
-        this.transReaper();
-        this.draw();
-        this.calcReaperNextAct();
-    }
-
-    transReaper() {
         let reaperX = ((GameVars.gameW / 4) * 3) - (this.reaperCont.clientWidth / 2);
         let reaperY = (GameVars.gameH / 2) - ((this.reaperCont.clientHeight / 4) * 3);
         this.reaperCont.style.transform = "translate(" + reaperX + "px," + reaperY + "px)";
+
+        this.draw();
+        this.calcReaperNextAct();
     }
 
     reaperTurn() {
         if (this.isNewTurn) {
             this.isNewTurn = false;
-            this.processReaperAct();
+            if (this.rAct === 1 || this.rAct === 2) { // atk or aoe atk
+                this.rCanv.style.animation = "";
+                requestAnimationFrame(() => setTimeout(() => this.rCanv.style.animation = "reaperatk 1s ease-in-out", 0));
+            }
+            switch (this.rAct) {
+                case 1: // atk
+                    setTimeout(() => {
+                        if (this.rLckOnSoul.soulStats.life > 0) {
+                            this.rLckOnSoul.takeDmg(this.rAtk);
+                        } else {
+                            let soulsAlive = [];
+                            GameVars.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStats.life > 0) soulsAlive.push(soul); }));
+                            soulsAlive[randomNumb(soulsAlive.length)].takeDmg(this.rAtk);
+                        }
+                    }, 250);
+                    break;
+                case 2: // aoe atk
+                    setTimeout(() => {
+                        GameVars.souls.forEach((row) => row.forEach((soul) => {
+                            if (soul) {
+                                soul.takeDmg(this.rAoeAtk);
+                            }
+                        }));
+                    }, 250);
+                    break;
+                case 3: // buff
+                    this.rCanv.style.animation = "addshield 500ms ease-in-out";
+                    this.rAtk += this.rBuffPwr;
+                    this.rAoeAtk += this.rBuffPwr;
+                    this.rDef += this.rBuffPwr;
+                    this.rBuffPwr++;
+                    GameVars.sound.buffSound();
+                    break;
+                default:
+                    this.rStats.addShield(this.rDef);
+                    break;
+            }
             this.calcReaperNextAct();
             setTimeout(() => {
                 GameVars.isPlayerTurn = true;
@@ -97,10 +130,7 @@ export class Reaper {
                 }
             }
         }
-        this.drawReaperAct();
-    }
 
-    drawReaperAct() {
         this.rActCtx.clearRect(0, 0, this.rActCanv.width, this.rActCanv.height);
         switch (this.rAct) {
             case 1: // atk
@@ -122,46 +152,6 @@ export class Reaper {
         drawSprite(this.rActCanv, actionIcon, GameVars.pixelSize, 4);
         generateSmallBox(this.rActCanv, 0, actionIcon.length - 6, 9, 9, GameVars.pixelSize, "black", "white");
         drawPixelTextInCanvas(convertTextToPixelArt(actionValue), this.rActCanv, GameVars.pixelSize, 5, actionIcon.length - 1, "black");
-    }
-
-    processReaperAct() {
-        if (this.rAct === 1 || this.rAct === 2) { // atk or aoe atk
-            this.rCanv.style.animation = "";
-            requestAnimationFrame(() => setTimeout(() => this.rCanv.style.animation = "reaperatk 1s ease-in-out", 0));
-        }
-        switch (this.rAct) {
-            case 1: // atk
-                setTimeout(() => {
-                    if (this.rLckOnSoul.soulStats.life > 0) {
-                        this.rLckOnSoul.takeDmg(this.rAtk);
-                    } else {
-                        let soulsAlive = [];
-                        GameVars.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStats.life > 0) soulsAlive.push(soul); }));
-                        soulsAlive[randomNumb(soulsAlive.length)].takeDmg(this.rAtk);
-                    }
-                }, 250);
-                break;
-            case 2: // aoe atk
-                setTimeout(() => {
-                    GameVars.souls.forEach((row) => row.forEach((soul) => {
-                        if (soul) {
-                            soul.takeDmg(this.rAoeAtk);
-                        }
-                    }));
-                }, 250);
-                break;
-            case 3: // buff
-                this.rCanv.style.animation = "addshield 500ms ease-in-out";
-                this.rAtk += this.rBuffPwr;
-                this.rAoeAtk += this.rBuffPwr;
-                this.rDef += this.rBuffPwr;
-                this.rBuffPwr++;
-                GameVars.sound.buffSound();
-                break;
-            default:
-                this.rStats.addShield(this.rDef);
-                break;
-        }
     }
 
     takeDmg(dmg) {

@@ -11,9 +11,9 @@ export class Status {
         this.shield = shieldValue;
         this.w = w;
 
-        this.statusCanvas = createElem(parentdiv, "canvas", null, ["status"], (18 + w) * GameVars.pixelSize, 18 * GameVars.pixelSize);
-        this.statusCanvas.addEventListener("animationend", () => this.statusCanvas.style.animation = "");
-        this.statusCtx = this.statusCanvas.getContext("2d");
+        this.statsCanv = createElem(parentdiv, "canvas", null, ["status"], (18 + w) * GameVars.pixelSize, 18 * GameVars.pixelSize);
+        this.statsCanv.addEventListener("animationend", () => this.statsCanv.style.animation = "");
+        this.statsCtx = this.statsCanv.getContext("2d");
         this.draw();
     }
 
@@ -37,35 +37,29 @@ export class Status {
 
     addShield(shieldAmount) {
         GameVars.sound.gainShield();
-        this.statusCanvas.style.animation = "";
-        requestAnimationFrame(() => setTimeout(() => this.statusCanvas.style.animation = "addshield 500ms ease-in-out", 0));
+        this.statsCanv.style.animation = "";
+        requestAnimationFrame(() => setTimeout(() => this.statsCanv.style.animation = "addshield 500ms ease-in-out", 0));
         this.shield += shieldAmount;
         this.draw();
     }
 
     draw() {
-        this.statusCtx.clearRect(0, 0, this.statusCanvas.width, this.statusCanvas.height);
-        generateSmallBox(this.statusCanvas, 16, 3, this.w + 1, 11, GameVars.pixelSize, "white", "white");
-        this.drawShield();
-        generateSmallBox(this.statusCanvas, 17, 4, this.w - 1, 9, GameVars.pixelSize, "black", "white");
-        this.drawLifeBar();
-        const lifeText = convertTextToPixelArt(this.life + "/" + this.maxLife);
-        drawPixelTextInCanvas(lifeText, this.statusCanvas, GameVars.pixelSize, 17 + (this.w / 2), 9);
-    }
-
-    drawShield() {
+        this.statsCtx.clearRect(0, 0, this.statsCanv.width, this.statsCanv.height);
+        generateSmallBox(this.statsCanv, 16, 3, this.w + 1, 11, GameVars.pixelSize, "white", "white");
         if (this.shield > 0) {
-            drawSprite(this.statusCanvas, defIcon, GameVars.pixelSize);
-            drawPixelTextInCanvas(convertTextToPixelArt(this.shield), this.statusCanvas, GameVars.pixelSize, 9, 9, "white");
+            drawSprite(this.statsCanv, defIcon, GameVars.pixelSize);
+            drawPixelTextInCanvas(convertTextToPixelArt(this.shield), this.statsCanv, GameVars.pixelSize, 9, 9, "white");
         }
-    }
 
-    drawLifeBar() {
-        this.statusCtx.fillStyle = this.shield > 0 ? "lightblue" : "red";
-        this.statusCtx.fillRect(
+        generateSmallBox(this.statsCanv, 17, 4, this.w - 1, 9, GameVars.pixelSize, "black", "white");
+        this.statsCtx.fillStyle = this.shield > 0 ? "lightblue" : "red";
+        this.statsCtx.fillRect(
             18 * GameVars.pixelSize,
             5 * GameVars.pixelSize,
             (this.life * ((this.w - 2) * GameVars.pixelSize)) / this.maxLife,
             8 * GameVars.pixelSize);
+
+        const lifeText = convertTextToPixelArt(this.life + "/" + this.maxLife);
+        drawPixelTextInCanvas(lifeText, this.statsCanv, GameVars.pixelSize, 17 + (this.w / 2), 9);
     }
 }

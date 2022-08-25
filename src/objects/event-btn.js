@@ -9,7 +9,32 @@ export class EventBtn {
 
         let eventBtnCanvas = createElem(btnContainer, "canvas", null, ["on-top"], 140 * GameVars.pixelSize, 40 * GameVars.pixelSize, null, () => {
             GameVars.sound.buffSound();
-            this.useBtn();
+            switch (this.eType) {
+                case 0:
+                    GameVars.cardDmg += GameVars.cardDmgBuff;
+                    GameVars.cardDmgBuff++;
+                    break;
+                case 1:
+                    GameVars.maxPlayCards++;
+                    break;
+                case 2:
+                    GameVars.souls.forEach((row) => row.forEach((soul) => {
+                        if (soul) {
+                            soul.soulStats.maxLife += GameVars.soulLifeBuff;
+                            soul.soulStats.draw();
+                        }
+                    }));
+                    GameVars.soulLife += GameVars.soulLifeBuff;
+                    GameVars.soulLifeBuff++;
+                    break;
+                case 3:
+                    GameVars.drawCardNumb++;
+                    break;
+                default:
+                    GameVars.cardShield += GameVars.cardShieldBuff;
+                    GameVars.cardShieldBuff++;
+                    break;
+            }
             btnContainer.parentElement.classList.add("hidden");
             btnContainer.innerHTML = "";
             GameVars.isEventRunning = false;
@@ -32,35 +57,6 @@ export class EventBtn {
                 return convertTextToPixelArt("cards draw +1");
             default:
                 return convertTextToPixelArt("cards shield +" + GameVars.cardShieldBuff);
-        }
-    }
-
-    useBtn() {
-        switch (this.eType) {
-            case 0:
-                GameVars.cardDmg += GameVars.cardDmgBuff;
-                GameVars.cardDmgBuff++;
-                break;
-            case 1:
-                GameVars.maxPlayCards++;
-                break;
-            case 2:
-                GameVars.souls.forEach((row) => row.forEach((soul) => {
-                    if (soul) {
-                        soul.soulStats.maxLife += GameVars.soulLifeBuff;
-                        soul.soulStats.draw();
-                    }
-                }));
-                GameVars.soulLife += GameVars.soulLifeBuff;
-                GameVars.soulLifeBuff++;
-                break;
-            case 3:
-                GameVars.drawCardNumb++;
-                break;
-            default:
-                GameVars.cardShield += GameVars.cardShieldBuff;
-                GameVars.cardShieldBuff++;
-                break;
         }
     }
 }

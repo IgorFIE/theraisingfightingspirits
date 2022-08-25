@@ -27,6 +27,8 @@ let sound;
 
 let reaper;
 
+let cards;
+
 let soulsConts;
 let souls;
 let soulsInGame;
@@ -65,6 +67,8 @@ const resetGameVars = () => {
     GameVars.soulsConts = [];
     GameVars.souls = [];
     GameVars.soulsInGame = 0;
+
+    GameVars.cards = [];
 
     GameVars.prevSoul = null;
     GameVars.soulInUse = null;
@@ -110,6 +114,8 @@ export const GameVars = {
     sound,
 
     reaper,
+
+    cards,
 
     soulsConts,
     souls,

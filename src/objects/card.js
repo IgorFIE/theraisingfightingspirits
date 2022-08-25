@@ -21,31 +21,6 @@ export class Card {
         this.drawCard();
     }
 
-    drawCard(bckColor = "White") {
-        generateLargeBox(this.cardCanv, 2, 2, GameVars.cardW - 3, GameVars.cardH - 3, GameVars.pixelSize, "black", bckColor);
-        generateSmallBox(this.cardCanv, 7, 14, 40, 31, GameVars.pixelSize, "black", bckColor);
-        generateSmallBox(this.cardCanv, 7, 48, 40, 31, GameVars.pixelSize, "black", bckColor);
-        generateSmallBox(this.cardCanv, 13, 42, 28, 9, GameVars.pixelSize, "black", bckColor);
-
-        switch (this.cardType) {
-            case 0:
-                drawSprite(this.cardCanv, atkIcon, GameVars.pixelSize);
-                drawSprite(this.cardCanv, shockImg, GameVars.pixelSize, 10, 19);
-                this.generateCardText("shock", "atk", GameVars.cardDmg + " damage");
-                break;
-            case 1:
-                drawSprite(this.cardCanv, minionIcon, GameVars.pixelSize);
-                drawSprite(this.cardCanv, spiritImg, GameVars.pixelSize, 22, 19);
-                this.generateCardText("spirit", "minion", "+1 soul");
-                break;
-            default:
-                drawSprite(this.cardCanv, defIcon, GameVars.pixelSize);
-                drawSprite(this.cardCanv, hardenImg, GameVars.pixelSize, 20, 20);
-                this.generateCardText("harden", "def", GameVars.cardShield + " shield");
-                break;
-        }
-    }
-
     generateCardText(cardName, cardType, cardDescription) {
         drawPixelTextInCanvas(convertTextToPixelArt(cardName), this.cardCanv, GameVars.pixelSize, 32, 9);
         drawPixelTextInCanvas(convertTextToPixelArt(cardType), this.cardCanv, GameVars.pixelSize, 27, 47);
@@ -61,7 +36,15 @@ export class Card {
                 this.afterUseCardsSettings();
                 break;
             case 1: // new soul minion card
-                this.generateNewMinion();
+                if (GameVars.soulsInGame != GameVars.souls.length * GameVars.souls[0].length) {
+                    let soulCoords = retrieveSoulCoords(GameVars.souls, (y, x) => GameVars.souls[y][x] !== null);
+                    GameVars.souls[soulCoords.y][soulCoords.x] = new Soul(GameVars.soulsConts[soulCoords.y][soulCoords.x], soulCoords.x, soulCoords.y);
+                    GameVars.soulsInGame++;
+                    this.afterUseCardsSettings();
+                } else {
+                    this.cardCanv.style.top = null;
+                    this.cardCanv.style.left = null;
+                }
                 break;
             default: // add shield
                 GameVars.soulInUse.soulStats.addShield(GameVars.cardShield);
@@ -74,22 +57,6 @@ export class Card {
         this.isUsed = true;
         GameVars.cardsPlayed++;
         this.dispose();
-        this.refreshPlayerCards();
-    }
-
-    generateNewMinion() {
-        if (GameVars.soulsInGame != GameVars.souls.length * GameVars.souls[0].length) {
-            let soulCoords = retrieveSoulCoords(GameVars.souls, (y, x) => GameVars.souls[y][x] !== null);
-            GameVars.souls[soulCoords.y][soulCoords.x] = new Soul(GameVars.soulsConts[soulCoords.y][soulCoords.x], soulCoords.x, soulCoords.y);
-            GameVars.soulsInGame++;
-            this.afterUseCardsSettings();
-        } else {
-            this.cardCanv.style.top = null;
-            this.cardCanv.style.left = null;
-        }
-    }
-
-    refreshPlayerCards() {
         const cardSpace = ((GameVars.cardContW * GameVars.pixelSize) / (GameVars.drawCardNumb - GameVars.cardsPlayed));
         const cardX = (cardSpace / 2) - (this.cardCanv.width / 2);
         const cardY = GameVars.cardContY + (2 * GameVars.pixelSize);
@@ -118,6 +85,31 @@ export class Card {
         }
         if (GameVars.maxPlayCards - GameVars.cardsPlayed <= 0) {
             this.drawCard("gray");
+        }
+    }
+
+    drawCard(bckColor = "White") {
+        generateLargeBox(this.cardCanv, 2, 2, GameVars.cardW - 3, GameVars.cardH - 3, GameVars.pixelSize, "black", bckColor);
+        generateSmallBox(this.cardCanv, 7, 14, 40, 31, GameVars.pixelSize, "black", bckColor);
+        generateSmallBox(this.cardCanv, 7, 48, 40, 31, GameVars.pixelSize, "black", bckColor);
+        generateSmallBox(this.cardCanv, 13, 42, 28, 9, GameVars.pixelSize, "black", bckColor);
+
+        switch (this.cardType) {
+            case 0:
+                drawSprite(this.cardCanv, atkIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanv, shockImg, GameVars.pixelSize, 10, 19);
+                this.generateCardText("shock", "atk", GameVars.cardDmg + " damage");
+                break;
+            case 1:
+                drawSprite(this.cardCanv, minionIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanv, spiritImg, GameVars.pixelSize, 22, 19);
+                this.generateCardText("spirit", "minion", "+1 soul");
+                break;
+            default:
+                drawSprite(this.cardCanv, defIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanv, hardenImg, GameVars.pixelSize, 20, 20);
+                this.generateCardText("harden", "def", GameVars.cardShield + " shield");
+                break;
         }
     }
 

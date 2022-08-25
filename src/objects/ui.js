@@ -34,7 +34,6 @@ export class UI {
         this.populateTurnControlCanv();
 
         this.cardCont = createElem(gameDiv, "div", "card-container");
-        GameVars.cards = [];
 
         this.cardEvent = new Event(gameDiv);
 
@@ -113,7 +112,8 @@ export class UI {
     endTurn() {
         if (!GameVars.isEventRunning && GameVars.isPlayerTurn) {
             GameVars.sound.clickSound();
-            this.disposePlayerCards();
+            GameVars.cards.forEach(card => card.dispose());
+            GameVars.cards = [];
             GameVars.isPlayerTurn = false;
             this.isNewTurn = true;
         }
@@ -160,41 +160,24 @@ export class UI {
         }
     }
 
-    disposePlayerCards() {
-        GameVars.cards.forEach(card => card.dispose());
-        GameVars.cards = [];
-    }
-
     draw() {
         if (this.energy != GameVars.maxPlayCards - GameVars.cardsPlayed) {
             this.energyCtx.clearRect(0, 0, this.energyCanv.width, this.energyCanv.height);
             this.populateEnergyCanv();
         }
-        this.drawEndTurnBtn();
-        this.drawNexSoulBtn();
-        this.drawPrevBtn();
-        this.drawTurnCount();
-    }
 
-    drawEndTurnBtn() {
         this.endTurnCtx.clearRect(0, 0, this.prevSoulCanv.width, this.prevSoulCanv.height);
         generateLargeBox(this.endTurnCanv, 5, 5, 56, 13, GameVars.pixelSize, "black", GameVars.isPlayerTurn ? "white" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("end turn"), this.endTurnCanv, GameVars.pixelSize, 34, 12);
-    }
 
-    drawPrevBtn() {
         this.prevSoulCtx.clearRect(0, 0, this.prevSoulCanv.width, this.prevSoulCanv.height);
         generateLargeBox(this.prevSoulCanv, 5, 3, 56, 13, GameVars.pixelSize, "black", GameVars.prevSoul ? "white" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("previous soul"), this.prevSoulCanv, GameVars.pixelSize, 34, 10);
-    }
 
-    drawNexSoulBtn() {
         this.nextSoulCtx.clearRect(0, 0, this.nextSoulCanv.width, this.nextSoulCanv.height);
         generateLargeBox(this.nextSoulCanv, 5, 5, 56, 13, GameVars.pixelSize, "black", GameVars.nextSoul ? "white" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("next soul"), this.nextSoulCanv, GameVars.pixelSize, 34, 12);
-    }
 
-    drawTurnCount() {
         this.turnCountCtx.clearRect(0, 0, this.turnCountCanv.width, this.turnCountCanv.height);
         drawPixelTextInCanvas(convertTextToPixelArt("turn: " + GameVars.turnCount), this.turnCountCanv, GameVars.pixelSize, 150 / GameVars.pixelSize, 25, "black", 2);
     }
