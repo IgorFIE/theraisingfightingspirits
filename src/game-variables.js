@@ -6,56 +6,42 @@ let pixelSize;
 let gameWdAsPixels;
 let gameHgAsPixels;
 
-const calcPixelSize = () => {
-    let hgPixelSize = Math.round((gameH - 270) * ((3 - 1) / (1100 - 270)) + 1);
-    let wdPixelSize = Math.round((gameW - 480) * ((3 - 1) / (1000 - 480)) + 1);
+let sound;
 
-    GameVars.pixelSize = hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
-    GameVars.gameWdAsPixels = GameVars.gameW / GameVars.pixelSize;
-    GameVars.gameHgAsPixels = GameVars.gameH / GameVars.pixelSize;
+let turnCount;
+let isPlayerTurn;
+let isEventRunning;
 
-    GameVars.cardContW = Math.round((GameVars.gameW / 2) / GameVars.pixelSize);
-    GameVars.cardContX = ((GameVars.gameW / 2) - ((GameVars.cardContW / 2) * GameVars.pixelSize));
-    GameVars.cardContY = (GameVars.gameH - (GameVars.cardContH * GameVars.pixelSize));
-};
+let reaper;
+let reaperNextEventTurn;
+
+let soulNextEventTurn;
+let soulsConts;
+let souls;
+let soulsInGame;
+
+let nextSoul;
+let prevSoul;
+let soulInUse;
+
+let soulLife;
+let soulLifeBuff;
+
+let cards;
 
 let cardContX;
 let cardContY;
 let cardContW;
 const cardContH = 89;
 
-let sound;
-
-let reaper;
-
-let cards;
-
-let soulsConts;
-let souls;
-let soulsInGame;
-
-let prevSoul;
-let soulInUse;
-let nextSoul;
-
 let maxPlayCards;
 let cardsPlayed;
 let drawCardNumb;
-
-let isPlayerTurn;
-let turnCount;
-let reaperNextEventTurn;
-let soulNextEventTurn;
-
-let soulLife;
-let soulLifeBuff;
 
 let cardDmg;
 let cardDmgBuff;
 let cardShield;
 let cardShieldBuff;
-
-let isEventRunning;
 
 const resetGameVars = () => {
     GameVars.cardContX = 0;
@@ -93,7 +79,16 @@ const resetGameVars = () => {
 
     GameVars.isEventRunning = false;
 
-    GameVars.calcPixelSize();
+    let hgPixelSize = Math.round((gameH - 270) * ((3 - 1) / (1100 - 270)) + 1);
+    let wdPixelSize = Math.round((gameW - 480) * ((3 - 1) / (1000 - 480)) + 1);
+
+    GameVars.pixelSize = hgPixelSize < wdPixelSize ? hgPixelSize : wdPixelSize;
+    GameVars.gameWdAsPixels = GameVars.gameW / GameVars.pixelSize;
+    GameVars.gameHgAsPixels = GameVars.gameH / GameVars.pixelSize;
+
+    GameVars.cardContW = Math.round((GameVars.gameW / 2) / GameVars.pixelSize);
+    GameVars.cardContX = ((GameVars.gameW / 2) - ((GameVars.cardContW / 2) * GameVars.pixelSize));
+    GameVars.cardContY = (GameVars.gameH - (GameVars.cardContH * GameVars.pixelSize));
 }
 
 export const GameVars = {
@@ -103,7 +98,6 @@ export const GameVars = {
     pixelSize,
     gameWdAsPixels,
     gameHgAsPixels,
-    calcPixelSize,
 
     cardContX,
     cardContY,
