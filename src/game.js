@@ -1,5 +1,4 @@
 import { GameVars } from "./game-variables";
-import { CardEvent } from "./objects/cardEvent";
 import { UI } from "./objects/ui";
 import { randomNumb, retrieveSoulCoords } from "./utilities/general-utilities";
 const { Reaper } = require("./objects/reaper");
@@ -10,6 +9,8 @@ const { createElem } = require("./utilities/draw-utilities");
 export class Game {
     constructor(gameDiv) {
         this.gameDiv = gameDiv;
+
+        GameVars.resetGameVars();
 
         this.background = new Background(gameDiv);
 
@@ -22,11 +23,6 @@ export class Game {
         this.background.generate(GameVars.reaper);
 
         this.ui = new UI(gameDiv);
-        this.ui.startPlayerTurn();
-
-        this.cardEvent = new CardEvent(gameDiv);
-
-        GameVars.isGameOver = false;
     }
 
     generateSoulsContainers() {
@@ -59,42 +55,9 @@ export class Game {
     update() {
         this.cleanDeadSouls();
         if (!GameVars.isPlayerTurn) {
-            if (!GameVars.isEventRunning) {
-                GameVars.reaper.reaperTurn();
-                if (GameVars.soulNextEventTurn === GameVars.turnCount) {
-                    GameVars.soulNextEventTurn = GameVars.soulNextEventTurn * 2;
-                    GameVars.isEventRunning = true;
-                    setTimeout(() => this.cardEvent.startEvent(), 1500);
-                } else {
-                    GameVars.isPlayerTurn = true;
-                    setTimeout(() => this.ui.startPlayerTurn(), 750);
-                }
-            }
-
-            if (GameVars.isEventRunning && GameVars.isEventFinished) {
-                GameVars.isEventRunning = false;
-                GameVars.isEventFinished = false;
-                this.ui.startPlayerTurn();
-            }
-        }
-        this.retrieveNextPrevSoul();
-    }
-
-    retrieveNextPrevSoul() {
-        if (GameVars.soulsInGame > 1) {
-            const soulInUse = GameVars.soulInUse;
-            GameVars.prevSoul = null;
-            GameVars.nextSoul = null;
-            GameVars.souls.forEach(row => row.forEach(soul => {
-                if (soul && soul !== soulInUse) {
-                    if (soul.y < soulInUse.y || (soul.y === soulInUse.y && soul.x < soulInUse.x)) {
-                        GameVars.prevSoul = soul;
-                    }
-                    if (GameVars.nextSoul === null && (soul.y > soulInUse.y || (soul.y === soulInUse.y && soul.x > soulInUse.x))) {
-                        GameVars.nextSoul = soul;
-                    }
-                }
-            }));
+            GameVars.reaper.reaperTurn();
+        } else {
+            this.ui.playerTurn();
         }
     }
 
@@ -114,10 +77,6 @@ export class Game {
             let soulCoords = retrieveSoulCoords(GameVars.souls, (y, x) => GameVars.souls[y][x] === null);
             GameVars.soulInUse = GameVars.souls[soulCoords.y][soulCoords.x];
             GameVars.soulInUse.select();
-        }
-
-        if (GameVars.soulsInGame <= 0) {
-            GameVars.isGameOver = true;
         }
     }
 

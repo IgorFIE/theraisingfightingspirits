@@ -14,8 +14,8 @@ export class Reaper {
         this.rBuffPwr = 1;
         this.rAct = 0; // def
         this.rLckOnSoul = null;
-        this.isReaperPlaying = false;
         this.isDead = false;
+        this.isNewTurn = true;
 
         this.reaperCont = createElem(gameDiv, "div", null, ["reaper-container"]);
 
@@ -47,10 +47,15 @@ export class Reaper {
     }
 
     reaperTurn() {
-        this.isReaperPlaying = true;
-        this.processReaperAct();
-        this.calcReaperNextAct();
-        setTimeout(() => this.isReaperPlaying = false, 750);
+        if (this.isNewTurn) {
+            this.isNewTurn = false;
+            this.processReaperAct();
+            this.calcReaperNextAct();
+            setTimeout(() => {
+                GameVars.isPlayerTurn = true;
+                this.isNewTurn = true;
+            }, 750);
+        }
     }
 
     calcReaperNextAct() {

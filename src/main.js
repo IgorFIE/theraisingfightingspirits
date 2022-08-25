@@ -139,7 +139,7 @@ function gameLoop() {
     if (game) {
         game.update();
         game.draw();
-        if (GameVars.isGameOver) {
+        if (GameVars.soulsInGame <= 0) {
             gameOverCanv.classList.remove("hidden");
         }
         if (GameVars.reaper.isDead && !wasScheduledToShowWinScreen) {

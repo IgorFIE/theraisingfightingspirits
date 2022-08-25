@@ -35,8 +35,6 @@ let prevSoul;
 let soulInUse;
 let nextSoul;
 
-let playerCards;
-
 let maxPlayCards;
 let cardsPlayed;
 let drawCardNumb;
@@ -54,9 +52,7 @@ let cardDmgBuff;
 let cardShield;
 let cardShieldBuff;
 
-let isGameOver;
 let isEventRunning;
-let isEventFinished;
 
 const resetGameVars = () => {
     GameVars.cardContX = 0;
@@ -73,8 +69,6 @@ const resetGameVars = () => {
     GameVars.prevSoul = null;
     GameVars.soulInUse = null;
     GameVars.nextSoul = null;
-
-    GameVars.playerCards = [];
 
     GameVars.maxPlayCards = 2;
     GameVars.cardsPlayed = 0;
@@ -93,9 +87,7 @@ const resetGameVars = () => {
     GameVars.cardShield = 2;
     GameVars.cardShieldBuff = 4;
 
-    GameVars.isGameOver = false;
     GameVars.isEventRunning = false;
-    GameVars.isEventFinished = false;
 }
 
 export const GameVars = {
@@ -127,8 +119,6 @@ export const GameVars = {
     soulInUse,
     nextSoul,
 
-    playerCards,
-
     maxPlayCards,
     cardsPlayed,
     drawCardNumb,
@@ -146,9 +136,7 @@ export const GameVars = {
     cardShield,
     cardShieldBuff,
 
-    isGameOver,
     isEventRunning,
-    isEventFinished,
 
     resetGameVars
 }

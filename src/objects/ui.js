@@ -1,4 +1,5 @@
 import { GameVars } from "../game-variables";
+import { CardEvent } from "../objects/cardEvent";
 const { Card } = require("../objects/card");
 const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
@@ -7,6 +8,7 @@ const { createElem } = require("../utilities/draw-utilities");
 export class UI {
     constructor(gameDiv) {
         this.energy = 0;
+        this.isNewTurn = true;
 
         this.uiCont = createElem(gameDiv, "div", "ui-container");
 
@@ -33,6 +35,8 @@ export class UI {
 
         this.cardCont = createElem(gameDiv, "div", "card-container");
         GameVars.cards = [];
+
+        this.cardEvent = new CardEvent(gameDiv);
 
         this.calcCardsArea();
     }
@@ -107,18 +111,26 @@ export class UI {
     }
 
     endTurn() {
-        if (!GameVars.isEventRunning && !GameVars.reaper.isReaperPlaying) {
+        if (!GameVars.isEventRunning && GameVars.isPlayerTurn) {
             GameVars.sound.clickSound();
             this.disposePlayerCards();
             GameVars.isPlayerTurn = false;
+            this.isNewTurn = true;
         }
     }
 
-    startPlayerTurn() {
-        GameVars.cardsPlayed = 0;
-        GameVars.isPlayerTurn = true;
-        GameVars.turnCount++;
-        this.populatePlayerCards();
+    playerTurn() {
+        if (GameVars.soulNextEventTurn === GameVars.turnCount && this.isNewTurn) {
+            GameVars.soulNextEventTurn = GameVars.soulNextEventTurn * 2;
+            GameVars.isEventRunning = true;
+            this.cardEvent.startEvent();
+        } else if (!GameVars.isEventRunning && this.isNewTurn) {
+            this.isNewTurn = false;
+            GameVars.cardsPlayed = 0;
+            GameVars.turnCount++;
+            this.populatePlayerCards();
+        }
+        this.retrieveNextPrevSoul();
     }
 
     populatePlayerCards() {
@@ -127,6 +139,24 @@ export class UI {
         const cardY = GameVars.cardContY + (2 * GameVars.pixelSize);
         for (let i = 0; i < GameVars.drawCardNumb; i++) {
             GameVars.cards.push(new Card(this.cardCont, GameVars.cardContX + (i * cardSpace + cardX), cardY));
+        }
+    }
+
+    retrieveNextPrevSoul() {
+        if (GameVars.soulsInGame > 1) {
+            const soulInUse = GameVars.soulInUse;
+            GameVars.prevSoul = null;
+            GameVars.nextSoul = null;
+            GameVars.souls.forEach(row => row.forEach(soul => {
+                if (soul && soul !== soulInUse) {
+                    if (soul.y < soulInUse.y || (soul.y === soulInUse.y && soul.x < soulInUse.x)) {
+                        GameVars.prevSoul = soul;
+                    }
+                    if (GameVars.nextSoul === null && (soul.y > soulInUse.y || (soul.y === soulInUse.y && soul.x > soulInUse.x))) {
+                        GameVars.nextSoul = soul;
+                    }
+                }
+            }));
         }
     }
 
@@ -148,7 +178,7 @@ export class UI {
 
     drawEndTurnBtn() {
         this.endTurnCtx.clearRect(0, 0, this.prevSoulCanv.width, this.prevSoulCanv.height);
-        generateLargeBox(this.endTurnCanv, 5, 5, 56, 13, GameVars.pixelSize, "black", GameVars.reaper.isReaperPlaying ? "gray" : "white");
+        generateLargeBox(this.endTurnCanv, 5, 5, 56, 13, GameVars.pixelSize, "black", GameVars.isPlayerTurn ? "white" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("end turn"), this.endTurnCanv, GameVars.pixelSize, 34, 12);
     }
 

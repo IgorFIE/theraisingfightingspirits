@@ -12,7 +12,7 @@ export class EventBtn {
             this.useBtn();
             btnContainer.parentElement.classList.add("hidden");
             btnContainer.innerHTML = "";
-            GameVars.isEventFinished = true;
+            GameVars.isEventRunning = false;
         });
         eventBtnCanvas.style.translate = ((GameVars.gameW / 2) - (x * (eventBtnCanvas.width + (10 * GameVars.pixelSize)))) + "px " +
             ((GameVars.gameH / 2) - (y * (eventBtnCanvas.height + (10 * GameVars.pixelSize)))) + "px";
