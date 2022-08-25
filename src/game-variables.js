@@ -22,7 +22,7 @@ const calcPixelSize = () => {
 let cardContX;
 let cardContY;
 let cardContW;
-let cardContH;
+const cardContH = 89;
 
 let sound;
 
@@ -61,7 +61,6 @@ const resetGameVars = () => {
     GameVars.cardContX = 0;
     GameVars.cardContY = 0;
     GameVars.cardContW = 0;
-    GameVars.cardContH = 85 + 4;
 
     GameVars.reaper = null;
 
