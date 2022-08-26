@@ -24,6 +24,7 @@ function init() {
 
     GameVars.resetGameVars();
 
+    addMonetizationEvents();
     createGameContainer();
     createGameTutorialMenu();
     createGameOverMenu();
@@ -147,6 +148,14 @@ function gameLoop() {
         }
         GameVars.sound.playMusic();
         window.requestAnimationFrame(() => gameLoop());
+    }
+}
+
+function addMonetizationEvents() {
+    // document.monetization = document.createElement('div');
+    if (document.monetization) {
+        document.monetization.addEventListener('monetizationstart', () => GameVars.isMonetActive = true);
+        document.monetization.addEventListener('monetizationstop', () => GameVars.isMonetActive = false);
     }
 }
 

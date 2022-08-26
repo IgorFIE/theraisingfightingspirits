@@ -38,7 +38,7 @@ export class Game {
             GameVars.soulsConts.push(newSoulContainerArray);
             GameVars.souls.push(newSoulArray);
         }
-        
+
         GameVars.souls[1][1] = new Soul(GameVars.soulsConts[1][1], 1, 1);
         GameVars.souls[1][1].select();
         GameVars.soulsInGame++;

@@ -21,12 +21,6 @@ export class Card {
         this.drawCard();
     }
 
-    generateCardText(cardName, cardType, cardDescription) {
-        drawPixelTextInCanvas(convertTextToPixelArt(cardName), this.cardCanv, GameVars.pixelSize, 32, 9);
-        drawPixelTextInCanvas(convertTextToPixelArt(cardType), this.cardCanv, GameVars.pixelSize, 27, 47);
-        drawPixelTextInCanvas(convertTextToPixelArt(cardDescription), this.cardCanv, GameVars.pixelSize, 28, 64);
-    }
-
     useCard() {
         switch (this.cardType) {
             case 0: // damage card
@@ -57,6 +51,10 @@ export class Card {
         this.isUsed = true;
         GameVars.cardsPlayed++;
         this.dispose();
+        this.updateCards();
+    }
+
+    updateCards() {
         const cardSpace = ((GameVars.cardContW * GameVars.pixelSize) / (GameVars.drawCardNumb - GameVars.cardsPlayed));
         const cardX = (cardSpace / 2) - (this.cardCanv.width / 2);
         const cardY = GameVars.cardContY + (2 * GameVars.pixelSize);
@@ -72,19 +70,23 @@ export class Card {
     updateCardPos(cardX, cardY) {
         this.cardX = cardX;
         this.cardY = cardY;
-        this.cardCanv.style.translate = + cardX + "px " + cardY + "px " + this.cardCanv.width + "px";
+        this.cardCanv.style.translate = cardX + "px " + cardY + "px " + this.cardCanv.width + "px";
     }
 
     draw() {
-        if (this.cardType === 1) {
-            if (GameVars.soulsInGame === GameVars.souls.length * GameVars.souls[0].length) {
+        if (this.cardType === 1) { // minion card
+            if (GameVars.maxPlayCards - GameVars.cardsPlayed <= 0 ||
+                GameVars.soulsInGame === GameVars.souls.length * GameVars.souls[0].length) {
                 this.drawCard("gray");
             } else {
                 this.drawCard();
             }
-        }
-        if (GameVars.maxPlayCards - GameVars.cardsPlayed <= 0) {
-            this.drawCard("gray");
+        } else {
+            if (GameVars.maxPlayCards - GameVars.cardsPlayed <= 0) {
+                this.drawCard("gray");
+            } else {
+                this.drawCard();
+            }
         }
     }
 
@@ -111,6 +113,12 @@ export class Card {
                 this.generateCardText("harden", "def", GameVars.cardShield + " shield");
                 break;
         }
+    }
+
+    generateCardText(cardName, cardType, cardDescription) {
+        drawPixelTextInCanvas(convertTextToPixelArt(cardName), this.cardCanv, GameVars.pixelSize, 32, 9);
+        drawPixelTextInCanvas(convertTextToPixelArt(cardType), this.cardCanv, GameVars.pixelSize, 27, 47);
+        drawPixelTextInCanvas(convertTextToPixelArt(cardDescription), this.cardCanv, GameVars.pixelSize, 28, 64);
     }
 
     dispose() {

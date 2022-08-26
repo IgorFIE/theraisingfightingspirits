@@ -7,54 +7,39 @@ const { createElem } = require("../utilities/draw-utilities");
 
 export class UI {
     constructor(gameDiv) {
-        this.energy = 0;
+        this.energy = GameVars.maxPlayCards - GameVars.cardsPlayed;
         this.isNewTurn = true;
+        this.wasMonetDeal = false;
 
-        this.uiCont = createElem(gameDiv, "div", "ui-container");
+        let uiCont = createElem(gameDiv, "div", "ui-container");
 
-        this.turnCountCanv = createElem(this.uiCont, "canvas", null, null, 300, 100);
+        this.turnCountCanv = createElem(uiCont, "canvas", null, null, 300, 100);
         this.turnCountCanv.style.transform = "translate(" + ((GameVars.gameW / 2) - (this.turnCountCanv.width / 2)) + "px,0px)";
         this.turnCountCtx = this.turnCountCanv.getContext("2d");
 
-        this.energyCanv = createElem(this.uiCont, "canvas");
+        this.energyCanv = createElem(uiCont, "canvas");
         this.energyCtx = this.energyCanv.getContext("2d");
         this.energyCanv.width = 67 * GameVars.pixelSize;
         this.energyCanv.height = 99 * GameVars.pixelSize;
         this.energyCanv.style.transform = "translate(0px," + (GameVars.gameH - this.energyCanv.height) + "px)";
-        generateLargeBox(this.energyCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "white");
 
-        generateLargeBox(this.energyCanv, 5, 5, 56, 53, GameVars.pixelSize, "black", "white");
-        drawPixelTextInCanvas(convertTextToPixelArt("energy"), this.energyCanv, GameVars.pixelSize, 33, 12);
+        this.turnControlCanv = createElem(uiCont, "canvas");
+        this.turnControlCtx = this.turnControlCanv.getContext("2d");
 
-        this.energy = GameVars.maxPlayCards - GameVars.cardsPlayed;
-        generateSmallBox(this.energyCanv, 17, 17, 31, 30, GameVars.pixelSize, "black", "white");
-        drawPixelTextInCanvas(convertTextToPixelArt(this.energy), this.energyCanv, GameVars.pixelSize, 33, 32, "black", 3);
-
-        generateSmallBox(this.energyCanv, 5, 63, 56, 30, GameVars.pixelSize, "black", "gray");
-        drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.energyCanv, GameVars.pixelSize, 34, 70);
-        drawPixelTextInCanvas(convertTextToPixelArt("monetization"), this.energyCanv, GameVars.pixelSize, 34, 78);
-        drawPixelTextInCanvas(convertTextToPixelArt("gain +1 energy"), this.energyCanv, GameVars.pixelSize, 34, 86);
-
-        this.turnControlCanv = createElem(this.uiCont, "canvas");
-
-        this.nextSoulCanv = createElem(this.uiCont, "canvas", null, null, null, null, null, (e) => this.selectNextSoul());
+        this.nextSoulCanv = createElem(uiCont, "canvas", null, null, null, null, null, (e) => this.selectNextSoul());
         this.nextSoulCtx = this.nextSoulCanv.getContext("2d");
 
-        this.prevSoulCanv = createElem(this.uiCont, "canvas", null, null, null, null, null, (e) => this.selectPrevSoul());
+        this.prevSoulCanv = createElem(uiCont, "canvas", null, null, null, null, null, (e) => this.selectPrevSoul());
         this.prevSoulCtx = this.prevSoulCanv.getContext("2d");
 
-        this.endTurnCanv = createElem(this.uiCont, "canvas", null, null, null, null, null, (e) => this.endTurn());
+        this.endTurnCanv = createElem(uiCont, "canvas", null, null, null, null, null, (e) => this.endTurn());
         this.endTurnCtx = this.endTurnCanv.getContext("2d");
 
         this.turnControlCanv.width = 67 * GameVars.pixelSize;
         this.turnControlCanv.height = 99 * GameVars.pixelSize;
-        this.turnControlCanv.style.transform = "translate(" + (GameVars.gameW - this.turnControlCanv.width) + "px," + (GameVars.gameH - this.turnControlCanv.height) + "px)";
-        generateLargeBox(this.turnControlCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "white");
-        generateSmallBox(this.turnControlCanv, 5, 23, 67 - 11, 31, GameVars.pixelSize, "black", "gray");
-        drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.turnControlCanv, GameVars.pixelSize, 34, 28);
-        drawPixelTextInCanvas(convertTextToPixelArt("monetization"), this.turnControlCanv, GameVars.pixelSize, 34, 35);
-        drawPixelTextInCanvas(convertTextToPixelArt("draw +1"), this.turnControlCanv, GameVars.pixelSize, 34, 42);
-        drawPixelTextInCanvas(convertTextToPixelArt("extra card"), this.turnControlCanv, GameVars.pixelSize, 34, 49);
+        this.turnControlCanv.style.transform = "translate(" +
+            (GameVars.gameW - this.turnControlCanv.width) + "px," +
+            (GameVars.gameH - this.turnControlCanv.height) + "px)";
 
         this.endTurnCanv.width = 67 * GameVars.pixelSize;
         this.endTurnCanv.height = 24 * GameVars.pixelSize;
@@ -109,14 +94,21 @@ export class UI {
             this.cardEvent.startEvent();
         } else if (!GameVars.isEventRunning && this.isNewTurn) {
             this.isNewTurn = false;
+            this.wasMonetDeal = false;
             GameVars.cardsPlayed = 0;
             GameVars.turnCount++;
-            const cardSpace = (GameVars.cardContW * GameVars.pixelSize) / GameVars.drawCardNumb;
-            const cardX = (cardSpace / 2) - ((53 / 2) * GameVars.pixelSize);
-            const cardY = GameVars.cardContY + (2 * GameVars.pixelSize);
             for (let i = 0; i < GameVars.drawCardNumb; i++) {
-                GameVars.cards.push(new Card(this.cardCont, GameVars.cardContX + (i * cardSpace + cardX), cardY));
+                GameVars.cards.push(new Card(this.cardCont, GameVars.cardContX, GameVars.cardContY));
             }
+            GameVars.cards[0].updateCards();
+        } else if (!GameVars.isEventRunning && GameVars.isMonetActive && !this.wasMonetDeal) {
+            this.wasMonetDeal = true;
+            GameVars.cardsPlayed--;
+            let newCard = new Card(this.cardCont, GameVars.cardContX, GameVars.cardContY);
+            GameVars.cards.push(newCard);
+            newCard.updateCards();
+        } else if (GameVars.isEventRunning) {
+            this.cardEvent.eventBtns.forEach((btn) => btn.drawBtn());
         }
         if (GameVars.soulsInGame > 1) {
             const soulInUse = GameVars.soulInUse;
@@ -136,25 +128,31 @@ export class UI {
     }
 
     draw() {
-        if (this.energy != GameVars.maxPlayCards - GameVars.cardsPlayed) {
-            this.energyCtx.clearRect(0, 0, this.energyCanv.width, this.energyCanv.height);
-            this.energyCanv.width = 67 * GameVars.pixelSize;
-            this.energyCanv.height = 99 * GameVars.pixelSize;
-            this.energyCanv.style.transform = "translate(0px," + (GameVars.gameH - this.energyCanv.height) + "px)";
-            generateLargeBox(this.energyCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "white");
+        this.energyCtx.clearRect(0, 0, this.energyCanv.width, this.energyCanv.height);
+        this.energyCanv.width = 67 * GameVars.pixelSize;
+        this.energyCanv.height = 99 * GameVars.pixelSize;
+        this.energyCanv.style.transform = "translate(0px," + (GameVars.gameH - this.energyCanv.height) + "px)";
+        generateLargeBox(this.energyCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "white");
 
-            generateLargeBox(this.energyCanv, 5, 5, 56, 53, GameVars.pixelSize, "black", "white");
-            drawPixelTextInCanvas(convertTextToPixelArt("energy"), this.energyCanv, GameVars.pixelSize, 33, 12);
+        generateLargeBox(this.energyCanv, 5, 5, 56, 53, GameVars.pixelSize, "black", "white");
+        drawPixelTextInCanvas(convertTextToPixelArt("energy"), this.energyCanv, GameVars.pixelSize, 33, 12);
 
-            this.energy = GameVars.maxPlayCards - GameVars.cardsPlayed;
-            generateSmallBox(this.energyCanv, 17, 17, 31, 30, GameVars.pixelSize, "black", "white");
-            drawPixelTextInCanvas(convertTextToPixelArt(this.energy), this.energyCanv, GameVars.pixelSize, 33, 32, "black", 3);
+        this.energy = GameVars.maxPlayCards - GameVars.cardsPlayed;
+        generateSmallBox(this.energyCanv, 17, 17, 31, 30, GameVars.pixelSize, "black", "white");
+        drawPixelTextInCanvas(convertTextToPixelArt(this.energy), this.energyCanv, GameVars.pixelSize, 33, 32, "black", 3);
 
-            generateSmallBox(this.energyCanv, 5, 63, 56, 30, GameVars.pixelSize, "black", "gray");
-            drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.energyCanv, GameVars.pixelSize, 34, 70);
-            drawPixelTextInCanvas(convertTextToPixelArt("monetization"), this.energyCanv, GameVars.pixelSize, 34, 78);
-            drawPixelTextInCanvas(convertTextToPixelArt("gain +1 energy"), this.energyCanv, GameVars.pixelSize, 34, 86);
-        }
+        generateSmallBox(this.energyCanv, 5, 63, 56, 30, GameVars.pixelSize, "black", GameVars.isMonetActive ? "gold" : "gray");
+        drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.energyCanv, GameVars.pixelSize, 34, 70);
+        drawPixelTextInCanvas(convertTextToPixelArt("monetization"), this.energyCanv, GameVars.pixelSize, 34, 78);
+        drawPixelTextInCanvas(convertTextToPixelArt("gain +1 energy"), this.energyCanv, GameVars.pixelSize, 34, 86);
+
+        this.turnControlCtx.clearRect(0, 0, this.turnControlCanv.width, this.turnControlCanv.height);
+        generateLargeBox(this.turnControlCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "white");
+        generateSmallBox(this.turnControlCanv, 5, 23, 67 - 11, 31, GameVars.pixelSize, "black", GameVars.isMonetActive ? "gold" : "gray");
+        drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.turnControlCanv, GameVars.pixelSize, 34, 28);
+        drawPixelTextInCanvas(convertTextToPixelArt("monetization"), this.turnControlCanv, GameVars.pixelSize, 34, 35);
+        drawPixelTextInCanvas(convertTextToPixelArt("draw +1"), this.turnControlCanv, GameVars.pixelSize, 34, 42);
+        drawPixelTextInCanvas(convertTextToPixelArt("extra card"), this.turnControlCanv, GameVars.pixelSize, 34, 49);
 
         this.endTurnCtx.clearRect(0, 0, this.prevSoulCanv.width, this.prevSoulCanv.height);
         generateLargeBox(this.endTurnCanv, 5, 5, 56, 13, GameVars.pixelSize, "black", GameVars.isPlayerTurn ? "white" : "gray");

@@ -10,6 +10,8 @@ export class Event {
         this.eCanv = createElem(this.eDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,150,0.8)");
         this.selectDiv = createElem(this.eDiv, "div");
 
+        this.eventBtns = [];
+
         drawPixelTextInCanvas(convertTextToPixelArt("event"), this.eCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 14, "black", 6);
         drawPixelTextInCanvas(convertTextToPixelArt("select a power up"), this.eCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 4, "black", 2);
     }
@@ -24,7 +26,7 @@ export class Event {
                     randomUpStatusType = randomNumb(5);
                 }
                 upsStatusUsed[randomUpStatusType + ""] = 1;
-                new EventBtn(this.selectDiv, x, y, randomUpStatusType);
+                this.eventBtns.push(new EventBtn(this.selectDiv, x, y, randomUpStatusType, y === 1 && x === 1));
             }
         }
     }
