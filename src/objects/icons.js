@@ -1,6 +1,6 @@
 const nu = null;
 const bl = "#000000"
-const wb = "#edeef7"
+const wb = "white"
 
 export const atkIcon = [
     [nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu],
@@ -131,4 +131,26 @@ export const deckIcon = [
     [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
     [bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl],
     [bl, bl, nu, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl],
+];
+
+export const speaker = [
+    [nu, nu, nu, bl, nu],
+    [nu, bl, bl, bl, nu],
+    [bl, bl, bl, bl, bl],
+    [bl, bl, bl, bl, bl],
+    [nu, bl, bl, bl, nu],
+    [nu, nu, nu, bl, nu]
+];
+
+export const audio = [
+    [nu, nu, nu, nu],
+    [nu, nu, bl, nu],
+    [bl, nu, nu, bl],
+    [nu, bl, nu, bl],
+    [nu, bl, nu, bl],
+    [nu, bl, nu, bl],
+    [nu, bl, nu, bl],
+    [bl, nu, nu, bl],
+    [nu, nu, bl, nu],
+    [nu, nu, nu, nu]
 ];

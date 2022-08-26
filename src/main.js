@@ -6,6 +6,7 @@ const { drawSprite, createElem } = require("./utilities/draw-utilities");
 const { Sound } = require("./utilities/sound");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { generateLargeBox } = require("./utilities/box-generator");
+const { speaker, audio } = require("./objects/icons");
 
 let mainDiv;
 
@@ -14,13 +15,14 @@ let gameTutorDiv;
 let gameDiv;
 let gameOverCanv;
 let winScreenCanv;
+let soundBtnCanv;
+let soundBtnCtx;
 
 let wasScheduledToShowWinScreen;
 let game;
 
 function init() {
     mainDiv = document.getElementById("main");
-    GameVars.sound = new Sound();
 
     GameVars.resetGameVars();
 
@@ -30,6 +32,9 @@ function init() {
     createGameOverMenu();
     createWinScreenMenu();
     createMainMenu();
+    createMuteBtn();
+
+    window.requestAnimationFrame(() => gameLoop());
 }
 
 function createMainMenu() {
@@ -125,14 +130,33 @@ function createWinScreenMenu() {
     drawPixelTextInCanvas(convertTextToPixelArt("win!!!"), winScreenCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 6, "black", 6);
 }
 
+function createMuteBtn() {
+    soundBtnCanv = createElem(mainDiv, "canvas", "sound-btn", ["on-top"], 27 * GameVars.pixelSize, 24 * GameVars.pixelSize, null,
+        (e) => {
+            if (GameVars.sound) {
+                GameVars.sound.muteMusic();
+            } else {
+                GameVars.sound = new Sound();
+                GameVars.sound.initSound();
+            }
+        });
+    soundBtnCtx = soundBtnCanv.getContext("2d");
+    drawSoundBtn();
+}
+
 function startGame() {
+    initAudio();
     mainMenuCanv.classList.add("hidden");
     gameTutorDiv.classList.remove("hidden");
     wasScheduledToShowWinScreen = false;
     game = new Game(gameDiv);
-    GameVars.sound.initSound();
-    GameVars.sound.clickSound();
-    window.requestAnimationFrame(() => gameLoop());
+}
+
+function initAudio() {
+    if (!GameVars.sound) {
+        GameVars.sound = new Sound();
+        GameVars.sound.initSound();
+    }
 }
 
 function gameLoop() {
@@ -146,13 +170,24 @@ function gameLoop() {
             wasScheduledToShowWinScreen = true;
             setTimeout(() => winScreenCanv.classList.remove("hidden"), 250);
         }
+    }
+    drawSoundBtn();
+    if (GameVars.sound) {
         GameVars.sound.playMusic();
-        window.requestAnimationFrame(() => gameLoop());
+    }
+    window.requestAnimationFrame(() => gameLoop());
+}
+
+function drawSoundBtn() {
+    soundBtnCtx.clearRect(0, 0, soundBtnCanv.width, soundBtnCanv.height);
+    generateLargeBox(soundBtnCanv, 0, 0, 26, 23, GameVars.pixelSize, "black", "rgba(150,150,150,0.8)");
+    drawSprite(soundBtnCanv, speaker, GameVars.pixelSize * 2, 2, 3);
+    if (GameVars.sound && GameVars.sound.isSoundOn) {
+        drawSprite(soundBtnCanv, audio, GameVars.pixelSize * 2, 7, 1);
     }
 }
 
 function addMonetizationEvents() {
-    // document.monetization = document.createElement('div');
     if (document.monetization) {
         document.monetization.addEventListener('monetizationstart', () => GameVars.isMonetActive = true);
         document.monetization.addEventListener('monetizationstop', () => GameVars.isMonetActive = false);
