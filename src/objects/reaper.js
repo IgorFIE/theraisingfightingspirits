@@ -29,6 +29,8 @@ export class Reaper {
             if (!this.isDead) {
                 this.rCanv.style.animation = "reaperAnim 6s infinite ease-in-out";
                 this.draw();
+            } else {
+                this.reaperCont.innerHTML = "";
             }
         });
         this.rCtx = this.rCanv.getContext("2d");

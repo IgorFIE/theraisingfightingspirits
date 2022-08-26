@@ -180,7 +180,7 @@ function gameLoop() {
 
 function drawSoundBtn() {
     soundBtnCtx.clearRect(0, 0, soundBtnCanv.width, soundBtnCanv.height);
-    generateLargeBox(soundBtnCanv, 0, 0, 26, 23, GameVars.pixelSize, "black", "rgba(150,150,150,0.8)");
+    generateLargeBox(soundBtnCanv, 0, 0, 26, 23, GameVars.pixelSize, "black", GameVars.sound && GameVars.sound.isSoundOn ? "rgba(255,255,255,0.8)" : "rgba(150,150,150,0.8)");
     drawSprite(soundBtnCanv, speaker, GameVars.pixelSize * 2, 2, 3);
     if (GameVars.sound && GameVars.sound.isSoundOn) {
         drawSprite(soundBtnCanv, audio, GameVars.pixelSize * 2, 7, 1);
