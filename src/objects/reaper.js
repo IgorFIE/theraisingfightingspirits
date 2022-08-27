@@ -78,7 +78,7 @@ export class Reaper {
                     this.rAtk += this.rBuffPwr;
                     this.rAoeAtk += this.rBuffPwr;
                     this.rDef += this.rBuffPwr;
-                    this.rBuffPwr++;
+                    this.rBuffPwr += 2;
                     GameVars.sound.buffSound();
                     break;
                 default:

@@ -10,11 +10,17 @@ const { speaker, audio } = require("./objects/icons");
 
 let mainDiv;
 
+let highScore = parseInt(localStorage.getItem(GameVars.storeId)) || 0;
+let totalRunScore = 0;
+
 let mainMenuCanv;
+let mainMenuCtx;
 let gameTutorDiv;
 let gameDiv;
 let gameOverCanv;
+let gameOverCtx;
 let winScreenCanv;
+let winScreenCtx;
 let soundBtnCanv;
 let soundBtnCtx;
 
@@ -28,10 +34,10 @@ function init() {
 
     addMonetizationEvents();
     createGameContainer();
+    createMainMenu();
     createGameTutorialMenu();
     createGameOverMenu();
     createWinScreenMenu();
-    createMainMenu();
     createMuteBtn();
 
     window.requestAnimationFrame(() => gameLoop());
@@ -39,7 +45,12 @@ function init() {
 
 function createMainMenu() {
     mainMenuCanv = createElem(mainDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH, "gray", (e) => startGame());
+    mainMenuCtx = mainMenuCanv.getContext("2d");
+    drawMainMenu();
+}
 
+function drawMainMenu() {
+    mainMenuCtx.clearRect(0, 0, mainMenuCanv.width, mainMenuCanv.height);
     let scale = GameVars.pixelSize * 5;
     drawSprite(mainMenuCanv, grimReaper, scale,
         Math.round((((GameVars.gameW / scale) / 4) * 3) - (grimReaper[0].length / 2)),
@@ -63,6 +74,10 @@ function createMainMenu() {
     let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
     drawPixelTextInCanvas(convertTextToPixelArt("the raising"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "#10495e", 6);
     drawPixelTextInCanvas(convertTextToPixelArt("fighting spirits"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 36, "#10495e", 6);
+
+    if (highScore > 0) {
+        drawPixelTextInCanvas(convertTextToPixelArt("best score " + highScore), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 72, "#10495e", 2);
+    }
 
     drawPixelTextInCanvas(convertTextToPixelArt("click/touch"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 2) + 10, "#10495e", 2);
     drawPixelTextInCanvas(convertTextToPixelArt("to start game"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 2) + 25, "#10495e", 2);
@@ -105,34 +120,61 @@ function createGameContainer() {
 }
 
 function createGameOverMenu() {
-    gameOverCanv = createElem(mainDiv, "canvas", "game-over-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "darkred",
-        (e) => {
-            GameVars.sound.clickSound();
+    gameOverCanv = createElem(mainDiv, "canvas", "game-over-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,75,75,0.9)",
+        () => {
             gameOverCanv.classList.add("hidden");
             mainMenuCanv.classList.remove("hidden");
+            GameVars.sound.clickSound();
             gameDiv.innerHTML = "";
             game = null;
+            updateHighScore();
         });
     gameOverCanv.style.transform = "translateZ(999px)";
-    drawPixelTextInCanvas(convertTextToPixelArt("crossed over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 6, "black", 6);
+    gameOverCtx = gameOverCanv.getContext("2d");
+}
+
+function drawGameOver() {
+    gameOverCtx.clearRect(0, 0, gameOverCanv.width, gameOverCanv.height);
+    drawPixelTextInCanvas(convertTextToPixelArt("crossed over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 3), "black", 6);
+    drawScoreCalc(gameOverCanv);
+}
+
+function drawScoreCalc(canvas) {
+    let turnScore = GameVars.reaper.isDead ? (GameVars.turnCount - 1000) * ((1000 - 1) / (1 - 1000)) + 1 : 0;
+    turnScore = turnScore < 0 ? 0 : turnScore;
+    totalRunScore = GameVars.score + turnScore;
+    drawPixelTextInCanvas(convertTextToPixelArt("score"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 65, "black", 4);
+    drawPixelTextInCanvas(convertTextToPixelArt("reaper life taken   " + GameVars.score), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 45, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("turns taken to kill reaper (less is better)   " + turnScore), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 30, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("total   " + totalRunScore), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 15, "black", 2);
+    if (totalRunScore > highScore) {
+        drawPixelTextInCanvas(convertTextToPixelArt("new record!"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3), "black", 2);
+    }
 }
 
 function createWinScreenMenu() {
-    winScreenCanv = createElem(mainDiv, "canvas", "win-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "lightblue",
-        (e) => {
-            GameVars.sound.clickSound();
+    winScreenCanv = createElem(mainDiv, "canvas", "win-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,255,0.9)",
+        () => {
             winScreenCanv.classList.add("hidden");
             mainMenuCanv.classList.remove("hidden");
+            GameVars.sound.clickSound();
             gameDiv.innerHTML = "";
             game = null;
+            updateHighScore();
         });
     winScreenCanv.style.transform = "translateZ(999px)";
-    drawPixelTextInCanvas(convertTextToPixelArt("win!!!"), winScreenCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 6, "black", 6);
+    winScreenCtx = winScreenCanv.getContext("2d");
+}
+
+function drawWinScreen() {
+    winScreenCtx.clearRect(0, 0, winScreenCanv.width, winScreenCanv.height);
+    drawPixelTextInCanvas(convertTextToPixelArt("liberated"), winScreenCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 3), "black", 6);
+    drawScoreCalc(winScreenCanv);
 }
 
 function createMuteBtn() {
     soundBtnCanv = createElem(mainDiv, "canvas", "sound-btn", ["on-top"], 27 * GameVars.pixelSize, 24 * GameVars.pixelSize, null,
-        (e) => {
+        () => {
             if (GameVars.sound) {
                 GameVars.sound.muteMusic();
             } else {
@@ -162,12 +204,13 @@ function initAudio() {
 function gameLoop() {
     if (game) {
         game.update();
-
         if (GameVars.soulsInGame <= 0) {
+            drawGameOver();
             gameOverCanv.classList.remove("hidden");
         }
         if (GameVars.reaper.isDead && !wasScheduledToShowWinScreen) {
             wasScheduledToShowWinScreen = true;
+            drawWinScreen();
             setTimeout(() => winScreenCanv.classList.remove("hidden"), 250);
         }
     }
@@ -184,6 +227,14 @@ function drawSoundBtn() {
     drawSprite(soundBtnCanv, speaker, GameVars.pixelSize * 2, 2, 3);
     if (GameVars.sound && GameVars.sound.isSoundOn) {
         drawSprite(soundBtnCanv, audio, GameVars.pixelSize * 2, 7, 1);
+    }
+}
+
+function updateHighScore() {
+    if (highScore < totalRunScore) {
+        highScore = totalRunScore;
+        localStorage.setItem(GameVars.storeId, highScore);
+        drawMainMenu();
     }
 }
 

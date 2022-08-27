@@ -74,5 +74,6 @@ export class Game {
         }
         this.ui.draw();
         GameVars.cards.forEach(card => card.draw());
+        GameVars.score = GameVars.reaper.rStats.maxLife - GameVars.reaper.rStats.life;
     }
 }

@@ -1,3 +1,5 @@
+const storeId = 'igorfie-the-raising-fighting-spirits';
+
 const gameW = window.innerWidth;
 const gameH = window.innerHeight;
 
@@ -8,6 +10,7 @@ let gameHgAsPixels;
 
 let sound;
 
+let score;
 let turnCount;
 let isPlayerTurn;
 let isEventRunning;
@@ -67,6 +70,7 @@ const resetGameVars = () => {
     GameVars.drawCardNumb = 5;
 
     GameVars.isPlayerTurn = true;
+    GameVars.score = 0;
     GameVars.turnCount = 0;
     GameVars.reaperNextEventTurn = 6;
     GameVars.soulNextEventTurn = 3;
@@ -94,6 +98,8 @@ const resetGameVars = () => {
 }
 
 export const GameVars = {
+    storeId,
+
     gameW,
     gameH,
 
@@ -126,6 +132,7 @@ export const GameVars = {
 
     isPlayerTurn,
     turnCount,
+    score,
     reaperNextEventTurn,
     soulNextEventTurn,
 
