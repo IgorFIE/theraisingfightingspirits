@@ -13,8 +13,8 @@ export class UI {
 
         let uiCont = createElem(gameDiv, "div", "ui-container");
 
-        this.turnCountCanv = createElem(uiCont, "canvas", null, null, 300, 100);
-        this.turnCountCanv.style.transform = "translate(" + ((GameVars.gameW / 2) - (this.turnCountCanv.width / 2)) + "px,0px)";
+        this.turnCountCanv = createElem(uiCont, "canvas", null, null, 100 * GameVars.pixelSize, 26 * GameVars.pixelSize);
+        this.turnCountCanv.style.translate = ((GameVars.gameW / 2) - (this.turnCountCanv.width / 2)) + "px " + (this.turnCountCanv.height / 2) + "px";
         this.turnCountCtx = this.turnCountCanv.getContext("2d");
 
         this.energyCanv = createElem(uiCont, "canvas");
@@ -167,6 +167,7 @@ export class UI {
         drawPixelTextInCanvas(convertTextToPixelArt("next soul"), this.nextSoulCanv, GameVars.pixelSize, 34, 12);
 
         this.turnCountCtx.clearRect(0, 0, this.turnCountCanv.width, this.turnCountCanv.height);
-        drawPixelTextInCanvas(convertTextToPixelArt("turn: " + GameVars.turnCount), this.turnCountCanv, GameVars.pixelSize, 150 / GameVars.pixelSize, 25, "black", 2);
+        generateSmallBox(this.turnCountCanv, 0, 0, 99, 25, GameVars.pixelSize, "black", "white");
+        drawPixelTextInCanvas(convertTextToPixelArt("turn: " + GameVars.turnCount), this.turnCountCanv, GameVars.pixelSize, 50, 13, "black", 2);
     }
 }
