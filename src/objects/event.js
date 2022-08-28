@@ -1,4 +1,5 @@
 import { GameVars } from "../game-variables";
+import { generateLargeBox } from "../utilities/box-generator";
 import { randomNumb } from "../utilities/general-utilities";
 import { EventBtn } from "./event-btn";
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
@@ -7,13 +8,14 @@ const { createElem } = require("../utilities/draw-utilities");
 export class Event {
     constructor(gameDiv) {
         this.eDiv = createElem(gameDiv, "div", null, ["hidden"]);
-        this.eCanv = createElem(this.eDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,150,0.8)");
+        this.eCanv = createElem(this.eDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(255,255,255,0.8)");
         this.selectDiv = createElem(this.eDiv, "div");
 
         this.eventBtns = [];
 
-        drawPixelTextInCanvas(convertTextToPixelArt("event"), this.eCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 14, "black", 6);
-        drawPixelTextInCanvas(convertTextToPixelArt("select a power up"), this.eCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 4, "black", 2);
+        generateLargeBox(this.eCanv, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 70, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
+        drawPixelTextInCanvas(convertTextToPixelArt("event"), this.eCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, Math.round(GameVars.gameHgAsPixels / 14), "black", 6);
+        drawPixelTextInCanvas(convertTextToPixelArt("select a power up"), this.eCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, Math.round((GameVars.gameHgAsPixels / 14) + 30), "black", 2);
     }
 
     startEvent() {

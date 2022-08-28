@@ -38,7 +38,7 @@ export class Reaper {
         this.rStats = new Status(this.reaperCont, 36, 999, 0);
 
         let reaperX = ((GameVars.gameW / 4) * 3) - (this.reaperCont.clientWidth / 2);
-        let reaperY = (GameVars.gameH / 2) - ((this.reaperCont.clientHeight / 4) * 3);
+        let reaperY = (GameVars.gameH / 2) - (this.reaperCont.clientHeight / 2);
         this.reaperCont.style.transform = "translate(" + reaperX + "px," + reaperY + "px)";
 
         this.draw();

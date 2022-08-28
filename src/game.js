@@ -20,7 +20,7 @@ export class Game {
         const containerW = fakeSoulContainer.clientWidth;
         const containerH = fakeSoulContainer.clientHeight;
         const containerX = (GameVars.gameW / 4) - ((containerW / 2) * 3);
-        const containerY = (GameVars.gameH / 2) - (containerH * 2);
+        const containerY = (GameVars.gameH / 2) - (containerH * 1.9);
 
         fakeSoulContainer.parentElement.removeChild(fakeSoulContainer);
 

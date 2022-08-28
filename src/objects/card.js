@@ -25,7 +25,7 @@ export class Card {
         } else {
             this.cardType = 2; // def 40% prob
         }
-        
+
         this.drawCard();
     }
 

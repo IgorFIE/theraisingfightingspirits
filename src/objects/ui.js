@@ -13,8 +13,8 @@ export class UI {
 
         let uiCont = createElem(gameDiv, "div", "ui-container");
 
-        this.turnCountCanv = createElem(uiCont, "canvas", null, null, 100 * GameVars.pixelSize, 32 * GameVars.pixelSize);
-        this.turnCountCanv.style.translate = ((GameVars.gameW / 2) - (this.turnCountCanv.width / 2)) + "px " + (this.turnCountCanv.height / 2) + "px";
+        this.turnCountCanv = createElem(uiCont, "canvas", null, null, GameVars.gameW, 50 * GameVars.pixelSize);
+        this.turnCountCanv.style.translate = ((GameVars.gameW / 2) - (this.turnCountCanv.width / 2)) + "px " + (Math.round(((GameVars.gameHgAsPixels / 14) - 25) * GameVars.pixelSize)) + "px";
         this.turnCountCtx = this.turnCountCanv.getContext("2d");
 
         this.energyCanv = createElem(uiCont, "canvas");
@@ -132,7 +132,7 @@ export class UI {
         this.energyCanv.width = 67 * GameVars.pixelSize;
         this.energyCanv.height = 99 * GameVars.pixelSize;
         this.energyCanv.style.transform = "translate(0px," + (GameVars.gameH - this.energyCanv.height) + "px)";
-        generateLargeBox(this.energyCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "white");
+        generateLargeBox(this.energyCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
 
         generateLargeBox(this.energyCanv, 5, 5, 56, 53, GameVars.pixelSize, "black", "white");
         drawPixelTextInCanvas(convertTextToPixelArt("energy"), this.energyCanv, GameVars.pixelSize, 33, 12);
@@ -147,7 +147,7 @@ export class UI {
         drawPixelTextInCanvas(convertTextToPixelArt("gain +1 energy"), this.energyCanv, GameVars.pixelSize, 34, 86);
 
         this.turnControlCtx.clearRect(0, 0, this.turnControlCanv.width, this.turnControlCanv.height);
-        generateLargeBox(this.turnControlCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "white");
+        generateLargeBox(this.turnControlCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
         generateSmallBox(this.turnControlCanv, 5, 23, 67 - 11, 31, GameVars.pixelSize, "black", GameVars.isMonetActive ? "gold" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.turnControlCanv, GameVars.pixelSize, 34, 28);
         drawPixelTextInCanvas(convertTextToPixelArt("monetization"), this.turnControlCanv, GameVars.pixelSize, 34, 35);
@@ -167,8 +167,8 @@ export class UI {
         drawPixelTextInCanvas(convertTextToPixelArt("next soul"), this.nextSoulCanv, GameVars.pixelSize, 34, 12);
 
         this.turnCountCtx.clearRect(0, 0, this.turnCountCanv.width, this.turnCountCanv.height);
-        generateLargeBox(this.turnCountCanv, 0, 0, 99, 31, GameVars.pixelSize, "black", "white");
-        drawPixelTextInCanvas(convertTextToPixelArt("turn " + GameVars.turnCount), this.turnCountCanv, GameVars.pixelSize, 50, 10, "black", 2);
-        drawPixelTextInCanvas(convertTextToPixelArt("score " + GameVars.score), this.turnCountCanv, GameVars.pixelSize, 50, 22, "black", 2);
+        generateLargeBox(this.turnCountCanv, -20, 0, GameVars.gameWdAsPixels + 40, 49, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
+        drawPixelTextInCanvas(convertTextToPixelArt("turn " + GameVars.turnCount), this.turnCountCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, 18, "black", 2);
+        drawPixelTextInCanvas(convertTextToPixelArt("score " + GameVars.score), this.turnCountCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, 32, "black", 2);
     }
 }

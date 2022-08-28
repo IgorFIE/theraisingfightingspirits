@@ -10,7 +10,7 @@ export class EventBtn {
         this.eType = upstatusType;
         this.isMonet = isMonet;
 
-        this.canv = createElem(btnContainer, "canvas", null, ["on-top"], 140 * GameVars.pixelSize, 40 * GameVars.pixelSize, null, () => {
+        this.canv = createElem(btnContainer, "canvas", null, ["on-top"], 100 * GameVars.pixelSize, 60 * GameVars.pixelSize, null, () => {
             if (!this.isMonet || this.isMonet && GameVars.isMonetActive) {
                 GameVars.sound.buffSound();
                 switch (this.eType) {
@@ -65,15 +65,16 @@ export class EventBtn {
 
     drawBtn() {
         this.ctx.clearRect(0, 0, this.canv.width, this.canv.height);
-        this.canv.style.translate = ((GameVars.gameW / 2) - (this.canv.width + (3 * GameVars.pixelSize)) + (this.x * (this.canv.width + (6 * GameVars.pixelSize)))) + "px " +
-            ((GameVars.gameH / 2) - (this.canv.height + (3 * GameVars.pixelSize)) + (this.y * (this.canv.height + (6 * GameVars.pixelSize)))) + "px";
+        this.canv.style.translate = ((GameVars.gameW / 2) - (this.canv.width + (3 * GameVars.pixelSize)) + (this.x * (this.canv.width + (12 * GameVars.pixelSize)))) + "px " +
+            ((GameVars.gameH / 2) - ((this.canv.height / 3) * 2) + (this.y * (this.canv.height + (12 * GameVars.pixelSize)))) + "px";
         let monetizationColor = GameVars.isMonetActive ? "rgba(200,200,150,0.8)" : "rgba(75,75,75,0.8)";
-        generateLargeBox(this.canv, 0, 0, 139, 39, GameVars.pixelSize, "black", this.isMonet ? monetizationColor : "rgba(150,150,150,0.8)");
+        generateLargeBox(this.canv, 0, 0, 99, 59, GameVars.pixelSize, "black", this.isMonet ? monetizationColor : "rgba(255,255,255,0.8)");
         if (this.isMonet) {
-            drawPixelTextInCanvas(convertTextToPixelArt("enable monetization"), this.canv, GameVars.pixelSize, 70, 15, "black", 1);
-            drawPixelTextInCanvas(this.genBtnText(), this.canv, GameVars.pixelSize, 70, 25, "black", 1);
+            drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.canv, GameVars.pixelSize, 50, 20, "black", 1);
+            drawPixelTextInCanvas(convertTextToPixelArt("monetization"), this.canv, GameVars.pixelSize, 50, 30, "black", 1);
+            drawPixelTextInCanvas(this.genBtnText(), this.canv, GameVars.pixelSize, 50, 40, "black", 1);
         } else {
-            drawPixelTextInCanvas(this.genBtnText(), this.canv, GameVars.pixelSize, 70, 20, "black", 1);
+            drawPixelTextInCanvas(this.genBtnText(), this.canv, GameVars.pixelSize, 50, 30, "black", 1);
         }
     }
 }

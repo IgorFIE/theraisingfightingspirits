@@ -7,14 +7,17 @@ const { Sound } = require("./utilities/sound");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { generateLargeBox } = require("./utilities/box-generator");
 const { speaker, audio } = require("./objects/icons");
+const { Background } = require("./objects/background");
 
 let mainDiv;
 
 let highScore = parseInt(localStorage.getItem(GameVars.storeId)) || 0;
 let totalRunScore = 0;
 
+let mainMenuDiv;
 let mainMenuCanv;
 let mainMenuCtx;
+let mainMenuBtn;
 let gameTutorDiv;
 let gameDiv;
 let gameOverCanv;
@@ -44,7 +47,20 @@ function init() {
 }
 
 function createMainMenu() {
-    mainMenuCanv = createElem(mainDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH, "gray", (e) => startGame());
+    mainMenuDiv = createElem(mainDiv, "div", null, null, GameVars.gameW, GameVars.gameH);
+    let background = new Background(mainMenuDiv);
+    background.generateMainMenu();
+    mainMenuCanv = createElem(mainMenuDiv, "canvas", "main-menu", null, GameVars.gameW, GameVars.gameH);
+
+    mainMenuBtn = createElem(mainMenuDiv, "canvas", null, null, 140 * GameVars.pixelSize, 60 * GameVars.pixelSize, null, (e) => startGame());
+    mainMenuBtn.style.translate = ((GameVars.gameW / 2) - (mainMenuBtn.width / 2)) + "px " +
+        ((GameVars.gameH / 2) - (mainMenuBtn.height / 2) + (40 * GameVars.pixelSize)) + "px";
+
+    generateLargeBox(mainMenuBtn, 0, 0, 139, 59, GameVars.pixelSize, "black", "rgba(255, 255, 255, 0.8)");
+    drawPixelTextInCanvas(convertTextToPixelArt("click/touch"), mainMenuBtn, GameVars.pixelSize, 70, 22, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("to start game"), mainMenuBtn, GameVars.pixelSize, 70, 38, "black", 2);
+
+
     mainMenuCtx = mainMenuCanv.getContext("2d");
     drawMainMenu();
 }
@@ -72,31 +88,34 @@ function drawMainMenu() {
         Math.round((((GameVars.gameH / soulCloseScale) / 6) * 4) - (soul.length / 2)));
 
     let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
-    drawPixelTextInCanvas(convertTextToPixelArt("the raising"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "#10495e", 6);
-    drawPixelTextInCanvas(convertTextToPixelArt("fighting spirits"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 36, "#10495e", 6);
 
     if (highScore > 0) {
-        drawPixelTextInCanvas(convertTextToPixelArt("best score " + highScore), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 72, "#10495e", 2);
+        generateLargeBox(mainMenuCanv, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 110, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
+        drawPixelTextInCanvas(convertTextToPixelArt("best score " + highScore), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 72, "black", 2);
+    } else {
+        generateLargeBox(mainMenuCanv, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 85, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
     }
 
-    drawPixelTextInCanvas(convertTextToPixelArt("click/touch"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 2) + 10, "#10495e", 2);
-    drawPixelTextInCanvas(convertTextToPixelArt("to start game"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 2) + 25, "#10495e", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("the raising"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "black", 6);
+    drawPixelTextInCanvas(convertTextToPixelArt("fighting spirits"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 36, "black", 6);
 
-    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2022 game by igor estevao"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 24) * 23, "#10495e", 2);
+    generateLargeBox(mainMenuCanv, -20, Math.round(((GameVars.gameHgAsPixels / 24) * 23) - 15), GameVars.gameWdAsPixels + 40, 30, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
+    drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2022 game by igor estevao"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 24) * 23, "black", 2);
 }
 
 function createGameTutorialMenu() {
     gameTutorDiv = createElem(mainDiv, "div", "game-tutorial", ["hidden"]);
 
-    let gameTutorialCanvas = createElem(gameTutorDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,150,0.8)");
+    let gameTutorialCanvas = createElem(gameTutorDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(255,255,255,0.8)");
     gameTutorialCanvas.style.transform = "translateZ(999px)";
 
+    generateLargeBox(gameTutorialCanvas, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 50, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
     drawPixelTextInCanvas(convertTextToPixelArt("tutorial"), gameTutorialCanvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 14, "black", 6);
 
     drawPixelTextInCanvas(convertTextToPixelArt("click/touch to select a soul"), gameTutorialCanvas, GameVars.pixelSize, (GameVars.gameWdAsPixels / 4) + 10, (GameVars.gameHgAsPixels / 2) - 72);
     drawPixelTextInCanvas(convertTextToPixelArt("or use the buttons at the bottom right"), gameTutorialCanvas, GameVars.pixelSize, (GameVars.gameWdAsPixels / 4) + 10, (GameVars.gameHgAsPixels / 2) - 62);
 
-    drawPixelTextInCanvas(convertTextToPixelArt("reaper next turn action"), gameTutorialCanvas, GameVars.pixelSize, ((GameVars.gameWdAsPixels / 4) * 3) + 10, (GameVars.gameHgAsPixels / 2) - 112);
+    drawPixelTextInCanvas(convertTextToPixelArt("reaper next turn action"), gameTutorialCanvas, GameVars.pixelSize, ((GameVars.gameWdAsPixels / 4) * 3) + 10, (GameVars.gameHgAsPixels / 2) - 82);
 
     drawPixelTextInCanvas(convertTextToPixelArt("cards you can play"), gameTutorialCanvas, GameVars.pixelSize, 34, GameVars.gameHgAsPixels - 120);
     drawPixelTextInCanvas(convertTextToPixelArt("per turn"), gameTutorialCanvas, GameVars.pixelSize, 34, GameVars.gameHgAsPixels - 110);
@@ -111,7 +130,7 @@ function createGameTutorialMenu() {
     gameTutorialSkipCanvas.style.transform = "translateZ(999px)";
     gameTutorialSkipCanvas.style.translate = ((GameVars.gameW - gameTutorialSkipCanvas.width) / 2) + "px " + (GameVars.gameH - gameTutorialSkipCanvas.height - (120 * GameVars.pixelSize)) + "px";
 
-    generateLargeBox(gameTutorialSkipCanvas, 0, 0, 139, 39, GameVars.pixelSize, "black", "rgba(150,150,150,0.8)");
+    generateLargeBox(gameTutorialSkipCanvas, 0, 0, 139, 39, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
     drawPixelTextInCanvas(convertTextToPixelArt("skip tutorial"), gameTutorialSkipCanvas, GameVars.pixelSize, 70, 20, "black", 2);
 }
 
@@ -120,10 +139,10 @@ function createGameContainer() {
 }
 
 function createGameOverMenu() {
-    gameOverCanv = createElem(mainDiv, "canvas", "game-over-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,75,75,0.9)",
+    gameOverCanv = createElem(mainDiv, "canvas", "game-over-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "rgba(255,75,75,0.9)",
         () => {
             gameOverCanv.classList.add("hidden");
-            mainMenuCanv.classList.remove("hidden");
+            mainMenuDiv.classList.remove("hidden");
             GameVars.sound.clickSound();
             gameDiv.innerHTML = "";
             game = null;
@@ -153,10 +172,10 @@ function drawScoreCalc(canvas) {
 }
 
 function createWinScreenMenu() {
-    winScreenCanv = createElem(mainDiv, "canvas", "win-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,255,0.9)",
+    winScreenCanv = createElem(mainDiv, "canvas", "win-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "rgba(255,255,255,0.9)",
         () => {
             winScreenCanv.classList.add("hidden");
-            mainMenuCanv.classList.remove("hidden");
+            mainMenuDiv.classList.remove("hidden");
             GameVars.sound.clickSound();
             gameDiv.innerHTML = "";
             game = null;
@@ -188,7 +207,7 @@ function createMuteBtn() {
 
 function startGame() {
     initAudio();
-    mainMenuCanv.classList.add("hidden");
+    mainMenuDiv.classList.add("hidden");
     gameTutorDiv.classList.remove("hidden");
     wasScheduledToShowWinScreen = false;
     game = new Game(gameDiv);
