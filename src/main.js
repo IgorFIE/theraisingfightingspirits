@@ -56,7 +56,7 @@ function createMainMenu() {
     mainMenuBtn.style.translate = ((GameVars.gameW / 2) - (mainMenuBtn.width / 2)) + "px " +
         ((GameVars.gameH / 2) - (mainMenuBtn.height / 2) + (40 * GameVars.pixelSize)) + "px";
 
-    generateLargeBox(mainMenuBtn, 0, 0, 139, 59, GameVars.pixelSize, "black", "rgba(255, 255, 255, 0.8)");
+    generateLargeBox(mainMenuBtn, 0, 0, 139, 59, GameVars.pixelSize, "black", "rgba(255, 255, 255, 0.9)");
     drawPixelTextInCanvas(convertTextToPixelArt("click/touch"), mainMenuBtn, GameVars.pixelSize, 70, 22, "black", 2);
     drawPixelTextInCanvas(convertTextToPixelArt("to start game"), mainMenuBtn, GameVars.pixelSize, 70, 38, "black", 2);
 
@@ -90,16 +90,16 @@ function drawMainMenu() {
     let halfScreenWidthAsPixels = GameVars.gameWdAsPixels / 2;
 
     if (highScore > 0) {
-        generateLargeBox(mainMenuCanv, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 110, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
+        generateLargeBox(mainMenuCanv, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 110, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
         drawPixelTextInCanvas(convertTextToPixelArt("best score " + highScore), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 72, "black", 2);
     } else {
-        generateLargeBox(mainMenuCanv, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 85, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
+        generateLargeBox(mainMenuCanv, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 85, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
     }
 
     drawPixelTextInCanvas(convertTextToPixelArt("the raising"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, GameVars.gameHgAsPixels / 14, "black", 6);
     drawPixelTextInCanvas(convertTextToPixelArt("fighting spirits"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 14) + 36, "black", 6);
 
-    generateLargeBox(mainMenuCanv, -20, Math.round(((GameVars.gameHgAsPixels / 24) * 23) - 15), GameVars.gameWdAsPixels + 40, 30, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
+    generateLargeBox(mainMenuCanv, -20, Math.round(((GameVars.gameHgAsPixels / 24) * 23) - 15), GameVars.gameWdAsPixels + 40, 30, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
     drawPixelTextInCanvas(convertTextToPixelArt("js13kgames 2022 game by igor estevao"), mainMenuCanv, GameVars.pixelSize, halfScreenWidthAsPixels, (GameVars.gameHgAsPixels / 24) * 23, "black", 2);
 }
 
@@ -154,8 +154,8 @@ function createGameOverMenu() {
 
 function drawGameOver() {
     gameOverCtx.clearRect(0, 0, gameOverCanv.width, gameOverCanv.height);
-    generateLargeBox(gameOverCanv, -20, ((GameVars.gameHgAsPixels / 3)) - 25, GameVars.gameWdAsPixels + 40, 50, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
-    drawPixelTextInCanvas(convertTextToPixelArt("crossed over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 3), "black", 6);
+    generateLargeBox(gameOverCanv, -20, (GameVars.gameHgAsPixels / 2) - 85, GameVars.gameWdAsPixels + 40, 180, GameVars.pixelSize, "black", "white");
+    drawPixelTextInCanvas(convertTextToPixelArt("crossed over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 50, "black", 6);
     drawScoreCalc(gameOverCanv);
 }
 
@@ -163,17 +163,13 @@ function drawScoreCalc(canvas) {
     let turnScore = GameVars.reaper.isDead ? (GameVars.turnCount - 1000) * ((1000 - 1) / (1 - 1000)) + 1 : 0;
     turnScore = turnScore < 0 ? 0 : turnScore;
     totalRunScore = GameVars.score + turnScore;
+    drawPixelTextInCanvas(convertTextToPixelArt("score"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 10, "black", 4);
+    drawPixelTextInCanvas(convertTextToPixelArt("reaper life taken - " + GameVars.score), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 15, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("turns taken to kill reaper - " + turnScore), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 30, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("(less turns give more points)"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 45, "black", 2);
+    drawPixelTextInCanvas(convertTextToPixelArt("total - " + totalRunScore), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 60, "black", 2);
     if (totalRunScore > highScore) {
-        generateLargeBox(canvas, -20, ((GameVars.gameHgAsPixels / 4) * 3) - 100, GameVars.gameWdAsPixels + 40, 115, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
-    } else {
-        generateLargeBox(canvas, -20, ((GameVars.gameHgAsPixels / 4) * 3) - 100, GameVars.gameWdAsPixels + 40, 105, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
-    }
-    drawPixelTextInCanvas(convertTextToPixelArt("score"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 75, "black", 4);
-    drawPixelTextInCanvas(convertTextToPixelArt("reaper life taken   " + GameVars.score), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 45, "black", 2);
-    drawPixelTextInCanvas(convertTextToPixelArt("turns taken to kill reaper (less is better)   " + turnScore), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 30, "black", 2);
-    drawPixelTextInCanvas(convertTextToPixelArt("total   " + totalRunScore), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 15, "black", 2);
-    if (totalRunScore > highScore) {
-        drawPixelTextInCanvas(convertTextToPixelArt("new record!"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3), "black", 2);
+        drawPixelTextInCanvas(convertTextToPixelArt("new record!"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) + 80, "black", 2);
     }
 }
 
@@ -193,8 +189,8 @@ function createWinScreenMenu() {
 
 function drawWinScreen() {
     winScreenCtx.clearRect(0, 0, winScreenCanv.width, winScreenCanv.height);
-    generateLargeBox(winScreenCanv, -20, ((GameVars.gameHgAsPixels / 3)) - 25, GameVars.gameWdAsPixels + 40, 50, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
-    drawPixelTextInCanvas(convertTextToPixelArt("liberated"), winScreenCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 3), "black", 6);
+    generateLargeBox(winScreenCanv, -20, (GameVars.gameHgAsPixels / 2) - 85, GameVars.gameWdAsPixels + 40, 180, GameVars.pixelSize, "black", "white");
+    drawPixelTextInCanvas(convertTextToPixelArt("liberated"), winScreenCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 2) - 50, "black", 6);
     drawScoreCalc(winScreenCanv);
 }
 

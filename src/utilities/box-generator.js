@@ -35,8 +35,8 @@ const generateBox = (canvas, startX, startY, endX, endY, pixelSize, color, condi
             if (conditionFn(x, y, endX, endY)) {
                 ctx.fillStyle = color;
                 ctx.fillRect(
-                    (startX * pixelSize) + (x * pixelSize),
-                    (startY * pixelSize) + (y * pixelSize),
+                    Math.round((startX * pixelSize) + (x * pixelSize)),
+                    Math.round((startY * pixelSize) + (y * pixelSize)),
                     pixelSize, pixelSize);
             }
         }
@@ -47,9 +47,9 @@ const genetateInsideBoxColor = (canvas, startX, startY, endX, endY, pixelSize, b
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = bgColor;
     ctx.fillRect(
-        (startX * pixelSize) + pixelSize,
-        (startY * pixelSize) + pixelSize,
-        (endX * pixelSize) - pixelSize,
-        (endY * pixelSize) - pixelSize
+        Math.round((startX * pixelSize) + pixelSize),
+        Math.round((startY * pixelSize) + pixelSize),
+        Math.round((endX * pixelSize) - pixelSize),
+        Math.round((endY * pixelSize) - pixelSize)
     );
 };

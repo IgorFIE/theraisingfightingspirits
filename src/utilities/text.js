@@ -97,6 +97,8 @@ const retrievePixelLetter = (letter) => {
             return leftParen;
         case ')':
             return rightParen;
+        case '-':
+            return minus;
 
         case '0':
             return zer;
@@ -354,6 +356,14 @@ const slash = [
     [true, true],
     [true, false],
     [true, false]
+];
+
+const minus = [
+    [false, false],
+    [false, false],
+    [true, true],
+    [false, false],
+    [false, false]
 ];
 
 const leftParen = [
