@@ -152,7 +152,7 @@ export class Reaper {
 
     drawAct(actionIcon, actionValue) {
         drawSprite(this.rActCanv, actionIcon, GameVars.pixelSize);
-        generateSmallBox(this.rActCanv, 2, actionIcon.length - 4, 13, 7, GameVars.pixelSize, "black", "white");
+        generateSmallBox(this.rActCanv, 0, actionIcon.length - 4, 17, 7, GameVars.pixelSize, "black", "white");
         drawPixelTextInCanvas(convertTextToPixelArt(actionValue), this.rActCanv, GameVars.pixelSize, 7 + 2, actionIcon.length, "black");
     }
 

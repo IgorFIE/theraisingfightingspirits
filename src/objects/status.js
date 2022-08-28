@@ -47,7 +47,7 @@ export class Status {
         generateSmallBox(this.statsCanv, 16, 3, this.w + 1, 11, GameVars.pixelSize, "white", "white");
         if (this.shield > 0) {
             drawSprite(this.statsCanv, defIcon, GameVars.pixelSize);
-            generateSmallBox(this.statsCanv, 2, defIcon.length - 4, 13, 7, GameVars.pixelSize, "black", "white");
+            generateSmallBox(this.statsCanv, 0, defIcon.length - 4, 17, 7, GameVars.pixelSize, "black", "white");
             drawPixelTextInCanvas(convertTextToPixelArt(this.shield), this.statsCanv, GameVars.pixelSize, 9, defIcon.length, "black");
         }
 
