@@ -154,6 +154,7 @@ function createGameOverMenu() {
 
 function drawGameOver() {
     gameOverCtx.clearRect(0, 0, gameOverCanv.width, gameOverCanv.height);
+    generateLargeBox(gameOverCanv, -20, ((GameVars.gameHgAsPixels / 3)) - 25, GameVars.gameWdAsPixels + 40, 50, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
     drawPixelTextInCanvas(convertTextToPixelArt("crossed over"), gameOverCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 3), "black", 6);
     drawScoreCalc(gameOverCanv);
 }
@@ -162,7 +163,12 @@ function drawScoreCalc(canvas) {
     let turnScore = GameVars.reaper.isDead ? (GameVars.turnCount - 1000) * ((1000 - 1) / (1 - 1000)) + 1 : 0;
     turnScore = turnScore < 0 ? 0 : turnScore;
     totalRunScore = GameVars.score + turnScore;
-    drawPixelTextInCanvas(convertTextToPixelArt("score"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 65, "black", 4);
+    if (totalRunScore > highScore) {
+        generateLargeBox(canvas, -20, ((GameVars.gameHgAsPixels / 4) * 3) - 100, GameVars.gameWdAsPixels + 40, 115, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
+    } else {
+        generateLargeBox(canvas, -20, ((GameVars.gameHgAsPixels / 4) * 3) - 100, GameVars.gameWdAsPixels + 40, 105, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
+    }
+    drawPixelTextInCanvas(convertTextToPixelArt("score"), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 75, "black", 4);
     drawPixelTextInCanvas(convertTextToPixelArt("reaper life taken   " + GameVars.score), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 45, "black", 2);
     drawPixelTextInCanvas(convertTextToPixelArt("turns taken to kill reaper (less is better)   " + turnScore), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 30, "black", 2);
     drawPixelTextInCanvas(convertTextToPixelArt("total   " + totalRunScore), canvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, ((GameVars.gameHgAsPixels / 4) * 3) - 15, "black", 2);
@@ -172,7 +178,7 @@ function drawScoreCalc(canvas) {
 }
 
 function createWinScreenMenu() {
-    winScreenCanv = createElem(mainDiv, "canvas", "win-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "rgba(255,255,255,0.9)",
+    winScreenCanv = createElem(mainDiv, "canvas", "win-screen", ["hidden", "on-top"], GameVars.gameW, GameVars.gameH, "rgba(150,150,255,0.9)",
         () => {
             winScreenCanv.classList.add("hidden");
             mainMenuDiv.classList.remove("hidden");
@@ -187,6 +193,7 @@ function createWinScreenMenu() {
 
 function drawWinScreen() {
     winScreenCtx.clearRect(0, 0, winScreenCanv.width, winScreenCanv.height);
+    generateLargeBox(winScreenCanv, -20, ((GameVars.gameHgAsPixels / 3)) - 25, GameVars.gameWdAsPixels + 40, 50, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
     drawPixelTextInCanvas(convertTextToPixelArt("liberated"), winScreenCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, (GameVars.gameHgAsPixels / 3), "black", 6);
     drawScoreCalc(winScreenCanv);
 }
