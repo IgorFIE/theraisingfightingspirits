@@ -44,7 +44,7 @@ export class Game {
         GameVars.soulsInGame++;
 
         GameVars.reaper = new Reaper(gameDiv);
-        this.background.generate(GameVars.reaper);
+        this.background.generateGameTerrain(GameVars.reaper);
 
         this.ui = new UI(gameDiv);
     }

@@ -17,7 +17,15 @@ export class Card {
         this.updateCardPos(cardX, cardY);
         this.dragElement(this);
 
-        this.cardType = randomNumb(3);
+        let value = randomNumb(100);
+        if (value < 20) {
+            this.cardType = 1; // minion 20% prob
+        } else if (value < 60) {
+            this.cardType = 0; // atk 40% prob
+        } else {
+            this.cardType = 2; // def 40% prob
+        }
+        
         this.drawCard();
     }
 

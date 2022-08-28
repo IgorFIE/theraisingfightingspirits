@@ -13,7 +13,7 @@ export class UI {
 
         let uiCont = createElem(gameDiv, "div", "ui-container");
 
-        this.turnCountCanv = createElem(uiCont, "canvas", null, null, 100 * GameVars.pixelSize, 27 * GameVars.pixelSize);
+        this.turnCountCanv = createElem(uiCont, "canvas", null, null, 100 * GameVars.pixelSize, 32 * GameVars.pixelSize);
         this.turnCountCanv.style.translate = ((GameVars.gameW / 2) - (this.turnCountCanv.width / 2)) + "px " + (this.turnCountCanv.height / 2) + "px";
         this.turnCountCtx = this.turnCountCanv.getContext("2d");
 
@@ -167,8 +167,8 @@ export class UI {
         drawPixelTextInCanvas(convertTextToPixelArt("next soul"), this.nextSoulCanv, GameVars.pixelSize, 34, 12);
 
         this.turnCountCtx.clearRect(0, 0, this.turnCountCanv.width, this.turnCountCanv.height);
-        generateSmallBox(this.turnCountCanv, 0, 0, 99, 26, GameVars.pixelSize, "black", "white");
-        drawPixelTextInCanvas(convertTextToPixelArt("turn " + GameVars.turnCount), this.turnCountCanv, GameVars.pixelSize, 50, 7, "black", 2);
-        drawPixelTextInCanvas(convertTextToPixelArt("score " + GameVars.score), this.turnCountCanv, GameVars.pixelSize, 50, 20, "black", 2);
+        generateLargeBox(this.turnCountCanv, 0, 0, 99, 31, GameVars.pixelSize, "black", "white");
+        drawPixelTextInCanvas(convertTextToPixelArt("turn " + GameVars.turnCount), this.turnCountCanv, GameVars.pixelSize, 50, 10, "black", 2);
+        drawPixelTextInCanvas(convertTextToPixelArt("score " + GameVars.score), this.turnCountCanv, GameVars.pixelSize, 50, 22, "black", 2);
     }
 }

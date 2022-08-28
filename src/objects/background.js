@@ -4,11 +4,11 @@ const { createElem } = require("../utilities/draw-utilities");
 
 export class Background {
     constructor(gameDiv) {
-        this.bckElem = createElem(gameDiv, "canvas", "gameBack", null, GameVars.gameW, GameVars.gameH, "#686b7a");
+        this.bckElem = createElem(gameDiv, "canvas", null, ["gameBack"], GameVars.gameW, GameVars.gameH, "#686b7a");
         this.bckCtx = this.bckElem.getContext("2d");
     }
 
-    generate(reaper) {
+    generateGameTerrain(reaper) {
         const reaperBox = reaper.reaperCont.getBoundingClientRect();
         let reaperCoords = { x: Math.round(reaperBox.left / GameVars.pixelSize), y: Math.round(reaperBox.top / GameVars.pixelSize) };
 

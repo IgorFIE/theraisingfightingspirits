@@ -10,8 +10,7 @@ export class Status {
         this.life = lifeValue;
         this.shield = shieldValue;
         this.w = w;
-
-        this.statsCanv = createElem(parentdiv, "canvas", null, ["status"], (18 + w) * GameVars.pixelSize, 18 * GameVars.pixelSize);
+        this.statsCanv = createElem(parentdiv, "canvas", null, ["status"], (18 + w) * GameVars.pixelSize, (18 + 4) * GameVars.pixelSize);
         this.statsCanv.addEventListener("animationend", () => this.statsCanv.style.animation = "");
         this.statsCtx = this.statsCanv.getContext("2d");
         this.draw();
@@ -48,7 +47,8 @@ export class Status {
         generateSmallBox(this.statsCanv, 16, 3, this.w + 1, 11, GameVars.pixelSize, "white", "white");
         if (this.shield > 0) {
             drawSprite(this.statsCanv, defIcon, GameVars.pixelSize);
-            drawPixelTextInCanvas(convertTextToPixelArt(this.shield), this.statsCanv, GameVars.pixelSize, 9, 9, "white");
+            generateSmallBox(this.statsCanv, 2, defIcon.length - 4, 13, 7, GameVars.pixelSize, "black", "white");
+            drawPixelTextInCanvas(convertTextToPixelArt(this.shield), this.statsCanv, GameVars.pixelSize, 9, defIcon.length, "black");
         }
 
         generateSmallBox(this.statsCanv, 17, 4, this.w - 1, 9, GameVars.pixelSize, "black", "white");

@@ -19,7 +19,7 @@ export class Reaper {
 
         this.reaperCont = createElem(gameDiv, "div", null, ["reaper-container"]);
 
-        this.rActCanv = createElem(this.reaperCont, "canvas", "reaper-action", null, (scytheIcon[0].length + 4) * GameVars.pixelSize, (scytheIcon.length + 4) * GameVars.pixelSize);
+        this.rActCanv = createElem(this.reaperCont, "canvas", "reaper-action", null, (scytheIcon[0].length) * GameVars.pixelSize, (scytheIcon.length + 4) * GameVars.pixelSize);
         this.rActCtx = this.rActCanv.getContext("2d");
 
         this.rCanv = createElem(this.reaperCont, "canvas", "reaper", null, grimReaper[0].length * GameVars.pixelSize, grimReaper.length * GameVars.pixelSize);
@@ -151,9 +151,9 @@ export class Reaper {
     }
 
     drawAct(actionIcon, actionValue) {
-        drawSprite(this.rActCanv, actionIcon, GameVars.pixelSize, 4);
-        generateSmallBox(this.rActCanv, 0, actionIcon.length - 6, 9, 9, GameVars.pixelSize, "black", "white");
-        drawPixelTextInCanvas(convertTextToPixelArt(actionValue), this.rActCanv, GameVars.pixelSize, 5, actionIcon.length - 1, "black");
+        drawSprite(this.rActCanv, actionIcon, GameVars.pixelSize);
+        generateSmallBox(this.rActCanv, 2, actionIcon.length - 4, 13, 7, GameVars.pixelSize, "black", "white");
+        drawPixelTextInCanvas(convertTextToPixelArt(actionValue), this.rActCanv, GameVars.pixelSize, 7 + 2, actionIcon.length, "black");
     }
 
     takeDmg(dmg) {
