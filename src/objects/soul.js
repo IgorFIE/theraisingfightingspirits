@@ -41,8 +41,12 @@ export class Soul {
     }
 
     takeDmg(dmg) {
+        if (this.soulStats.shield - dmg < 0) {
+            this.draw("red");
+        } else {
+            this.draw("lightblue");
+        }
         this.soulStats.takeDmg(dmg);
-        this.draw("red");
         if (this.soulStats.life > 0) {
             this.soulCanv.style.animation = "takedmg 400ms ease-in-out";
         } else {

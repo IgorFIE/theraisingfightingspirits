@@ -78,7 +78,7 @@ export class Reaper {
                     this.rAtk += this.rBuffPwr;
                     this.rAoeAtk += this.rBuffPwr;
                     this.rDef += this.rBuffPwr;
-                    this.rBuffPwr += 2;
+                    this.rBuffPwr += 3;
                     GameVars.sound.buffSound();
                     break;
                 default:
@@ -95,7 +95,7 @@ export class Reaper {
 
     calcReaperNextAct() {
         if (GameVars.turnCount === GameVars.reaperNextEventTurn) {
-            GameVars.reaperNextEventTurn = GameVars.reaperNextEventTurn * 2;
+            GameVars.reaperNextEventTurn += 6;
             this.rAct = 3; // buff
         } else {
             let visibleSouls = [];
@@ -157,8 +157,12 @@ export class Reaper {
     }
 
     takeDmg(dmg) {
+        if (this.rStats.shield - dmg < 0) {
+            this.draw("red");
+        } else {
+            this.draw("lightblue");
+        }
         this.rStats.takeDmg(dmg);
-        this.draw("red");
         if (this.rStats.life > 0) {
             this.rCanv.style.animation = "takedmg 400ms ease-in-out";
         } else {

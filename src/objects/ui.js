@@ -89,7 +89,7 @@ export class UI {
 
     playerTurn() {
         if (GameVars.soulNextEventTurn === GameVars.turnCount && this.isNewTurn) {
-            GameVars.soulNextEventTurn = GameVars.soulNextEventTurn * 2;
+            GameVars.soulNextEventTurn += 3;
             GameVars.isEventRunning = true;
             this.cardEvent.startEvent();
         } else if (!GameVars.isEventRunning && this.isNewTurn) {
@@ -110,7 +110,7 @@ export class UI {
         } else if (GameVars.isEventRunning) {
             this.cardEvent.eventBtns.forEach((btn) => btn.drawBtn());
         }
-        if (GameVars.soulsInGame > 1) {
+        if (GameVars.soulsInGame > 0) {
             const soulInUse = GameVars.soulInUse;
             GameVars.prevSoul = null;
             GameVars.nextSoul = null;

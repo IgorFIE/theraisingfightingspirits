@@ -8,7 +8,7 @@ const { createElem } = require("../utilities/draw-utilities");
 export class Event {
     constructor(gameDiv) {
         this.eDiv = createElem(gameDiv, "div", null, ["hidden"]);
-        this.eCanv = createElem(this.eDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgba(255,255,255,0.8)");
+        this.eCanv = createElem(this.eDiv, "canvas", null, ["on-top"], GameVars.gameW, GameVars.gameH, "rgb(101,107,114,0.6)");
         this.selectDiv = createElem(this.eDiv, "div");
 
         this.eventBtns = [];
