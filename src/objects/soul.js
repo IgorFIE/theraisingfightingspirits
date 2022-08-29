@@ -4,7 +4,6 @@ const { drawSprite, createElem } = require("../utilities/draw-utilities");
 
 export class Soul {
     constructor(soulContainer, containerPosX, containerPosY) {
-        GameVars.sound.spawnSound();
         this.x = containerPosX;
         this.y = containerPosY;
         this.isDead = false;
@@ -46,9 +45,9 @@ export class Soul {
         } else {
             this.draw("lightblue");
         }
-        this.soulStats.takeDmg(dmg);
         if (this.soulStats.life > 0) {
             this.soulCanv.style.animation = "takedmg 400ms ease-in-out";
+            this.soulStats.takeDmg(dmg);
         } else {
             this.soulCanv.style.animation = "addsoul 500ms reverse ease-in-out";
             GameVars.sound.deadSound();

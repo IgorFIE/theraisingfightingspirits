@@ -3,7 +3,7 @@ export class Sound {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         this.context = new AudioContext();
 
-        this.loopTime = 0.01;
+        this.loopTime = 0.016;
         this.loopMaxTime = 4;
         this.notesPeerLoop = 32;
         this.currentTime = this.loopMaxTime / this.notesPeerLoop;
@@ -26,43 +26,43 @@ export class Sound {
 
     clickSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 174.6, 0.5, 0, 2);
+            this.playSound(square, 174.6, 0.14, 0, 0.2);
         }
     }
 
     takeDmgSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 32.70, 1, 0, 1);
-            this.playSound(square, 36.71, 0.8, 0.1, 2);
-            this.playSound(square, 16.35, 1, 0.2, 3);
+            this.playSound(square, 32.70, 0.14, 0, 0.1);
+            this.playSound(square, 36.71, 0.14, 0.1, 0.2);
+            this.playSound(square, 16.35, 0.16, 0.2, 0.2);
         }
     }
 
     gainShield() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 233.1, 0.2, 0, 1);
-            this.playSound(square, 466.2, 0.4, 0.1, 2);
+            this.playSound(square, 233.1, 0.1, 0, 0.1);
+            this.playSound(square, 466.2, 0.1, 0.1, 0.2);
         }
     }
 
     spawnSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 293.7, 0.4, 0, 3);
+            this.playSound(square, 293.7, 0.1, 0, 0.2);
         }
     }
 
     deadSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 18.35, 0.3, 0, 1);
-            this.playSound(square, 36.71, 0.5, 0.1, 2);
-            this.playSound(square, 73.42, 0.8, 0.2, 3);
+            this.playSound(square, 18.35, 0.1, 0, 0.1);
+            this.playSound(square, 36.71, 0.1, 0.1, 0.2);
+            this.playSound(square, 73.42, 0.1, 0.2, 0.2);
         }
     }
 
     buffSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 932.3, 0.3, 0, 1);
-            this.playSound(square, 1865, 0.5, 0.1, 2);
+            this.playSound(square, 932.3, 0.1, 0, 0.1);
+            this.playSound(square, 1865, 0.1, 0.1, 0.2);
         }
     }
 
@@ -70,12 +70,12 @@ export class Sound {
         if (this.isSoundOn && this.isSoundInitialized) {
             if (this.currentTime >= (this.loopMaxTime / this.notesPeerLoop)) {
 
-                this.playSound("triangle", mB[this.musicBassNote], 1, 0, 2);
+                this.playSound("triangle", mB[this.musicBassNote], 0.5, 0, 0.2);
                 this.musicBassNote++;
                 if (this.musicBassNote >= mB.length) {
                     this.musicBassNote = 0;
                 }
-                this.playSound(square, mM[this.musicMelodyNote], 0.2, 0, 2);
+                this.playSound(square, mM[this.musicMelodyNote], 0.08, 0, 0.2);
                 this.musicMelodyNote++;
                 if (this.musicMelodyNote >= mM.length) {
                     this.musicMelodyNote = 0;
@@ -88,11 +88,11 @@ export class Sound {
         }
     }
 
-    playGameOverSound() {
+    playOverSound() {
         if (this.isSoundOn && this.isSoundInitialized) {
-            this.playSound(square, 32.70, 0.5, 0, 0.1);
-            this.playSound(square, 36.71, 0.3, 0.1, 0.2);
-            this.playSound(square, 16.35, 0.5, 0.2, 1);
+            this.playSound(square, 32.70, 0.3, 0, 0.1);
+            this.playSound(square, 36.71, 0.2, 0.1, 0.2);
+            this.playSound(square, 16.35, 0.3, 0.2, 0.1);
         }
     }
 
@@ -101,8 +101,10 @@ export class Sound {
         const g = this.context.createGain();
         o.type = type;
         o.frequency.value = value;
-        g.gain.value = volume;
-        g.gain.exponentialRampToValueAtTime(0.00001, this.context.currentTime + end);
+
+        g.gain.setValueAtTime(volume, this.context.currentTime);
+        g.gain.linearRampToValueAtTime(0.00001, this.context.currentTime + end);
+
         o.connect(g);
         g.connect(this.context.destination);
         o.start(start);

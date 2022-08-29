@@ -72,8 +72,9 @@ export class Game {
         } else {
             this.ui.playerTurn();
         }
-        this.ui.draw();
-        GameVars.cards.forEach(card => card.draw());
+        if (!GameVars.isEventRunning) this.ui.draw();
+        if (GameVars.redraw) GameVars.cards.forEach(card => card.draw());
         GameVars.score = GameVars.reaper.rStats.maxLife - GameVars.reaper.rStats.life;
+        GameVars.redraw = false;
     }
 }

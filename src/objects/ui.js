@@ -101,14 +101,16 @@ export class UI {
                 GameVars.cards.push(new Card(this.cardCont, GameVars.cardContX, GameVars.cardContY));
             }
             GameVars.cards[0].updateCards();
+            GameVars.redraw = true;
         } else if (!GameVars.isEventRunning && GameVars.isMonetActive && !this.wasMonetDeal) {
             this.wasMonetDeal = true;
             GameVars.cardsPlayed--;
             let newCard = new Card(this.cardCont, GameVars.cardContX, GameVars.cardContY);
             GameVars.cards.push(newCard);
             newCard.updateCards();
+            GameVars.redraw = true;
         } else if (GameVars.isEventRunning) {
-            this.cardEvent.eventBtns.forEach((btn) => btn.drawBtn());
+            this.cardEvent.eventBtns.forEach((btn) => { if (btn.isMonet) btn.drawBtn() });
         }
         if (GameVars.soulsInGame > 0) {
             const soulInUse = GameVars.soulInUse;

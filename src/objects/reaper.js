@@ -52,9 +52,9 @@ export class Reaper {
                 this.rCanv.style.animation = "";
                 requestAnimationFrame(() => setTimeout(() => this.rCanv.style.animation = "reaperatk 1s ease-in-out", 0));
             }
-            switch (this.rAct) {
-                case 1: // atk
-                    setTimeout(() => {
+            setTimeout(() => {
+                switch (this.rAct) {
+                    case 1: // atk
                         if (this.rLckOnSoul.soulStats.life > 0) {
                             this.rLckOnSoul.takeDmg(this.rAtk);
                         } else {
@@ -62,34 +62,32 @@ export class Reaper {
                             GameVars.souls.forEach((row) => row.forEach((soul) => { if (soul && soul.soulStats.life > 0) soulsAlive.push(soul); }));
                             soulsAlive[randomNumb(soulsAlive.length)].takeDmg(this.rAtk);
                         }
-                    }, 250);
-                    break;
-                case 2: // aoe atk
-                    setTimeout(() => {
+                        break;
+                    case 2: // aoe atk
                         GameVars.souls.forEach((row) => row.forEach((soul) => {
                             if (soul) {
                                 soul.takeDmg(this.rAoeAtk);
                             }
                         }));
-                    }, 250);
-                    break;
-                case 3: // buff
-                    this.rCanv.style.animation = "addshield 500ms ease-in-out";
-                    this.rAtk += this.rBuffPwr;
-                    this.rAoeAtk += this.rBuffPwr;
-                    this.rDef += this.rBuffPwr;
-                    this.rBuffPwr += 3;
-                    GameVars.sound.buffSound();
-                    break;
-                default:
-                    this.rStats.addShield(this.rDef);
-                    break;
-            }
-            this.calcReaperNextAct();
-            setTimeout(() => {
-                GameVars.isPlayerTurn = true;
-                this.isNewTurn = true;
-            }, 750);
+                        break;
+                    case 3: // buff
+                        this.rCanv.style.animation = "addshield 500ms ease-in-out";
+                        this.rAtk += this.rBuffPwr;
+                        this.rAoeAtk += this.rBuffPwr;
+                        this.rDef += this.rBuffPwr;
+                        this.rBuffPwr += 3;
+                        GameVars.sound.buffSound();
+                        break;
+                    default:
+                        this.rStats.addShield(this.rDef);
+                        break;
+                }
+                this.calcReaperNextAct();
+                setTimeout(() => {
+                    GameVars.isPlayerTurn = true;
+                    this.isNewTurn = true;
+                }, 750);
+            }, 250);
         }
     }
 

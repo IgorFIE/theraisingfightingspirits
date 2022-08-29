@@ -67,7 +67,7 @@ export class EventBtn {
         this.ctx.clearRect(0, 0, this.canv.width, this.canv.height);
         this.canv.style.translate = ((GameVars.gameW / 2) - (this.canv.width + (3 * GameVars.pixelSize)) + (this.x * (this.canv.width + (12 * GameVars.pixelSize)))) + "px " +
             ((GameVars.gameH / 2) - ((this.canv.height / 3) * 2) + (this.y * (this.canv.height + (12 * GameVars.pixelSize)))) + "px";
-        let monetizationColor = GameVars.isMonetActive ? "rgba(200,200,150,0.9)" : "rgba(75,75,75,0.9)";
+        let monetizationColor = GameVars.isMonetActive ? "rgba(255,240,150,0.9)" : "rgba(75,75,75,0.9)";
         generateLargeBox(this.canv, 0, 0, 99, 59, GameVars.pixelSize, "black", this.isMonet ? monetizationColor : "rgba(255,255,255,0.8)");
         if (this.isMonet) {
             drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.canv, GameVars.pixelSize, 50, 20, "black", 1);

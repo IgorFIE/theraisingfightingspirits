@@ -47,6 +47,7 @@ let cardShield;
 let cardShieldBuff;
 
 let isMonetActive;
+let redraw;
 
 const resetGameVars = () => {
     GameVars.cardContX = 0;
@@ -147,6 +148,7 @@ export const GameVars = {
     isEventRunning,
 
     isMonetActive,
+    redraw,
 
     resetGameVars
 }

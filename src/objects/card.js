@@ -21,6 +21,7 @@ export class Card {
     }
 
     useCard() {
+        GameVars.redraw = true;
         switch (this.cardType) {
             case 0: // damage card
                 GameVars.soulInUse.soulCanv.style.animation = "";
@@ -30,6 +31,7 @@ export class Card {
                 break;
             case 1: // new soul minion card
                 if (GameVars.soulsInGame != GameVars.souls.length * GameVars.souls[0].length) {
+                    GameVars.sound.spawnSound();
                     let soulCoords = retrieveSoulCoords(GameVars.souls, (y, x) => GameVars.souls[y][x] !== null);
                     GameVars.souls[soulCoords.y][soulCoords.x] = new Soul(GameVars.soulsConts[soulCoords.y][soulCoords.x], soulCoords.x, soulCoords.y);
                     GameVars.soulsInGame++;
@@ -56,7 +58,7 @@ export class Card {
     updateCards() {
         const cardSpace = ((GameVars.cardContW * GameVars.pixelSize) / (GameVars.drawCardNumb - GameVars.cardsPlayed));
         const cardX = (cardSpace / 2) - (this.cardCanv.width / 2);
-        const cardY = GameVars.cardContY + (2 * GameVars.pixelSize);
+        const cardY = GameVars.cardContY - (2 * GameVars.pixelSize);
         let placementCounter = 0;
         GameVars.cards.forEach((card) => {
             if (!card.isUsed) {

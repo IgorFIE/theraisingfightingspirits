@@ -107,32 +107,6 @@ export const buffIcon = [
     [nu, nu, nu, nu, nu, nu, wb, wb, wb, wb, wb, wb, nu, nu, nu, nu, nu, nu]
 ];
 
-export const deckIcon = [
-    [bl, bl, nu, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl],
-    [bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [bl, nu, nu, bl, nu, bl, bl, bl, nu, bl, nu, nu, bl],
-    [bl, nu, nu, nu, bl, nu, nu, nu, bl, nu, nu, nu, bl],
-    [bl, nu, nu, bl, nu, bl, bl, bl, nu, bl, nu, nu, bl],
-    [bl, nu, bl, bl, nu, bl, nu, bl, nu, bl, bl, nu, bl],
-    [bl, nu, nu, bl, nu, bl, bl, bl, nu, bl, nu, nu, bl],
-    [bl, nu, nu, nu, bl, nu, nu, nu, bl, nu, nu, nu, bl],
-    [bl, nu, nu, bl, nu, bl, bl, bl, nu, bl, nu, nu, bl],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
-    [nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu],
-    [bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl],
-    [bl, bl, nu, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl],
-];
-
 export const speaker = [
     [nu, nu, nu, bl, nu],
     [nu, bl, bl, bl, nu],

@@ -43,6 +43,8 @@ function init() {
     createWinScreenMenu();
     createMuteBtn();
 
+    // createFpsElement();
+
     window.requestAnimationFrame(() => gameLoop());
 }
 
@@ -210,6 +212,7 @@ function createMuteBtn() {
 
 function startGame() {
     initAudio();
+    GameVars.sound.clickSound();
     mainMenuDiv.classList.add("hidden");
     gameTutorDiv.classList.remove("hidden");
     wasScheduledToShowWinScreen = false;
@@ -223,23 +226,43 @@ function initAudio() {
     }
 }
 
+// let fps;
+// function createFpsElement() {
+//     fps = document.createElement("div");
+//     fps.style.fontSize = "50px";
+//     fps.style.position = "absolute";
+//     mainDiv.appendChild(fps);
+// }
+
+// let frameCount = 0;
+let fpsInterval = 1000 / 30; // lock to 30fps
+let then = Date.now();
+// let startTime = then;
 function gameLoop() {
-    if (game) {
-        game.update();
-        if (GameVars.soulsInGame <= 0) {
-            drawGameOver();
-            gameOverCanv.classList.remove("hidden");
+    elapsed = Date.now() - then;
+    if (elapsed > fpsInterval) {
+        then = Date.now() - (elapsed % fpsInterval);
+        // var sinceStart = Date.now() - startTime;
+        // var currentFps = Math.round(1000 / (sinceStart / ++frameCount) * 100) / 100;
+        // fps.innerHTML = currentFps + " fps";
+        if (game) {
+            game.update();
+            if (GameVars.soulsInGame <= 0) {
+                drawGameOver();
+                gameOverCanv.classList.remove("hidden");
+            }
+            if (GameVars.reaper.isDead && !wasScheduledToShowWinScreen) {
+                wasScheduledToShowWinScreen = true;
+                drawWinScreen();
+                setTimeout(() => winScreenCanv.classList.remove("hidden"), 250);
+            }
         }
-        if (GameVars.reaper.isDead && !wasScheduledToShowWinScreen) {
-            wasScheduledToShowWinScreen = true;
-            drawWinScreen();
-            setTimeout(() => winScreenCanv.classList.remove("hidden"), 250);
+        drawSoundBtn();
+        if (GameVars.sound) {
+            GameVars.sound.playMusic();
         }
     }
-    drawSoundBtn();
-    if (GameVars.sound) {
-        GameVars.sound.playMusic();
-    }
+
     window.requestAnimationFrame(() => gameLoop());
 }
 
@@ -262,8 +285,14 @@ function updateHighScore() {
 
 function addMonetizationEvents() {
     if (document.monetization) {
-        document.monetization.addEventListener('monetizationstart', () => GameVars.isMonetActive = true);
-        document.monetization.addEventListener('monetizationstop', () => GameVars.isMonetActive = false);
+        document.monetization.addEventListener('monetizationstart', () => {
+            GameVars.sound.buffSound();
+            GameVars.isMonetActive = true;
+        });
+        document.monetization.addEventListener('monetizationstop', () => {
+            GameVars.sound.playOverSound();
+            GameVars.isMonetActive = false
+        });
     }
 }
 
