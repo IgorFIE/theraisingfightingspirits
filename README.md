@@ -15,5 +15,5 @@ Run `npm run start` to start the game in a development server on `localhost:8080
 ### Production
 Use `npm run build` to create minified file and zip him with the `index.html`. The result will be available in the `dist` directory.
 
-![main menu](main-menu.JPG "The Raising Fighting Spirits Main Menu")
-![game screen](game-screen.JPG "The Raising Fighting Spirits Game Screen")
+![main menu](main-menu.png "The Raising Fighting Spirits Main Menu")
+![game screen](game-screen.png "The Raising Fighting Spirits Game Screen")
