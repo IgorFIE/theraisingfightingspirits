@@ -5,7 +5,7 @@ const { soul } = require("./objects/soul");
 const { drawSprite, createElem } = require("./utilities/draw-utilities");
 const { Sound } = require("./utilities/sound");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
-const { genLargeBox } = require("./utilities/box-generator");
+const { genLargeBox, genSmallBox } = require("./utilities/box-generator");
 const { speaker, audio } = require("./objects/icons");
 const { Background } = require("./objects/background");
 
@@ -108,19 +108,23 @@ function drawMainMenu() {
 function createGameTutorialMenu() {
     gameTutorDiv = createElem(mainDiv, "div", "game-tutorial", ["hidden", "ontop"]);
 
-    let gameTutorialCanvas = createElem(gameTutorDiv, "canvas", null, null, GameVars.gameW, GameVars.gameH, "rgb(151,157,164,0.6)");
+    let gameTutorialCanvas = createElem(gameTutorDiv, "canvas", null, null, GameVars.gameW, GameVars.gameH, "rgb(101,107,114,0.6)");
 
     genLargeBox(gameTutorialCanvas, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 50, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
     drawPixelTextInCanvas(convertTextToPixelArt("tutorial"), gameTutorialCanvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 14, "black", 6);
 
+    genSmallBox(gameTutorialCanvas, (GameVars.gameWdAsPixels / 4) - 70, (GameVars.gameHgAsPixels / 2) - 80, 160, 24, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
     drawPixelTextInCanvas(convertTextToPixelArt("click/touch to select a soul"), gameTutorialCanvas, GameVars.pixelSize, (GameVars.gameWdAsPixels / 4) + 10, (GameVars.gameHgAsPixels / 2) - 72);
     drawPixelTextInCanvas(convertTextToPixelArt("or use the buttons at the bottom right"), gameTutorialCanvas, GameVars.pixelSize, (GameVars.gameWdAsPixels / 4) + 10, (GameVars.gameHgAsPixels / 2) - 62);
 
+    genSmallBox(gameTutorialCanvas, ((GameVars.gameWdAsPixels / 4) * 3) - 40, (GameVars.gameHgAsPixels / 2) - 89, 100, 12, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
     drawPixelTextInCanvas(convertTextToPixelArt("reaper next turn action"), gameTutorialCanvas, GameVars.pixelSize, ((GameVars.gameWdAsPixels / 4) * 3) + 10, (GameVars.gameHgAsPixels / 2) - 82);
 
+    genSmallBox(gameTutorialCanvas, 0, GameVars.gameHgAsPixels - 126, 68, 21, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
     drawPixelTextInCanvas(convertTextToPixelArt("cards you can play"), gameTutorialCanvas, GameVars.pixelSize, 34, GameVars.gameHgAsPixels - 120);
     drawPixelTextInCanvas(convertTextToPixelArt("per turn"), gameTutorialCanvas, GameVars.pixelSize, 34, GameVars.gameHgAsPixels - 110);
 
+    genSmallBox(gameTutorialCanvas, GameVars.gameWdAsPixels / 2 - 80, GameVars.gameHgAsPixels - 107, 160, 13, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
     drawPixelTextInCanvas(convertTextToPixelArt("drag cards off the hand area to play them"), gameTutorialCanvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels - 100);
 
     let gameTutorialSkipCanvas = createElem(gameTutorDiv, "canvas", null, null, 140 * GameVars.pixelSize, 40 * GameVars.pixelSize, null,
