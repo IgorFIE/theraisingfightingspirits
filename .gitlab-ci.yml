@@ -1,0 +1,42 @@
+image: node:latest
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - node_modules/
+
+before_script:
+- npm ci
+
+build:
+  before_script:
+  - apt-get update
+  - apt-get install zip
+  - npm ci
+  script:
+  - npm run build
+  - cd dist
+  - zip -9 theraisingfightingspirits *.html *.js
+  - cd -
+  - mv dist/theraisingfightingspirits.zip ./
+  - echo 'file_size $(stat --printf="%s" theraisingfightingspirits.zip)' > metrics.txt
+  #- test $(stat --printf="%s" theraisingfightingspirits.zip) -lt 13312
+  artifacts:
+    paths:
+    - theraisingfightingspirits.zip
+    reports:
+      metrics: metrics.txt
+
+pages:
+  script:
+  - npm ci
+  - npm run build
+  - mkdir .public
+  - cp dist/index.html .public
+  - cp dist/main.js .public
+  - mv .public public
+  artifacts:
+    paths:
+    - public
+  only:
+    - main

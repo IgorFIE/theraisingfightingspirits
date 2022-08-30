@@ -108,7 +108,7 @@ function drawMainMenu() {
 function createGameTutorialMenu() {
     gameTutorDiv = createElem(mainDiv, "div", "game-tutorial", ["hidden", "ontop"]);
 
-    let gameTutorialCanvas = createElem(gameTutorDiv, "canvas", null, null, GameVars.gameW, GameVars.gameH, "rgb(101,107,114,0.6)");
+    let gameTutorialCanvas = createElem(gameTutorDiv, "canvas", null, null, GameVars.gameW, GameVars.gameH, "rgb(151,157,164,0.6)");
 
     genLargeBox(gameTutorialCanvas, -20, Math.round((GameVars.gameHgAsPixels / 14) - 25), GameVars.gameWdAsPixels + 40, 50, GameVars.pixelSize, "black", "rgba(255,255,255,0.8)");
     drawPixelTextInCanvas(convertTextToPixelArt("tutorial"), gameTutorialCanvas, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, GameVars.gameHgAsPixels / 14, "black", 6);
