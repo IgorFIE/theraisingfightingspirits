@@ -11,7 +11,7 @@ before_script:
 build:
   before_script:
   - apt-get update
-  - apt-get install p7zip-full p7zip-rar
+  - apt-get install p7zip-full
   - npm ci
   script:
   - npm run build
