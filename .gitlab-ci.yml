@@ -16,7 +16,7 @@ build:
   script:
   - npm run build
   - cd dist
-  - 7z a theraisingfightingspirits.zip *.html *.js
+  - 7z a -mm=Deflate -mx=9 theraisingfightingspirits.zip *.html *.js
   - cd -
   - mv dist/theraisingfightingspirits.zip ./
   - echo 'file_size $(stat --printf="%s" theraisingfightingspirits.zip)' > metrics.txt

@@ -6,7 +6,7 @@ const { drawSprite, createElem } = require("./utilities/draw-utilities");
 const { Sound } = require("./utilities/sound");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("./utilities/text");
 const { genLargeBox, genSmallBox } = require("./utilities/box-generator");
-const { speaker, audio } = require("./objects/icons");
+const { speaker, audio, dollar } = require("./objects/icons");
 const { Background } = require("./objects/background");
 
 let mainDiv;
@@ -24,8 +24,12 @@ let gameOverCanv;
 let gameOverCtx;
 let winScreenCanv;
 let winScreenCtx;
+
 let soundBtnCanv;
 let soundBtnCtx;
+
+let monetizationCanv;
+let monetizationCtx;
 
 let wasScheduledToShowWinScreen;
 let game;
@@ -41,6 +45,7 @@ function init() {
     createGameTutorialMenu();
     createGameOverMenu();
     createWinScreenMenu();
+    createMonetizationIcon();
     createMuteBtn();
 
     // createFpsElement();
@@ -197,7 +202,7 @@ function drawWinScreen() {
 }
 
 function createMuteBtn() {
-    soundBtnCanv = createElem(mainDiv, "canvas", "soundbtn", ["ontop"], 27 * GameVars.pixelSize, 24 * GameVars.pixelSize, null,
+    soundBtnCanv = createElem(mainDiv, "canvas", "soundbtn", ["ontop"], 27 * GameVars.pixelSize, 25 * GameVars.pixelSize, null,
         () => {
             if (GameVars.sound) {
                 GameVars.sound.muteMusic();
@@ -206,8 +211,16 @@ function createMuteBtn() {
                 GameVars.sound.initSound();
             }
         });
+    soundBtnCanv.style.translate = GameVars.gameW - (37 * GameVars.pixelSize) + "px " + (Math.round(((GameVars.gameHgAsPixels / 14) - 13) * GameVars.pixelSize)) + "px";
     soundBtnCtx = soundBtnCanv.getContext("2d");
     drawSoundBtn();
+}
+
+function createMonetizationIcon() {
+    monetizationCanv = createElem(mainDiv, "canvas", "moneticon", ["ontop"], 27 * GameVars.pixelSize, 25 * GameVars.pixelSize);
+    monetizationCanv.style.translate = 10 * GameVars.pixelSize + "px " + (Math.round(((GameVars.gameHgAsPixels / 14) - 13) * GameVars.pixelSize)) + "px";
+    monetizationCtx = monetizationCanv.getContext("2d");
+    drawMonetizationIcon();
 }
 
 function startGame() {
@@ -268,11 +281,17 @@ function gameLoop() {
 
 function drawSoundBtn() {
     soundBtnCtx.clearRect(0, 0, soundBtnCanv.width, soundBtnCanv.height);
-    genLargeBox(soundBtnCanv, 0, 0, 26, 23, GameVars.pixelSize, "black", GameVars.sound && GameVars.sound.isSoundOn ? "rgba(255,255,255,0.8)" : "rgba(150,150,150,0.8)");
+    genLargeBox(soundBtnCanv, 0, 0, 26, 24, GameVars.pixelSize, "black", GameVars.sound && GameVars.sound.isSoundOn ? "rgba(255,255,255,0.8)" : "rgba(150,150,150,0.8)");
     drawSprite(soundBtnCanv, speaker, GameVars.pixelSize * 2, 2, 3);
     if (GameVars.sound && GameVars.sound.isSoundOn) {
         drawSprite(soundBtnCanv, audio, GameVars.pixelSize * 2, 7, 1);
     }
+}
+
+function drawMonetizationIcon() {
+    monetizationCtx.clearRect(0, 0, monetizationCanv.width, monetizationCanv.height);
+    genLargeBox(monetizationCanv, 0, 0, 26, 24, GameVars.pixelSize, "black", GameVars.isMonetActive ? "gold" : "rgba(150,150,150,0.8)");
+    drawSprite(monetizationCanv, dollar, GameVars.pixelSize * 2, 4, 3);
 }
 
 function updateHighScore() {
@@ -286,12 +305,16 @@ function updateHighScore() {
 function addMonetizationEvents() {
     if (document.monetization) {
         document.monetization.addEventListener('monetizationstart', () => {
-            GameVars.sound.buffSound();
+            initAudio();
+            setTimeout(() => GameVars.sound.buffSound(), 0);
             GameVars.isMonetActive = true;
+            drawMonetizationIcon();
         });
         document.monetization.addEventListener('monetizationstop', () => {
-            GameVars.sound.playOverSound();
-            GameVars.isMonetActive = false
+            initAudio();
+            setTimeout(() => GameVars.sound.playOverSound(), 0);
+            GameVars.isMonetActive = false;
+            drawMonetizationIcon();
         });
     }
 }

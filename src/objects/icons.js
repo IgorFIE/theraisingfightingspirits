@@ -149,3 +149,13 @@ export const audio = [
     [nu, nu, bl, nu],
     [nu, nu, nu, nu]
 ];
+
+export const dollar = [
+    [nu, nu, bl, nu, nu],
+    [bl, bl, bl, bl, bl],
+    [bl, nu, bl, nu, nu],
+    [bl, bl, bl, bl, bl],
+    [nu, nu, bl, nu, bl],
+    [bl, bl, bl, bl, bl],
+    [nu, nu, bl, nu, nu]
+];
