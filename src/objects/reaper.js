@@ -3,7 +3,7 @@ import { randomNumb } from "../utilities/general-utilities";
 import { Status } from "./status";
 const { drawSprite, createElem } = require("../utilities/draw-utilities");
 const { atkIcon, defIcon, scytheIcon, buffIcon } = require("../objects/icons");
-const { generateSmallBox } = require("../utilities/box-generator");
+const { genSmallBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 
 export class Reaper {
@@ -17,9 +17,9 @@ export class Reaper {
         this.isDead = false;
         this.isNewTurn = true;
 
-        this.reaperCont = createElem(gameDiv, "div", null, ["reaper-container"]);
+        this.reaperCont = createElem(gameDiv, "div", null, ["reapercontainer"]);
 
-        this.rActCanv = createElem(this.reaperCont, "canvas", "reaper-action", null, (scytheIcon[0].length) * GameVars.pixelSize, (scytheIcon.length + 4) * GameVars.pixelSize);
+        this.rActCanv = createElem(this.reaperCont, "canvas", "reaperaction", null, (scytheIcon[0].length) * GameVars.pixelSize, (scytheIcon.length + 4) * GameVars.pixelSize);
         this.rActCtx = this.rActCanv.getContext("2d");
 
         this.rCanv = createElem(this.reaperCont, "canvas", "reaper", null, grimReaper[0].length * GameVars.pixelSize, grimReaper.length * GameVars.pixelSize);
@@ -150,7 +150,7 @@ export class Reaper {
 
     drawAct(actionIcon, actionValue) {
         drawSprite(this.rActCanv, actionIcon, GameVars.pixelSize);
-        generateSmallBox(this.rActCanv, 0, actionIcon.length - 4, 17, 7, GameVars.pixelSize, "black", "white");
+        genSmallBox(this.rActCanv, 0, actionIcon.length - 4, 17, 7, GameVars.pixelSize, "black", "white");
         drawPixelTextInCanvas(convertTextToPixelArt(actionValue), this.rActCanv, GameVars.pixelSize, 7 + 2, actionIcon.length, "black");
     }
 

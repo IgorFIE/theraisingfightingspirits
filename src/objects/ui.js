@@ -1,7 +1,7 @@
 import { GameVars } from "../game-variables";
 import { Event } from "../objects/event";
 const { Card } = require("../objects/card");
-const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
+const { genSmallBox, genLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 const { createElem } = require("../utilities/draw-utilities");
 
@@ -134,42 +134,42 @@ export class UI {
         this.energyCanv.width = 67 * GameVars.pixelSize;
         this.energyCanv.height = 99 * GameVars.pixelSize;
         this.energyCanv.style.transform = "translate(0px," + (GameVars.gameH - this.energyCanv.height) + "px)";
-        generateLargeBox(this.energyCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
+        genLargeBox(this.energyCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
 
-        generateLargeBox(this.energyCanv, 5, 5, 56, 53, GameVars.pixelSize, "black", "white");
+        genLargeBox(this.energyCanv, 5, 5, 56, 53, GameVars.pixelSize, "black", "white");
         drawPixelTextInCanvas(convertTextToPixelArt("energy"), this.energyCanv, GameVars.pixelSize, 33, 12);
 
         this.energy = GameVars.maxPlayCards - GameVars.cardsPlayed;
-        generateSmallBox(this.energyCanv, 17, 17, 31, 30, GameVars.pixelSize, "black", "white");
+        genSmallBox(this.energyCanv, 17, 17, 31, 30, GameVars.pixelSize, "black", "white");
         drawPixelTextInCanvas(convertTextToPixelArt(this.energy), this.energyCanv, GameVars.pixelSize, 33, 32, "black", 3);
 
-        generateSmallBox(this.energyCanv, 5, 63, 56, 30, GameVars.pixelSize, "black", GameVars.isMonetActive ? "gold" : "gray");
+        genSmallBox(this.energyCanv, 5, 63, 56, 30, GameVars.pixelSize, "black", GameVars.isMonetActive ? "gold" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.energyCanv, GameVars.pixelSize, 34, 70);
         drawPixelTextInCanvas(convertTextToPixelArt("monetization"), this.energyCanv, GameVars.pixelSize, 34, 78);
         drawPixelTextInCanvas(convertTextToPixelArt("gain +1 energy"), this.energyCanv, GameVars.pixelSize, 34, 86);
 
         this.turnControlCtx.clearRect(0, 0, this.turnControlCanv.width, this.turnControlCanv.height);
-        generateLargeBox(this.turnControlCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
-        generateSmallBox(this.turnControlCanv, 5, 23, 67 - 11, 31, GameVars.pixelSize, "black", GameVars.isMonetActive ? "gold" : "gray");
+        genLargeBox(this.turnControlCanv, 0, 0, 67 - 1, 99 - 1, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
+        genSmallBox(this.turnControlCanv, 5, 23, 67 - 11, 31, GameVars.pixelSize, "black", GameVars.isMonetActive ? "gold" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("enable"), this.turnControlCanv, GameVars.pixelSize, 34, 28);
         drawPixelTextInCanvas(convertTextToPixelArt("monetization"), this.turnControlCanv, GameVars.pixelSize, 34, 35);
         drawPixelTextInCanvas(convertTextToPixelArt("draw +1"), this.turnControlCanv, GameVars.pixelSize, 34, 42);
         drawPixelTextInCanvas(convertTextToPixelArt("extra card"), this.turnControlCanv, GameVars.pixelSize, 34, 49);
 
         this.endTurnCtx.clearRect(0, 0, this.prevSoulCanv.width, this.prevSoulCanv.height);
-        generateLargeBox(this.endTurnCanv, 5, 5, 56, 13, GameVars.pixelSize, "black", GameVars.isPlayerTurn ? "white" : "gray");
+        genLargeBox(this.endTurnCanv, 5, 5, 56, 13, GameVars.pixelSize, "black", GameVars.isPlayerTurn ? "white" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("end turn"), this.endTurnCanv, GameVars.pixelSize, 34, 12);
 
         this.prevSoulCtx.clearRect(0, 0, this.prevSoulCanv.width, this.prevSoulCanv.height);
-        generateLargeBox(this.prevSoulCanv, 5, 3, 56, 13, GameVars.pixelSize, "black", GameVars.prevSoul ? "white" : "gray");
+        genLargeBox(this.prevSoulCanv, 5, 3, 56, 13, GameVars.pixelSize, "black", GameVars.prevSoul ? "white" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("previous soul"), this.prevSoulCanv, GameVars.pixelSize, 34, 10);
 
         this.nextSoulCtx.clearRect(0, 0, this.nextSoulCanv.width, this.nextSoulCanv.height);
-        generateLargeBox(this.nextSoulCanv, 5, 5, 56, 13, GameVars.pixelSize, "black", GameVars.nextSoul ? "white" : "gray");
+        genLargeBox(this.nextSoulCanv, 5, 5, 56, 13, GameVars.pixelSize, "black", GameVars.nextSoul ? "white" : "gray");
         drawPixelTextInCanvas(convertTextToPixelArt("next soul"), this.nextSoulCanv, GameVars.pixelSize, 34, 12);
 
         this.turnCountCtx.clearRect(0, 0, this.turnCountCanv.width, this.turnCountCanv.height);
-        generateLargeBox(this.turnCountCanv, -20, 0, GameVars.gameWdAsPixels + 40, 49, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
+        genLargeBox(this.turnCountCanv, -20, 0, GameVars.gameWdAsPixels + 40, 49, GameVars.pixelSize, "black", "rgba(255,255,255,0.9)");
         drawPixelTextInCanvas(convertTextToPixelArt("turn " + GameVars.turnCount), this.turnCountCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, 18, "black", 2);
         drawPixelTextInCanvas(convertTextToPixelArt("score " + GameVars.score), this.turnCountCanv, GameVars.pixelSize, GameVars.gameWdAsPixels / 2, 32, "black", 2);
     }

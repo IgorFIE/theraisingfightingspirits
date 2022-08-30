@@ -2,8 +2,8 @@ import { GameVars } from "../game-variables";
 import { randomNumb, retrieveSoulCoords } from "../utilities/general-utilities";
 const { Soul } = require("../objects/soul");
 const { drawSprite, createElem } = require("../utilities/draw-utilities");
-const { atkIcon, defIcon, minionIcon } = require("../objects/icons");
-const { generateSmallBox, generateLargeBox } = require("../utilities/box-generator");
+const { atkIcon, defIcon, minionIcon, skillIcon } = require("../objects/icons");
+const { genSmallBox, genLargeBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 
 export class Card {
@@ -16,7 +16,7 @@ export class Card {
 
         this.updateCardPos(cardX, cardY);
         this.dragElement(this);
-        this.cardType = randomNumb(3);
+        this.cardType = randomNumb(4);
         this.drawCard();
     }
 
@@ -40,6 +40,16 @@ export class Card {
                     this.cardCanv.style.top = null;
                     this.cardCanv.style.left = null;
                 }
+                break;
+            case 2: // resonance card
+                GameVars.souls.forEach((row) => row.forEach((soul) => {
+                    if (soul && !this.isDead) {
+                        soul.soulCanv.style.animation = "";
+                        requestAnimationFrame(() => setTimeout(() => soul.soulCanv.style.animation = "soulatk 900ms ease-in-out", 0));
+                        setTimeout(() => GameVars.reaper.takeDmg(Math.ceil(GameVars.cardDmg / 4) || 1), 250)
+                    }
+                }));
+                this.afterUseCardsSettings();
                 break;
             default: // add shield
                 GameVars.soulInUse.soulStats.addShield(GameVars.cardShield);
@@ -92,10 +102,10 @@ export class Card {
     }
 
     drawCard(bckColor = "White") {
-        generateLargeBox(this.cardCanv, 2, 2, 53 - 3, 85 - 3, GameVars.pixelSize, "black", bckColor);
-        generateSmallBox(this.cardCanv, 7, 14, 40, 31, GameVars.pixelSize, "black", bckColor);
-        generateSmallBox(this.cardCanv, 7, 48, 40, 31, GameVars.pixelSize, "black", bckColor);
-        generateSmallBox(this.cardCanv, 13, 42, 28, 9, GameVars.pixelSize, "black", bckColor);
+        genLargeBox(this.cardCanv, 2, 2, 53 - 3, 85 - 3, GameVars.pixelSize, "black", bckColor);
+        genSmallBox(this.cardCanv, 7, 14, 40, 31, GameVars.pixelSize, "black", bckColor);
+        genSmallBox(this.cardCanv, 7, 48, 40, 31, GameVars.pixelSize, "black", bckColor);
+        genSmallBox(this.cardCanv, 13, 42, 28, 9, GameVars.pixelSize, "black", bckColor);
 
         switch (this.cardType) {
             case 0:
@@ -108,6 +118,13 @@ export class Card {
                 drawSprite(this.cardCanv, spiritImg, GameVars.pixelSize, 22, 19);
                 this.generateCardText("spirit", "minion", "+1 soul");
                 break;
+            case 2:
+                drawSprite(this.cardCanv, skillIcon, GameVars.pixelSize);
+                drawSprite(this.cardCanv, resonanceImg, GameVars.pixelSize, 10, 18);
+                this.generateCardText("resonanc", "skill", "");
+                drawPixelTextInCanvas(convertTextToPixelArt((Math.ceil(GameVars.cardDmg / 4) || 1) + " damage"), this.cardCanv, GameVars.pixelSize, 28, 60);
+                drawPixelTextInCanvas(convertTextToPixelArt("per soul"), this.cardCanv, GameVars.pixelSize, 28, 68);
+                break;
             default:
                 drawSprite(this.cardCanv, defIcon, GameVars.pixelSize);
                 drawSprite(this.cardCanv, hardenImg, GameVars.pixelSize, 20, 20);
@@ -117,7 +134,7 @@ export class Card {
     }
 
     generateCardText(cardName, cardType, cardDescription) {
-        drawPixelTextInCanvas(convertTextToPixelArt(cardName), this.cardCanv, GameVars.pixelSize, 32, 9);
+        drawPixelTextInCanvas(convertTextToPixelArt(cardName), this.cardCanv, GameVars.pixelSize, 33, 9);
         drawPixelTextInCanvas(convertTextToPixelArt(cardType), this.cardCanv, GameVars.pixelSize, 27, 47);
         drawPixelTextInCanvas(convertTextToPixelArt(cardDescription), this.cardCanv, GameVars.pixelSize, 28, 64);
     }
@@ -150,7 +167,7 @@ export class Card {
                 startX = e.clientX;
                 startY = e.clientY;
             }
-            card.cardCanv.classList.add("on-top");
+            card.cardCanv.classList.add("ontop");
 
             document.onmouseup = closeDragElem;
             document.onmousemove = elemDrag;
@@ -192,7 +209,7 @@ export class Card {
                 card.cardCanv.style.top = null;
                 card.cardCanv.style.left = null;
             }
-            card.cardCanv.classList.remove("on-top");
+            card.cardCanv.classList.remove("ontop");
         }
     }
 }
@@ -220,6 +237,31 @@ const shockImg = [
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, bl, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu],
     [nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu]
+];
+
+const resonanceImg = [
+    [nu, nu, nu, nu, nu, nu, bl, nu, bl, nu, bl, bl, nu, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, nu, bl, bl, nu, bl, nu, nu, bl, bl, bl, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, bl, bl, nu, nu, bl, nu, nu, bl, bl, nu, nu, bl, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, bl, nu, bl, bl, nu, bl, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, bl, nu, bl, bl, bl, bl, bl, nu, bl, bl, bl, bl, bl, bl, bl, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, bl, bl, bl, bl, nu, bl, nu, bl, nu, bl, nu, bl, nu, nu, nu, bl, bl, bl, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [bl, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, nu, bl, nu, nu, bl, bl, nu, bl, bl, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [bl, nu, bl, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu, bl, nu, nu, nu, bl, nu, bl, bl, bl, bl, bl, bl, nu, nu, bl, nu, nu, nu, nu, nu, nu],
+    [bl, bl, bl, nu, nu, bl, nu, bl, bl, nu, bl, bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl, nu, nu, nu, nu, nu],
+    [bl, bl, nu, nu, bl, nu, nu, bl, bl, bl, bl, bl, bl, nu, bl, bl, bl, bl, bl, nu, bl, bl, bl, bl, bl, bl, nu, bl, bl, nu, bl, nu, nu, nu],
+    [bl, nu, nu, bl, bl, bl, nu, nu, bl, bl, bl, bl, bl, nu, bl, nu, bl, nu, bl, nu, bl, bl, bl, nu, bl, bl, bl, bl, bl, nu, bl, bl, nu, nu],
+    [bl, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl, nu, bl, nu, nu, bl, bl, bl, nu, nu, bl, bl, bl, nu, bl, bl, bl, nu, bl, bl, bl, bl, bl, bl],
+    [bl, nu, bl, nu, bl, nu, bl, nu, bl, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu, bl, bl, bl, bl, nu, bl, bl, bl, nu, nu, bl, nu, nu, bl, nu],
+    [bl, nu, nu, bl, bl, bl, nu, nu, nu, nu, nu, bl, nu, bl, bl, nu, bl, bl, bl, bl, bl, bl, bl, nu, bl, bl, bl, nu, nu, bl, nu, nu, nu, nu],
+    [bl, bl, nu, nu, nu, nu, nu, bl, nu, bl, bl, nu, nu, nu, bl, bl, bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, bl, nu, nu, bl, nu, nu, nu, nu],
+    [bl, bl, bl, bl, nu, bl, bl, nu, nu, bl, bl, bl, nu, nu, nu, bl, bl, bl, nu, nu, bl, bl, nu, nu, nu, bl, bl, nu, nu, nu, nu, nu, nu, nu],
+    [nu, bl, bl, bl, bl, bl, bl, nu, bl, bl, bl, bl, bl, nu, bl, bl, bl, bl, nu, nu, nu, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, bl, bl, bl, bl, nu, nu, bl, nu, bl, nu, bl, nu, bl, bl, bl, nu, nu, nu, nu, bl, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, bl, bl, bl, bl, bl, nu, nu, bl, bl, bl, nu, nu, bl, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, bl, nu, bl, bl, bl, bl, nu, nu, nu, nu, nu, bl, bl, nu, bl, nu, nu, nu, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, bl, nu, bl, bl, nu, bl, bl, bl, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
+    [nu, nu, nu, nu, bl, nu, nu, nu, bl, bl, bl, nu, bl, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu, nu],
 ];
 
 const hardenImg = [

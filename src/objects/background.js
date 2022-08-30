@@ -4,7 +4,7 @@ const { createElem } = require("../utilities/draw-utilities");
 
 export class Background {
     constructor(gameDiv) {
-        this.bckElem = createElem(gameDiv, "canvas", null, ["gameBack"], GameVars.gameW, GameVars.gameH, "#686b7a");
+        this.bckElem = createElem(gameDiv, "canvas", null, ["gameback"], GameVars.gameW, GameVars.gameH, "#686b7a");
         this.bckCtx = this.bckElem.getContext("2d");
     }
 

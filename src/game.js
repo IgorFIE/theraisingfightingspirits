@@ -14,7 +14,7 @@ export class Game {
 
         this.background = new Background(gameDiv);
 
-        let fakeSoulContainer = createElem(this.gameDiv, "div", null, ["soul-container"]);
+        let fakeSoulContainer = createElem(this.gameDiv, "div", null, ["soulcontainer"]);
         new Soul(fakeSoulContainer, 0, 0);
 
         const containerW = fakeSoulContainer.clientWidth;
@@ -28,7 +28,7 @@ export class Game {
             let newSoulContainerArray = [];
             let newSoulArray = [];
             for (let x = 0; x < 3; x++) {
-                let soulContainer = createElem(this.gameDiv, "div", null, ["soul-container"]);
+                let soulContainer = createElem(this.gameDiv, "div", null, ["soulcontainer"]);
                 soulContainer.style.transform = "translate(" +
                     (containerX + (containerW * x)) + "px," +
                     (containerY + (containerH * y)) + "px)";

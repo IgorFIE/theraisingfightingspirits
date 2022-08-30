@@ -1,4 +1,4 @@
-export const generateSmallBox = (canvas, startX, startY, endX, endY, pixelSize, color, bgColor) => {
+export const genSmallBox = (canvas, startX, startY, endX, endY, pixelSize, color, bgColor) => {
     const conditionFn = (x, y, endX, endY) => {
         return (y === 0 && (x > 0 && x < endX)) ||
             (y === endY && (x > 0 && x < endX)) ||
@@ -11,7 +11,7 @@ export const generateSmallBox = (canvas, startX, startY, endX, endY, pixelSize, 
     generateBox(canvas, startX, startY, endX, endY, pixelSize, color, conditionFn);
 };
 
-export const generateLargeBox = (canvas, startX, startY, endX, endY, pixelSize, color, bgColor) => {
+export const genLargeBox = (canvas, startX, startY, endX, endY, pixelSize, color, bgColor) => {
     const conditionFn = (x, y, endX, endY) => {
         return (y < 3 && (x > 0 && x < endX)) ||
             (y > endY - 3 && (x > 0 && x < endX)) ||

@@ -1,7 +1,7 @@
 import { GameVars } from "../game-variables";
 const { defIcon } = require("../objects/icons");
 const { drawSprite, createElem } = require("../utilities/draw-utilities");
-const { generateSmallBox } = require("../utilities/box-generator");
+const { genSmallBox } = require("../utilities/box-generator");
 const { convertTextToPixelArt, drawPixelTextInCanvas } = require("../utilities/text");
 
 export class Status {
@@ -44,14 +44,14 @@ export class Status {
 
     draw() {
         this.statsCtx.clearRect(0, 0, this.statsCanv.width, this.statsCanv.height);
-        generateSmallBox(this.statsCanv, 16, 3, this.w + 1, 11, GameVars.pixelSize, "white", "white");
+        genSmallBox(this.statsCanv, 16, 3, this.w + 1, 11, GameVars.pixelSize, "white", "white");
         if (this.shield > 0) {
             drawSprite(this.statsCanv, defIcon, GameVars.pixelSize);
-            generateSmallBox(this.statsCanv, 0, defIcon.length - 4, 17, 7, GameVars.pixelSize, "black", "white");
+            genSmallBox(this.statsCanv, 0, defIcon.length - 4, 17, 7, GameVars.pixelSize, "black", "white");
             drawPixelTextInCanvas(convertTextToPixelArt(this.shield), this.statsCanv, GameVars.pixelSize, 9, defIcon.length, "black");
         }
 
-        generateSmallBox(this.statsCanv, 17, 4, this.w - 1, 9, GameVars.pixelSize, "black", "white");
+        genSmallBox(this.statsCanv, 17, 4, this.w - 1, 9, GameVars.pixelSize, "black", "white");
         this.statsCtx.fillStyle = this.shield > 0 ? "lightblue" : "red";
         this.statsCtx.fillRect(
             18 * GameVars.pixelSize,

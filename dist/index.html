@@ -26,7 +26,7 @@
             display: none;
         }
 
-        #sound-btn {
+        #soundbtn {
             position: relative;
             margin: 1%;
             float: right;
@@ -39,22 +39,22 @@
             display: initial;
         }
 
-        #game-over-screen,
-        #win-screen {
+        #gameoverscreen,
+        #winscreen {
             opacity: 0.9;
         }
 
-        .gameBack {
+        .gameback {
             z-index: -10;
         }
 
-        .reaper-container,
-        .soul-container {
+        .reapercontainer,
+        .soulcontainer {
             position: fixed;
         }
 
         #reaper,
-        #reaper-action,
+        #reaperaction,
         .soul,
         .status {
             position: relative;
@@ -62,7 +62,7 @@
             display: block;
         }
 
-        #reaper-action {
+        #reaperaction {
             margin-left: 46%;
             animation: arrowAnim 3s infinite ease-in-out;
         }
@@ -81,12 +81,9 @@
             margin-left: 46%;
         }
 
-        .card {
-            z-index: 1;
-        }
-
-        .on-top {
+        .ontop {
             z-index: 999;
+            transform: translateZ(999px);
         }
 
         canvas,
