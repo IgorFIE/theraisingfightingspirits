@@ -11,12 +11,12 @@ before_script:
 build:
   before_script:
   - apt-get update
-  - apt-get install zip
+  - apt-get install p7zip-full p7zip-rar
   - npm ci
   script:
   - npm run build
   - cd dist
-  - zip -9 theraisingfightingspirits *.html *.js
+  - 7z a theraisingfightingspirits.zip *.html *.js
   - cd -
   - mv dist/theraisingfightingspirits.zip ./
   - echo 'file_size $(stat --printf="%s" theraisingfightingspirits.zip)' > metrics.txt
