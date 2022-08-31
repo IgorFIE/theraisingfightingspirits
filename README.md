@@ -1,6 +1,6 @@
 # The Raising Fighting Spirits
 
-Is a simple card game where you fight against the grim reaper using a hord of fighting spirits!
+Is a simple card game where you fight against the grim reaper using a horde of fighting spirits!
 
 You can play a live version here: https://igorfie.gitlab.io/theraisingfightingspirits/
 
