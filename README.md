@@ -1,6 +1,27 @@
 # The Raising Fighting Spirits
 
-Is a simple card game where you fight against the grim reaper using a horde of fighting spirits!
+Is a simple strategy card game where you fight against the Grim Reaper using a horde of spirits!
+
+Try to kill the Reaper faster to receive a better score!!! BUT watch out for the Reaper's next turn intended action!!!
+
+Game instructions:
+- You can stop/start the game sounds in the top right speaker icon.
+- Click/touch a soul to select it or use the buttons at the bottom right (next soul/previous soul) to navigate them.
+- Look at the Reaper's next turn intention/action to create your strategy.
+- Energy lets you know the amount of cards you can play per turn.
+- Click and drag cards out/above your hand area to play them.
+- End your turn and see the reaper action.
+- During game events you can select one of the power up options.
+
+Web monetization:
+- When monetization is active the top left dollar icon will display as gold.
+- During game you will also see messages boxes as gold letting you know what bonuses are active.
+- If you end monetization the bonus applied only expires at the end of your turn.
+
+Web monetization Bonus:
+- Monetization allows you to have one extra energy per turn (energy allows you to play cards).
+- Monetization allows you to draw one extra card per turn.
+- Monetization gives you one more option to select during events.
 
 You can play a live version here: https://igorfie.gitlab.io/theraisingfightingspirits/
 
