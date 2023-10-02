@@ -7,7 +7,6 @@
     "build": "npx webpack --config webpack.config.js"
   },
   "author": "Igor Estevao",
-  "license": "ISC",
   "devDependencies": {
     "webpack": "^5.50.0",
     "webpack-cli": "^4.7.2",
